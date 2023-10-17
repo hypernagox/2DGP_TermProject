@@ -4,7 +4,7 @@ from sdl2 import SDL_KEYDOWN, SDLK_a, SDLK_LEFT, SDLK_RIGHT, SDL_KEYUP
 from math import pi
 
 
-#push test
+#push test 2
 
 WIDTH,HEIGHT = 800,600
 class Boy:
