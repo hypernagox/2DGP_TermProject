@@ -13,3 +13,5 @@ class CSceneMgr(metaclass=SingletonBase):
         self.cur_scene.final_update()
     def render(self):
         self.cur_scene.render()
+    def GetCurScene(self):
+        return self.cur_scene

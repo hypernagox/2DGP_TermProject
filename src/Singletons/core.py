@@ -28,11 +28,11 @@ class CCore(metaclass = SingletonBase):
 CCore().Initialize(800,600)
 
 
-anim = CAnimation('Monster/wolf/walking')
+anim = CAnimation('Monster/wolf/walking',0.2,True)
 
 while True:
+    CTimeMgr().update()
     anim.render()
     anim.update()
     update_canvas()
     clear_canvas()
-    delay(0.1)

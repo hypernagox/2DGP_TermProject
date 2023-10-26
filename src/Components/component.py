@@ -14,3 +14,5 @@ class CComponent:
         pass
     def render(self):
         pass
+    def GetOwner(self):
+        return self.owner

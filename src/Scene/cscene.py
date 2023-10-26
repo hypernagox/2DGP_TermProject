@@ -11,15 +11,15 @@ class CScene:
     def late_update(self):
         for arr in self.objs:
             for obj in arr:
-                obj.update()
+                obj.late_update()
     def last_update(self):
         for arr in self.objs:
             for obj in arr:
-                obj.update()
+                obj.last_update()
     def final_update(self):
         for arr in self.objs:
             for obj in arr:
-                obj.update()
+                obj.final_update()
     def render(self):
         for arr in self.objs:
             for obj in arr:
