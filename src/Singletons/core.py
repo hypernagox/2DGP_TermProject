@@ -2,6 +2,7 @@ from singleton import SingletonBase
 from pico2d import *
 
 from src.Components.animator import CAnimation
+from src.Singletons.ctimemgr import CTimeMgr
 from src.Singletons.resourcemgr import CPathMgr,CResMgr
 
 
@@ -16,6 +17,7 @@ class CCore(metaclass = SingletonBase):
         open_canvas(self.width,self.height)
         CPathMgr().Initialize()
         CResMgr().Initialize()
+        CTimeMgr().Initialize()
         pass
     def GameLoop(self):
         while not self.should_close:

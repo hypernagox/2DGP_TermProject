@@ -26,7 +26,7 @@ class CResMgr(metaclass=SingletonBase):
     def __init__(self):
         self.tex_map = {}
         self.sound_map = {}
-
+        self.anim_map = {}
     def Initialize(self):
         for tex in CPathMgr().GetTexPath().rglob('**/*'):
             if tex.is_file():
@@ -36,3 +36,13 @@ class CResMgr(metaclass=SingletonBase):
         return self.tex_map[name]
     def GetSound(self,name):
         return self.sound_map[name]
+    def GetAnim(self,folderName):
+        if folderName not in self.anim_map:
+            anim_clips = []
+            target_dir = CPathMgr().GetAnimPath() / folderName
+            for clips in target_dir.rglob('*'):
+                if clips.is_file():
+                    from pico2d import load_image
+                    anim_clips.append(load_image(str(clips.absolute())))
+            self.anim_map[folderName] = anim_clips
+        return self.anim_map[folderName]
