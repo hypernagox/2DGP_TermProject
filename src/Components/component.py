@@ -2,7 +2,8 @@
 class CComponent:
     def __init__(self):
         self.owner = None
-
+    def set_owner(self,obj):
+        self.owner = obj
     def update(self):
         pass
     def late_update(self):
