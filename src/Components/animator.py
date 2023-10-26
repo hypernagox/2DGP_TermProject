@@ -1,5 +1,5 @@
 from src.Components.component import CComponent
-from src.Singletons.pathmgr import CPathMgr
+from src.Singletons.resourcemgr import CPathMgr
 
 
 class CAnimation:
