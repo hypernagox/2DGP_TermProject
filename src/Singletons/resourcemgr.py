@@ -9,11 +9,13 @@ class CResMgr(metaclass=SingletonBase):
 
     def Initialize(self):
         for tex in CPathMgr().GetTexPath().rglob('**/*'):
-            print(tex)
             if tex.is_file():
                 from pico2d import load_image
-                self.tex_map[tex.name] = load_image(tex.absolute)
-                print(tex)
+                self.tex_map[tex.parent.name + '_' + tex.name] = load_image(str(tex.absolute()))
+    def GetTex(self,name):
+        return self.tex_map[name]
+    def GetSound(self,name):
+        return self.sound_map[name]
 
 CCore(800,600).Initialize()
 CPathMgr().Initialize()
