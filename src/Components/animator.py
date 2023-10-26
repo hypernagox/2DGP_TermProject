@@ -1,5 +1,7 @@
-from component import CComponent
-from ..Singletons.pathmgr import CPathMgr
+from src.Components.component import CComponent
+from src.Singletons.pathmgr import CPathMgr
+
+
 class CAnimation:
     def __init__(self,folderName):
         self.anim_clips = []
@@ -10,7 +12,10 @@ class CAnimation:
                 self.anim_clips.append(load_image(str(clips.absolute())))
         self.num_of_clips = len(self.anim_clips)
         self.frame = 0
-    
+    def update(self):
+        self.frame = (self.frame + 1) % self.num_of_clips
+    def render(self):
+        self.anim_clips[self.frame].draw(100,100)
 class CState:
     def update(self):
         pass
