@@ -41,15 +41,11 @@ class CAnimator(CComponent):
     def __init__(self):
         super().__init__()
         self.obj = None
-        self.anim_map = {}
         self.state_map = {}
-        self.cur_anim = None
         self.cur_state = None
-    def AddAnimState(self,anim_name,folderName,duration,repeat,state):
-        self.anim_map[anim_name] = CAnimation(folderName,duration,repeat)
-        self.state_map[anim_name] = state
+    def AddAnimState(self,state_name,state):
+        self.state_map[state_name] = state
     def update(self):
-        self.cur_anim.update()
         self.cur_state.update()
     def late_update(self):
         pass
@@ -61,10 +57,9 @@ class CAnimator(CComponent):
         pass
 
     def render(self):
-        self.cur_anim.render()
-        next_state =  self.cur_state.change_state()
+        self.cur_state.render()
+        next_state = self.cur_state.change_state()
         if '' != next_state:
             self.cur_state.exit_state()
             self.cur_state = self.state_map[next_state]
             self.cur_state.enter_state()
-            self.cur_anim = self.anim_map[next_state]

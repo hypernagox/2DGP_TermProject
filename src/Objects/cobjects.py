@@ -2,9 +2,13 @@
 class CObject:
     def __init__(self):
         self.components = []
+        self.comp_map = {}
         self.name = ''
-    def AddComponent(self,comp):
+    def AddComponent(self,comp_name,comp):
         self.components.append(comp)
+        self.comp_map[comp_name] = comp
+    def GetComp(self,comp_name):
+        return self.comp_map[comp_name]
     def update(self):
         for comp in self.components:
             comp.update()
