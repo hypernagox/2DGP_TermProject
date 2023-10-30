@@ -34,5 +34,5 @@ class CTransform(CComponent):
         transform.parent = self
         self.childs.append(transform)
     def final_update(self):
-        self.m_pos = self.m_posOffset
+        self.m_pos += self.m_posOffset
         self.m_posOffset = Vec2()

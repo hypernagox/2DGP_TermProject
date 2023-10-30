@@ -45,6 +45,10 @@ class Vec2:
             return Vec2(self.x / magnitude, self.y / magnitude)
         return Vec2()
 
+    def is_zero(self, tolerance=1e-10):
+        return abs(self.x) < tolerance and abs(self.y) < tolerance
+
+
 def dot(a, b):
     if isinstance(a, Vec2) and isinstance(b, Vec2):
         return a.x * b.x + a.y * b.y

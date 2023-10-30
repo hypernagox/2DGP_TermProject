@@ -3,7 +3,7 @@ from src.Singletons.resourcemgr import CResMgr
 
 
 class CAnimation:
-    def __init__(self,folderName,duration,repeat):
+    def __init__(self,folderName,duration,repeat,animator):
         self.anim_clips = CResMgr().GetAnim(folderName)
         self.num_of_clips = len(self.anim_clips)
         self.frame = 0
@@ -11,6 +11,7 @@ class CAnimation:
         self.duration = duration
         self.bFinish = False
         self.bRepeat = repeat
+        self.animator = animator
     def update(self):
         from src.Singletons.ctimemgr import DT
         if self.bFinish:
@@ -26,7 +27,8 @@ class CAnimation:
                     self.bFinish = True
                     self.frame = self.num_of_clips - 1
     def render(self):
-        self.anim_clips[self.frame].draw(100,100)
+        trans = self.animator.GetOwner().GetTransform()
+        self.anim_clips[self.frame].draw(trans.m_pos.x,trans.m_pos.y)
 class CState:
     def update(self):
         pass

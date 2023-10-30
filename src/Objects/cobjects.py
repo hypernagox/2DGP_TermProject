@@ -8,12 +8,16 @@ class CObject:
         self.comp_map = {}
         self.name = ''
         self.components.append(CTransform())
+        self.components[0].SetOwner(self)
     def AddComponent(self,comp_name,comp):
         self.components.append(comp)
         self.comp_map[comp_name] = comp
+        comp.SetOwner(self)
     def AddChild(self,child):
         self.childs.append(child)
         self.components[0].AddChild(child.components[0])
+    def GetTransform(self):
+        return self.components[0]
     def GetComp(self,comp_name):
         return self.comp_map[comp_name]
     def update(self):
