@@ -36,3 +36,11 @@ class CTransform(CComponent):
     def final_update(self):
         self.m_pos += self.m_posOffset
         self.m_posOffset = Vec2()
+    def GetLeft(self):
+        return self.m_pos.x - self.m_size.x/4
+    def GetRight(self):
+        return self.m_pos.x + self.m_size.x/4
+    def GetBottom(self):
+        return self.m_pos.y - self.m_size.y/4
+    def GetTop(self):
+        return self.m_pos.y + self.m_size.y/4

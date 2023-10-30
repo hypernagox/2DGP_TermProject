@@ -3,7 +3,7 @@ from src.Singletons.resourcemgr import CResMgr
 
 
 class CAnimation:
-    def __init__(self,folderName,duration,repeat,animator):
+    def __init__(self,folderName,duration,repeat,left,bottom,width,height,animator):
         self.anim_clips = CResMgr().GetAnim(folderName)
         self.num_of_clips = len(self.anim_clips)
         self.frame = 0
@@ -12,6 +12,10 @@ class CAnimation:
         self.bFinish = False
         self.bRepeat = repeat
         self.animator = animator
+        self.left = left
+        self.bottom = bottom
+        self.width = width
+        self.height = height
     def update(self):
         from src.Singletons.ctimemgr import DT
         if self.bFinish:
@@ -27,8 +31,13 @@ class CAnimation:
                     self.bFinish = True
                     self.frame = self.num_of_clips - 1
     def render(self):
-        trans = self.animator.GetOwner().GetTransform()
-        self.anim_clips[self.frame].draw(trans.m_pos.x,trans.m_pos.y)
+        renderer = self.animator.GetOwner().GetComp("SpriteRenderer")
+        renderer.render_target(self.anim_clips[self.frame]
+                               ,self.left
+                               ,self.bottom
+                               ,self.width
+                               ,self.height
+                               ,self.animator.bIsFlip)
 class CState:
     def update(self):
         pass
@@ -45,6 +54,7 @@ class CAnimator(CComponent):
         self.obj = None
         self.state_map = {}
         self.cur_state = None
+        self.bIsFlip = False
     def AddAnimState(self,state_name,state):
         self.state_map[state_name] = state
     def update(self):
