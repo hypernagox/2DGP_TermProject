@@ -65,7 +65,9 @@ class CRigidBody(CComponent):
         self.update_physics()
     def final_update(self):
         trans = self.GetOwner().GetTransform()
-        if not self.bIsGround and trans.GetBottom() < 0:
+        ground = Vec2()
+        from src.Components.camera import GetCurMainCam
+        if not self.bIsGround and trans.GetBottom() < GetCurMainCam().screen_to_world(ground).y:
             trans.m_pos.y = trans.m_size.y / 4
             self.vVelocity.y = 0
             self.bIsGround = True

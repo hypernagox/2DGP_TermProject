@@ -22,6 +22,7 @@ class CPlayer(CObject):
         idle.anim_leg = CAnimation('Player/legs', 0.1, True,0,0,94,98,animator)
         animator.AddAnimState('Idle',idle)
         animator.cur_state = idle
+
         self.AddComponent("RigidBody",CRigidBody())
         self.AddComponent("SpriteRenderer",CSpriteRenderer())
         cam = CCamera(self)
@@ -30,6 +31,7 @@ class CPlayer(CObject):
         self.GetTransform().m_size.x = 150
         self.GetTransform().m_size.y = 150
     def update(self):
+        super().update()
         rigid = self.GetComp("RigidBody")
         animator = self.GetComp("Animator")
         if 'TAP' == GetKey(SDLK_a):

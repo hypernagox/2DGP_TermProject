@@ -26,4 +26,5 @@ class CScene:
                 obj.render()
     def Enter(self):
         from src.Factory.factory import CFactory
-        self.objs[0].append(CFactory.CreateObject('Player'))
+        p1 = CFactory.CreateObject('Player')
+        self.AddObject(0,p1)

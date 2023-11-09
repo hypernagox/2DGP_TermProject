@@ -8,4 +8,5 @@ class CCollider(CComponent):
         self.owner = obj
         self.m_transform = obj.GetTransform()
         self.m_vOffset = Vec2()
-        self.m_xSizeOffset, self.m_ySizeOffset = 0,0
+        self.m_vSizeOffset = Vec2()
+
