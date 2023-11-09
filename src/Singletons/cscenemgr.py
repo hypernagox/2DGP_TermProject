@@ -20,3 +20,6 @@ class CSceneMgr(metaclass=SingletonBase):
         self.cur_scene.render()
     def GetCurScene(self):
         return self.cur_scene
+
+def GetCurSceneObjects():
+    return CSceneMgr().GetCurScene().objs

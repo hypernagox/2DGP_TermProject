@@ -9,6 +9,7 @@ class CObject:
         self.name = ''
         self.components.append(CTransform())
         self.components[0].SetOwner(self)
+        self.IsDead = False
     def AddComponent(self,comp_name,comp):
         self.components.append(comp)
         self.comp_map[comp_name] = comp
@@ -19,6 +20,7 @@ class CObject:
     def GetTransform(self):
         return self.components[0]
     def GetComp(self,comp_name):
+        if comp_name not in self.comp_map: return None
         return self.comp_map[comp_name]
     def update(self):
         for comp in self.components:
@@ -45,3 +47,9 @@ class CObject:
             comp.render()
         for childs in self.childs:
             childs.render()
+    def OnCollisionEnter(self,other):
+        pass
+    def OnCollisionStay(self,other):
+        pass
+    def OnCollisionExit(self,other):
+        pass

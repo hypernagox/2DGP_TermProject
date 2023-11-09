@@ -8,7 +8,7 @@ GROUP_NAME = {
 
 class CScene:
     def __init__(self):
-        self.objs = [[] for _ in range(10)]
+        self.objs = [[] for _ in range(len(GROUP_NAME))]
     def AddObject(self,group_name,obj):
         self.objs[GROUP_NAME[group_name]].append(obj)
     def update(self):

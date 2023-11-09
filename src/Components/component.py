@@ -16,3 +16,5 @@ class CComponent:
         pass
     def GetOwner(self):
         return self.owner
+    def IsDeadObj(self):
+        return self.owner.IsDead
