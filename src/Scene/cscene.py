@@ -1,6 +1,5 @@
 from src.Objects.cplayer import CPlayer
 
-
 class CScene:
     def __init__(self):
         self.objs = [[] for _ in range(10)]

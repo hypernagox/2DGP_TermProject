@@ -7,7 +7,8 @@ from src.Singletons.cscenemgr import CSceneMgr
 from src.Singletons.ctimemgr import CTimeMgr
 from src.Singletons.resourcemgr import CPathMgr,CResMgr
 
-
+def GetWidthHeight():
+    return CCore().GetWidthHeight()
 class CCore(metaclass = SingletonBase):
     def __init__(self):
         self.width = 0
@@ -23,6 +24,8 @@ class CCore(metaclass = SingletonBase):
         CKeyMgr().Initialize()
         CTimeMgr().Initialize()
         pass
+    def GetWidthHeight(self):
+        return self.width,self.height
     def GameLoop(self):
         while not self.should_close:
             CKeyMgr().update()

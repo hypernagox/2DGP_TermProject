@@ -1,6 +1,7 @@
 from sdl2 import SDLK_d, SDLK_a, SDLK_SPACE
 
 from src.Components.animator import CAnimator, CState, CAnimation
+from src.Components.camera import CCamera
 from src.Components.rigidbody import CRigidBody
 from src.Components.spriterenderer import CSpriteRenderer
 from src.Objects.cobjects import CObject
@@ -25,7 +26,7 @@ class CPlayer(CObject):
         animator.cur_state = idle
         self.AddComponent("RigidBody",CRigidBody())
         self.AddComponent("SpriteRenderer",CSpriteRenderer())
-
+        self.AddComponent("Camera", CCamera(self))
         self.GetTransform().m_size.x = 150
         self.GetTransform().m_size.y = 150
     def update(self):
@@ -42,7 +43,7 @@ class CPlayer(CObject):
         if 'HOLD' == GetKey(SDLK_d):
             rigid.AddForce(Vec2(100, 0))
         if 'TAP' == GetKey(SDLK_SPACE):
-            rigid.AddVelocity(Vec2(0,100))
+            rigid.AddVelocity(Vec2(0,200))
             rigid.AddForce(Vec2(0,100))
             rigid.SetIsGround(False)
 

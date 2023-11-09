@@ -1,3 +1,5 @@
+from src.Components.camera import GetCurMainCam
+from src.Components.camera import CCamera
 from src.Components.component import CComponent
 
 class Sprite:
@@ -13,6 +15,7 @@ class CSpriteRenderer(CComponent):
         super().__init__()
     def render_target(self,sprite,left,bottom,width,height,bflip):
         trans = self.GetOwner().GetTransform()
+        render_pos = GetCurMainCam().world_to_screen(trans.m_pos)
         flag = '' if not bflip else 'h'
         sprite.clip_composite_draw(
             left,

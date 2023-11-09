@@ -1,5 +1,7 @@
 from singleton import SingletonBase
-from ..Scene.cscene import CScene
+
+
+#from ..Scene.cscene import CScene
 
 class CSceneMgr(metaclass=SingletonBase):
     def __init__(self):
@@ -8,6 +10,7 @@ class CSceneMgr(metaclass=SingletonBase):
     def AddScene(self,name,scene):
         self.scenes[name] = scene
     def Initialize(self):
+        from src.Scene.cscene import CScene
         self.cur_scene = CScene()
         self.scenes['Start']  = self.cur_scene
     def update(self):
