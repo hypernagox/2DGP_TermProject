@@ -1,9 +1,16 @@
 
+GROUP_NAME = {
+    "DEFAULT" : 0 ,
+    "PLAYER" : 1,
+    "MONSTER" : 2,
+    "PROJ" : 3
+}
+
 class CScene:
     def __init__(self):
         self.objs = [[] for _ in range(10)]
-    def AddObject(self,depth,obj):
-        self.objs[depth].append(obj)
+    def AddObject(self,group_name,obj):
+        self.objs[GROUP_NAME[group_name]].append(obj)
     def update(self):
         for arr in self.objs:
             for obj in arr:
@@ -27,4 +34,4 @@ class CScene:
     def Enter(self):
         from src.Factory.factory import CFactory
         p1 = CFactory.CreateObject('Player')
-        self.AddObject(0,p1)
+        self.AddObject("PLAYER",p1)

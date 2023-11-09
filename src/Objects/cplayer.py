@@ -45,7 +45,7 @@ class CPlayer(CObject):
         if 'HOLD' == GetKey(SDLK_d):
             rigid.AddForce(Vec2(100, 0))
         if 'TAP' == GetKey(SDLK_SPACE):
-            rigid.AddVelocity(Vec2(0,200))
+            rigid.AddVelocity(Vec2(0,100))
             rigid.AddForce(Vec2(0,100))
             rigid.SetIsGround(False)
 

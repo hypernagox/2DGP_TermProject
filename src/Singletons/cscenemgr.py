@@ -14,6 +14,7 @@ class CSceneMgr(metaclass=SingletonBase):
         self.cur_scene.update()
         self.cur_scene.late_update()
         self.cur_scene.last_update()
+    def final_update(self):
         self.cur_scene.final_update()
     def render(self):
         self.cur_scene.render()

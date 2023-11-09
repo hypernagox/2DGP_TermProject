@@ -3,6 +3,7 @@ from pico2d import *
 
 #from src.Components.animator import CAnimation
 from src.Singletons.ckeymgr import CKeyMgr, GetKey
+from src.Singletons.collisionmgr import CCollisionMgr
 #from src.Singletons.cscenemgr import CSceneMgr
 from src.Singletons.ctimemgr import CTimeMgr
 from src.Singletons.resourcemgr import CPathMgr,CResMgr
@@ -37,6 +38,8 @@ class CCore(metaclass = SingletonBase):
                 self.should_close = True
 
             CSceneMgr().update()
+            CCollisionMgr().update_collision()
+            CSceneMgr().final_update()
             CSceneMgr().render()
 
             update_canvas()
