@@ -24,8 +24,8 @@ class CSpriteRenderer(CComponent):
             height ,
             trans.m_degree,
             flag,
-            trans.m_pos.x,
-            trans.m_pos.y,
+            render_pos.x,
+            render_pos.y,
             trans.m_size.x,
             trans.m_size.y
         )

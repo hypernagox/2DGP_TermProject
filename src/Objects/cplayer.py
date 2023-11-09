@@ -7,8 +7,6 @@ from src.Components.spriterenderer import CSpriteRenderer
 from src.Objects.cobjects import CObject
 from src.Singletons.ckeymgr import GetKey
 from src.struct.vector2 import Vec2
-
-
 class CPlayer(CObject):
     def __init__(self):
         super().__init__()
@@ -26,7 +24,9 @@ class CPlayer(CObject):
         animator.cur_state = idle
         self.AddComponent("RigidBody",CRigidBody())
         self.AddComponent("SpriteRenderer",CSpriteRenderer())
-        self.AddComponent("Camera", CCamera(self))
+        cam = CCamera(self)
+        cam.SetThisCam2Main()
+        self.AddComponent("Camera", cam)
         self.GetTransform().m_size.x = 150
         self.GetTransform().m_size.y = 150
     def update(self):

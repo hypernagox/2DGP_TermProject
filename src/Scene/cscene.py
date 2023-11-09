@@ -1,9 +1,7 @@
-from src.Objects.cplayer import CPlayer
 
 class CScene:
     def __init__(self):
         self.objs = [[] for _ in range(10)]
-        self.objs[1].append(CPlayer())
     def AddObject(self,depth,obj):
         self.objs[depth].append(obj)
     def update(self):
@@ -26,3 +24,6 @@ class CScene:
         for arr in self.objs:
             for obj in arr:
                 obj.render()
+    def Enter(self):
+        from src.Factory.factory import CFactory
+        self.objs[0].append(CFactory.CreateObject('Player'))

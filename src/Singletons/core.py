@@ -1,9 +1,9 @@
 from singleton import SingletonBase
 from pico2d import *
 
-from src.Components.animator import CAnimation
+#from src.Components.animator import CAnimation
 from src.Singletons.ckeymgr import CKeyMgr, GetKey
-from src.Singletons.cscenemgr import CSceneMgr
+#from src.Singletons.cscenemgr import CSceneMgr
 from src.Singletons.ctimemgr import CTimeMgr
 from src.Singletons.resourcemgr import CPathMgr,CResMgr
 
@@ -15,6 +15,7 @@ class CCore(metaclass = SingletonBase):
         self.height = 0
         self.should_close = False
     def Initialize(self,width,height):
+        from src.Singletons.cscenemgr import CSceneMgr
         self.width = width
         self.height = height
         open_canvas(self.width,self.height)
@@ -27,6 +28,7 @@ class CCore(metaclass = SingletonBase):
     def GetWidthHeight(self):
         return self.width,self.height
     def GameLoop(self):
+        from src.Singletons.cscenemgr import CSceneMgr
         while not self.should_close:
             CKeyMgr().update()
             CTimeMgr().update()
@@ -42,5 +44,5 @@ class CCore(metaclass = SingletonBase):
 
         close_canvas()
 
-CCore().Initialize(800,600)
-CCore().GameLoop()
+#CCore().Initialize(800,600)
+#CCore().GameLoop()
