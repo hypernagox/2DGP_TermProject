@@ -51,7 +51,7 @@ class OBB:
         axes = []
         for i in range(4):
             edge = self.corners[i] - self.corners[(i + 1) % 4]
-            normal = Vec2(-edge.y, edge.x)  # Perpendicular to the edge
+            normal = Vec2(-edge.y, edge.x)
             axes.append(normal.normalized())
         return axes
 
@@ -63,3 +63,5 @@ class OBB:
         self.corners = self.calculate_corners()
         self.axes = self.calculate_axes()
 
+    def render(self):
+        pass
