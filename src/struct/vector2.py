@@ -1,5 +1,5 @@
 class Vec2:
-    def __init__(self, x=0, y=0):
+    def __init__(self, x=0., y=0.):
         self.x = x
         self.y = y
 
@@ -47,6 +47,13 @@ class Vec2:
 
     def is_zero(self, tolerance=1e-10):
         return abs(self.x) < tolerance and abs(self.y) < tolerance
+
+    def rotate(self, angle):
+        import math
+        rad = math.radians(angle)
+        cos = math.cos(rad)
+        sin = math.sin(rad)
+        return Vec2(self.x * cos - self.y * sin, self.x * sin + self.y * cos)
 
 
 def dot(a, b):
