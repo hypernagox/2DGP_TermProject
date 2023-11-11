@@ -12,10 +12,11 @@ class CCollider(CComponent):
         CCollider.g_collider_ID += 1
         self.m_vOffset = Vec2()
         self.m_vSizeOffset = Vec2()
+        self.obb_obx = OBB()
 
     def last_update(self):
-        pass
-
+        self.obb_obx.update(self.m_transform.m_pos ,self.m_transform.m_size + self.m_vSizeOffset
+                            ,self.m_transform.m_degree , self.m_vOffset)
     def OnCollisionEnter(self,other):
         self.owner.OnCollisionEnter(other.owner)
     def OnCollisionStay(self,other):
@@ -24,13 +25,13 @@ class CCollider(CComponent):
         self.owner.OnCollisionExit(other.owner)
 
 class OBB:
-    def __init__(self, center, width, height, angle):
-        self.center = center
-        self.width = width
-        self.height = height
-        self.angle = angle
-        self.corners = self.calculate_corners()
-        self.axes = self.calculate_axes()
+    def __init__(self):
+        self.center = Vec2()
+        self.width = 0
+        self.height = 0
+        self.angle = 0
+        self.corners = []
+        self.axes = []
 
     def calculate_corners(self):
         half_width = self.width / 2
@@ -47,7 +48,6 @@ class OBB:
         return rotated_corners
 
     def calculate_axes(self):
-
         axes = []
         for i in range(4):
             edge = self.corners[i] - self.corners[(i + 1) % 4]
@@ -55,10 +55,11 @@ class OBB:
             axes.append(normal.normalized())
         return axes
 
-    def update(self, new_center, new_angle):
-
-        self.center = new_center
-        self.angle = new_angle
+    def update(self, center,size,angle,offset):
+        self.center = center + offset
+        self.angle = angle
+        self.width = size.x
+        self.height = size.y
         self.corners = self.calculate_corners()
         self.axes = self.calculate_axes()
 
