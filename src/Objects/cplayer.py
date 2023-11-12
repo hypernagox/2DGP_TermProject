@@ -32,6 +32,7 @@ class CPlayer(CObject):
         self.GetTransform().m_size.x = 150
         self.GetTransform().m_size.y = 150
         self.AddComponent("Collider",CCollider(self))
+        self.col_count =0
     def update(self):
         super().update()
         rigid = self.GetComp("RigidBody")
@@ -55,7 +56,8 @@ class CPlayer(CObject):
             from src.Singletons.ctimemgr import DT
             self.GetTransform().m_degree += 10 * DT()
     def OnCollisionEnter(self,other):
-        print('충돌')
+        print(f'충돌',self.col_count)
+        self.col_count += 1
     def OnCollisionStay(self,other):
         pass
     def OnCollisionExit(self,other):

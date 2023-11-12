@@ -53,6 +53,8 @@ class CCollisionMgr(metaclass = SingletonBase):
                     if not self.map_prev_collision[union_key]:
                         a_collider.OnCollisionExit(b_collider)
                         b_collider.OnCollisionExit(a_collider)
+                if union_key in self.map_prev_collision:
+                    self.map_prev_collision[union_key] = now_collision
 
     def IsCollision(self , obb1, obb2):
         axes = []
