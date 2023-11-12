@@ -9,14 +9,14 @@ class Sprite:
         self.bottom = 0
         self.width = 0
         self.height = 0
-
 class CSpriteRenderer(CComponent):
     def __init__(self):
         super().__init__()
+        self.bIsCamAffective = True
     def render_target(self,sprite,left,bottom,width,height,bflip):
         trans = self.GetOwner().GetTransform()
-        render_pos = GetCurMainCam().world_to_screen(trans.m_pos)
-        flag = '' if not bflip else 'h'
+        cam = GetCurMainCam()
+        render_pos = trans.m_pos if cam is None or not self.bIsCamAffective else cam.world_to_screen(trans.m_pos)
         sprite.clip_composite_draw(
             int(left),
             int(bottom),

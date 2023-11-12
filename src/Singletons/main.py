@@ -187,5 +187,5 @@
 #     close_canvas()
 from src.Singletons.core import CCore
 
-CCore().Initialize(800,600)
+CCore().Initialize(1400,700)
 CCore().GameLoop()
