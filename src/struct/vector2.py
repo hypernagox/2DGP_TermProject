@@ -55,6 +55,11 @@ class Vec2:
         sin = math.sin(rad)
         return Vec2(self.x * cos - self.y * sin, self.x * sin + self.y * cos)
 
+    def dot(self, a):
+        return self.x * a.x + self.y * a.y
+
+
+
 
 def dot(a, b):
     if isinstance(a, Vec2) and isinstance(b, Vec2):

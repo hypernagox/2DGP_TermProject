@@ -15,10 +15,10 @@ class CCollider(CComponent):
         CCollider.g_collider_ID += 1
         self.m_vOffset = Vec2()
         self.m_vSizeOffset = Vec2()
-        self.obb_obx = OBB()
+        self.obb_box = OBB()
 
     def last_update(self):
-        self.obb_obx.update(self.m_transform.m_pos ,self.m_transform.m_size + self.m_vSizeOffset
+        self.obb_box.update(self.m_transform.m_pos ,self.m_transform.m_size + self.m_vSizeOffset
                             ,self.m_transform.m_degree , self.m_vOffset)
     def OnCollisionEnter(self,other):
         self.owner.OnCollisionEnter(other.owner)

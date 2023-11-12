@@ -4,4 +4,6 @@ class CFactory:
         if 'Player' == object_type:
             from src.Objects.cplayer import CPlayer
             return CPlayer()
-        pass
+        if 'Monster' == object_type:
+            from src.Objects.monster import CMonster
+            return CMonster()

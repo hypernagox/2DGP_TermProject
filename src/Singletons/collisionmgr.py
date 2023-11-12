@@ -2,7 +2,8 @@ from singleton import SingletonBase
 from src.Scene.cscene import GROUP_NAME
 from src.struct.vector2 import Vec2
 
-
+def RegisterGroup(group_name_a,group_name_b):
+    CCollisionMgr().RegisterGroup(group_name_a,group_name_b)
 class CCollisionMgr(metaclass = SingletonBase):
     def __init__(self):
         self.collision_table =[[False for _ in range(len(GROUP_NAME))] for _ in range(len(GROUP_NAME))]
@@ -35,7 +36,7 @@ class CCollisionMgr(metaclass = SingletonBase):
                 union_key = (left_id,right_id)
                 if union_key not in self.map_prev_collision:
                     self.map_prev_collision[union_key] = False
-                now_collision = self.IsCollision(a_collider,b_collider)
+                now_collision = self.IsCollision(a_collider.obb_box, b_collider.obb_box)
                 if now_collision:
                     if self.map_prev_collision[union_key]:
                         if a_collider.IsDeadObj() or b_collider.IsDeadObj():
@@ -57,11 +58,11 @@ class CCollisionMgr(metaclass = SingletonBase):
         axes = []
         corners = obb1.corners
         for i in range(4):
-            axis = (corners[i] - corners[(i + 1) % 4]).normalize()
+            axis = (corners[i] - corners[(i + 1) % 4]).normalized()
             axes.append(axis)
         corners = obb2.corners
         for i in range(4):
-            axis = (corners[i] - corners[(i + 1) % 4]).normalize()
+            axis = (corners[i] - corners[(i + 1) % 4]).normalized()
             axes.append(axis)
         for axis in axes:
             if not overlap_on_axis(axis, obb1, obb2):

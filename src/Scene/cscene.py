@@ -35,3 +35,7 @@ class CScene:
         from src.Factory.factory import CFactory
         p1 = CFactory.CreateObject('Player')
         self.AddObject("PLAYER",p1)
+        p2 = CFactory.CreateObject('Monster')
+        self.AddObject("MONSTER", p2)
+        from src.Singletons.collisionmgr import RegisterGroup
+        RegisterGroup("PLAYER","MONSTER")
