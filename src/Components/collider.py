@@ -1,6 +1,7 @@
+from pico2d import pico2d
+
 from src.Components.component import CComponent
 from src.struct.vector2 import Vec2
-
 
 class CCollider(CComponent):
     g_collider_ID = 0
@@ -64,4 +65,14 @@ class OBB:
         self.axes = self.calculate_axes()
 
     def render(self):
-        pass
+        def draw_rectangle(x1, y1, x2, y2):
+            from sdl2.ext import renderer
+            from sdl2 import SDL_SetRenderDrawColor
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255)
+            from sdl2 import SDL_RenderDrawLine
+
+            for i in range(2):
+                SDL_RenderDrawLine(renderer, self.corners[i].x, self.corners[i].y
+                                   , self.corners[i + 1].x,self.corners[i + 1].y )
+
+

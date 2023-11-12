@@ -14,6 +14,7 @@ class CObject:
         self.components.append(comp)
         self.comp_map[comp_name] = comp
         comp.SetOwner(self)
+        return comp
     def AddChild(self,child):
         self.childs.append(child)
         self.components[0].AddChild(child.components[0])
