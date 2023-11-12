@@ -13,7 +13,7 @@ class CRigidBody(CComponent):
         self.fMass = 1
         self.fFriction = 100
         self.bGravity = True
-        self.bIsGround = False
+        self.bIsGround = True
         self.bDirty = True
     def SetIsGround(self,b):
         self.bIsGround = b
@@ -23,7 +23,7 @@ class CRigidBody(CComponent):
             self.GetOwner().GetTransform().m_pos.y += 1
     def Move(self):
         trans = self.GetOwner().GetTransform()
-        trans.m_pos += self.vVelocity * DT()
+        trans.m_posOffset += self.vVelocity * DT()
     def update_gravity(self):
         if self.bGravity and not self.bIsGround:
             self.AddForce(Vec2(0,-300))
@@ -67,7 +67,7 @@ class CRigidBody(CComponent):
         trans = self.GetOwner().GetTransform()
         ground = Vec2()
         from src.Components.camera import GetCurMainCam
-        if not self.bIsGround and trans.GetBottom() < GetCurMainCam().screen_to_world(ground).y:
+        if not self.bIsGround and trans.GetBottom() < 0:
             trans.m_pos.y = trans.m_size.y / 4
             self.vVelocity.y = 0
             self.bIsGround = True

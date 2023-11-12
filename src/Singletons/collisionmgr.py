@@ -1,3 +1,5 @@
+import pico2d
+
 from singleton import SingletonBase
 from src.Scene.cscene import GROUP_NAME
 from src.struct.vector2 import Vec2
@@ -81,7 +83,9 @@ def project_obb_on_axis(obb, axis):
 
     return min_proj, max_proj
 
+EPSILON = 25
 def overlap_on_axis(axis, obb1, obb2):
     min1, max1 = project_obb_on_axis(obb1, axis)
     min2, max2 = project_obb_on_axis(obb2, axis)
-    return max1 >= min2 and max2 >= min1
+    overlap = min(max1, max2) - max(min1, min2)
+    return overlap > EPSILON
