@@ -54,6 +54,7 @@ class CPlayer(CObject):
         if 'HOLD' == GetKey(SDLK_r):
             from src.Singletons.ctimemgr import DT
             self.GetTransform().m_degree += 10 * DT()
+        print(f'{0},{1}',self.GetTransform().m_pos.x,self.GetTransform().m_pos.y)
 
 
 

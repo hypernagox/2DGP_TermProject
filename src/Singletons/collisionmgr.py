@@ -1,5 +1,8 @@
 from singleton import SingletonBase
 from src.Scene.cscene import GROUP_NAME
+from src.struct.vector2 import Vec2
+
+
 class CCollisionMgr(metaclass = SingletonBase):
     def __init__(self):
         self.collision_table =[[False for _ in range(len(GROUP_NAME))] for _ in range(len(GROUP_NAME))]
@@ -49,5 +52,33 @@ class CCollisionMgr(metaclass = SingletonBase):
                     if not self.map_prev_collision[union_key]:
                         a_collider.OnCollisionExit(b_collider)
                         b_collider.OnCollisionExit(a_collider)
-    def IsCollision(self,col_a,col_b):
-        pass
+
+    def IsCollision(self , obb1, obb2):
+        axes = []
+        corners = obb1.corners
+        for i in range(4):
+            axis = (corners[i] - corners[(i + 1) % 4]).normalize()
+            axes.append(axis)
+        corners = obb2.corners
+        for i in range(4):
+            axis = (corners[i] - corners[(i + 1) % 4]).normalize()
+            axes.append(axis)
+        for axis in axes:
+            if not overlap_on_axis(axis, obb1, obb2):
+                return False
+        return True
+
+def project_obb_on_axis(obb, axis):
+    corners = obb.corners
+    min_proj = max_proj = corners[0].dot(axis)
+    for corner in corners[1:]:
+        projection = corner.dot(axis)
+        min_proj = min(min_proj, projection)
+        max_proj = max(max_proj, projection)
+
+    return min_proj, max_proj
+
+def overlap_on_axis(axis, obb1, obb2):
+    min1, max1 = project_obb_on_axis(obb1, axis)
+    min2, max2 = project_obb_on_axis(obb2, axis)
+    return max1 >= min2 and max2 >= min1
