@@ -49,5 +49,4 @@ class CResMgr(metaclass=SingletonBase):
                     from pico2d import load_image
                     anim_clips.append(load_image(str(clips.absolute())))
             self.anim_map[folderName] = anim_clips
-        from copy import deepcopy
-        return deepcopy(self.anim_map[folderName])
+        return self.anim_map[folderName]

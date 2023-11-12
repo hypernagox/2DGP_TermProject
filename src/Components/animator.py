@@ -55,6 +55,7 @@ class CAnimator(CComponent):
         self.state_map = {}
         self.cur_state = None
         self.bIsFlip = False
+        self.state_change_signal = False
     def AddAnimState(self,state_name,state):
         self.state_map[state_name] = state
     def update(self):
@@ -71,7 +72,11 @@ class CAnimator(CComponent):
     def render(self):
         self.cur_state.render()
         next_state = self.cur_state.change_state()
-        if '' != next_state:
+        if '' != next_state and self.state_change_signal:
             self.cur_state.exit_state()
             self.cur_state = self.state_map[next_state]
             self.cur_state.enter_state()
+        self.state_change_signal = False
+
+    def OnSignal(self):
+        self.state_change_signal = True

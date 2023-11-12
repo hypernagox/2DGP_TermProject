@@ -29,4 +29,3 @@ class CMonster(CObject):
         self.GetTransform().m_size.y = 100
         from src.Components.collider import CCollider
         self.AddComponent("Collider", CCollider(self))
-        

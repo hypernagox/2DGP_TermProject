@@ -40,13 +40,16 @@ class CPlayer(CObject):
         if 'TAP' == GetKey(SDLK_a):
             rigid.AddVelocity(Vec2(-100,0))
             animator.bIsFlip = True
+            animator.OnSignal()
         if 'HOLD' == GetKey(SDLK_a):
             rigid.AddForce(Vec2(-100,0))
         if 'TAP' == GetKey(SDLK_d):
             rigid.AddVelocity(Vec2(100, 0))
             animator.bIsFlip = False
+            animator.OnSignal()
         if 'HOLD' == GetKey(SDLK_d):
             rigid.AddForce(Vec2(100, 0))
+            animator.OnSignal()
         if 'TAP' == GetKey(SDLK_SPACE):
             rigid.AddVelocity(Vec2(0,500))
             rigid.AddForce(Vec2(0,500))

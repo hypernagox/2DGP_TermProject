@@ -26,3 +26,10 @@ class CKeyMgr(metaclass=SingletonBase):
 
 def GetKey(key):
     return CKeyMgr().GetKeyState(key)
+
+def GetTapAllKeys():
+    pass
+def GetHoldAllKeys():
+    pass
+def GetAwayAllKeys():
+    pass
