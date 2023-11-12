@@ -18,14 +18,14 @@ class CSpriteRenderer(CComponent):
         render_pos = GetCurMainCam().world_to_screen(trans.m_pos)
         flag = '' if not bflip else 'h'
         sprite.clip_composite_draw(
-            left,
-            bottom,
-            width ,
-            height ,
-            trans.m_degree,
-            flag,
-            render_pos.x,
-            render_pos.y,
-            trans.m_size.x,
-            trans.m_size.y
+            int(left),
+            int(bottom),
+            int(width),
+            int(height),
+            int(trans.m_degree),
+            '' if not bflip else 'h',
+            int(render_pos.x),
+            int(render_pos.y),
+            int(trans.m_size.x),
+            int(trans.m_size.y)
         )

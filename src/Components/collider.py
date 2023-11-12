@@ -1,12 +1,14 @@
-from pico2d import pico2d
-
 from src.Components.component import CComponent
 from src.struct.vector2 import Vec2
 
 class CCollider(CComponent):
     g_collider_ID = 0
+    g_colBox = None
     def __init__(self,obj):
         super().__init__()
+        if CCollider.g_colBox == None :
+            from src.Singletons.resourcemgr import CResMgr
+            CCollider.g_colBox = CResMgr().GetTex('colbox.png')
         self.owner = obj
         self.m_transform = obj.GetTransform()
         self.m_Collider_ID = CCollider.g_collider_ID
@@ -24,6 +26,17 @@ class CCollider(CComponent):
         self.owner.OnCollisionStay(other.owner)
     def OnCollisionExit(self,other):
         self.owner.OnCollisionExit(other.owner)
+
+    def render(self):
+        self.owner.GetComp("SpriteRenderer").render_target(
+            CCollider.g_colBox,
+            0,
+            0,
+            512,
+            512,
+            False
+        )
+
 
 class OBB:
     def __init__(self):
@@ -63,16 +76,5 @@ class OBB:
         self.height = size.y
         self.corners = self.calculate_corners()
         self.axes = self.calculate_axes()
-
-    def render(self):
-        def draw_rectangle(x1, y1, x2, y2):
-            from sdl2.ext import renderer
-            from sdl2 import SDL_SetRenderDrawColor
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255)
-            from sdl2 import SDL_RenderDrawLine
-
-            for i in range(2):
-                SDL_RenderDrawLine(renderer, self.corners[i].x, self.corners[i].y
-                                   , self.corners[i + 1].x,self.corners[i + 1].y )
 
 
