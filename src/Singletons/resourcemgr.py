@@ -40,7 +40,7 @@ class CResMgr(metaclass=SingletonBase):
         return self.tex_map[name]
     def GetSound(self,name):
         return self.sound_map[name]
-    def GetAnim(self,folderName):
+    def GetAnimClips(self,folderName):
         if folderName not in self.anim_map:
             anim_clips = []
             target_dir = CPathMgr().GetAnimPath() / folderName
