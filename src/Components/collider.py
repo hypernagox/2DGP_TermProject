@@ -21,10 +21,12 @@ class CCollider(CComponent):
         self.obb_box.update(self.m_transform.m_pos ,self.m_transform.m_size + self.m_vSizeOffset
                             ,self.m_transform.m_degree , self.m_vOffset)
     def OnCollisionEnter(self,other):
+        self.collision_count += 1
         self.owner.OnCollisionEnter(other.owner)
     def OnCollisionStay(self,other):
         self.owner.OnCollisionStay(other.owner)
     def OnCollisionExit(self,other):
+        self.collision_count -= 1
         self.owner.OnCollisionExit(other.owner)
 
     def render(self):
