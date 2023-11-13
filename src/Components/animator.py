@@ -4,7 +4,7 @@ from src.Singletons.resourcemgr import CResMgr
 
 class CAnimation:
     def __init__(self,folderName,duration,repeat,left,bottom,width,height,animator):
-        self.anim_clips = CResMgr().GetAnim(folderName)
+        self.anim_clips = CResMgr().GetAnimClips(folderName)
         self.num_of_clips = len(self.anim_clips)
         self.frame = 0
         self.accTime = 0
