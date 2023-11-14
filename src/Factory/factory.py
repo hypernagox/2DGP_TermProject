@@ -13,6 +13,6 @@ class CFactory:
 
 class CLayerFactory:
     @staticmethod
-    def CreateLayer(fileName,filelb,filert,worldCenter,width = CCore().width * 2,height = CCore().height * 2):
+    def CreateLayer(fileName,filelb,filert,worldLeftBottom,width = CCore().width * 2,height = CCore().height * 2):
         from src.Objects.layer import CLayer
-        return CLayer(fileName,filelb,filert,worldCenter,width,height)
+        return CLayer(fileName,filelb,filert,worldLeftBottom,width,height)

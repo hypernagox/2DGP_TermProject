@@ -2,7 +2,7 @@ from src.Singletons.core import CCore
 
 
 class CLayer:
-    def __init__(self,fileName,filelb,filert,worldCenter,width,height):
+    def __init__(self,fileName,filelb,filert,worldLeftBottom,width,height):
         from src.Singletons.resourcemgr import CResMgr
         self.layer_img = CResMgr().GetTex(fileName)
         self.left = filelb.x
@@ -15,7 +15,8 @@ class CLayer:
         self.transform = CTransform()
         self.transform.m_size.x = width
         self.transform.m_size.y = height
-        self.transform.m_pos = worldCenter
+        self.transform.m_pos.x = worldLeftBottom.x + width / 4
+        self.transform.m_pos.y = worldLeftBottom.y + height / 4
         self.sprite_renderer.owner = self.transform.owner = self
     def GetTransform(self):
         return self.transform
@@ -24,9 +25,9 @@ class CLayer:
     def render(self):
         self.sprite_renderer.render_target(
             self.layer_img,
-            0,
-            0,
-            200,
-            155,
+            self.left,
+            self.bottom,
+            self.layer_img.w,
+            self.layer_img.h,
             False
         )

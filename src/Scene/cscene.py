@@ -51,7 +51,18 @@ class CScene:
         RegisterGroup("PLAYER","MONSTER")
         from src.Factory.factory import CLayerFactory
         from src.struct.vector2 import Vec2
+        self.AddLayer(CLayerFactory.CreateLayer('sky1.png',
+                                                Vec2(0, 0),
+                                                Vec2(80, 53),
+                                                Vec2(0, 0)), 0)
         self.AddLayer(CLayerFactory.CreateLayer('background.png',
                                                 Vec2(0,0),
                                                 Vec2(155,100),
-                                                Vec2(700,350)),1)
+                                                Vec2(0,0)),1)
+        self.AddLayer(CLayerFactory.CreateLayer('ground.png',
+                                                Vec2(0, 0),
+                                                Vec2(483, 89),
+                                                Vec2(0, 0),
+                                                1400 * 2,
+                                                700 / 10
+                                                ), 2)
