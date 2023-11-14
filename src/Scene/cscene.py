@@ -9,8 +9,12 @@ GROUP_NAME = {
 class CScene:
     def __init__(self):
         self.objs = [[] for _ in range(len(GROUP_NAME))]
+        self.layers = [0] * 5
     def AddObject(self,group_name,obj):
         self.objs[GROUP_NAME[group_name]].append(obj)
+
+    def AddLayer(self,layer,depth = 0):
+        self.layers[depth] = layer
     def update(self):
         for arr in self.objs:
             for obj in arr:
@@ -27,7 +31,11 @@ class CScene:
         for arr in self.objs:
             for obj in arr:
                 obj.final_update()
+        for layer in self.layers:
+            layer.update()
     def render(self):
+        for layer in self.layers:
+            layer.render()
         for arr in self.objs:
             for obj in arr:
                 obj.render()

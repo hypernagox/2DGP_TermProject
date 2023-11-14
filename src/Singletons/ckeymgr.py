@@ -1,9 +1,13 @@
-from sdl2 import SDL_KEYDOWN, SDL_KEYUP
+from sdl2 import SDL_KEYDOWN, SDL_KEYUP, SDL_MOUSEBUTTONUP, SDL_MOUSEBUTTONDOWN
 
 from src.Singletons.singleton import SingletonBase
+from src.struct.vector2 import Vec2
+
+
 class CKeyMgr(metaclass=SingletonBase):
     def __init__(self):
         self.key_map = {}
+        self.mouse_pos = Vec2()
     def Initialize(self):
         pass
     def update(self):
@@ -13,11 +17,16 @@ class CKeyMgr(metaclass=SingletonBase):
                 self.key_map[keys] = 'NONE'
             elif 'TAP' == self.key_map[keys]:
                 self.key_map[keys] = 'HOLD'
+
         for eve in get_events():
             if eve.type == SDL_KEYDOWN:
                 self.key_map[eve.key] = 'TAP'
             elif eve.type == SDL_KEYUP:
                 self.key_map[eve.key] = 'AWAY'
+            elif eve.type == SDL_MOUSEBUTTONDOWN:
+                self.key_map[eve.key] = 'TAP'
+                self.mouse_pos = Vec2(eve.type.x,eve.type.y)
+
 
     def GetKeyState(self,key):
         if key not in self.key_map:
