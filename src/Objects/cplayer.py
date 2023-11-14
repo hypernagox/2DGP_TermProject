@@ -5,7 +5,7 @@ from src.struct.vector2 import Vec2
 from src.Components.animator import CAnimator, CState, CAnimation
 class CPlayer(CObject):
     def __init__(self):
-
+        self.name = "Player"
         from src.Components.camera import CCamera
         from src.Components.collider import CCollider
         from src.Components.rigidbody import CRigidBody
@@ -37,6 +37,13 @@ class CPlayer(CObject):
         from src.Attack.attack import CAttack
         self.player_attack = CAttack(self)
         self.col_count = 0
+        self.curballs = []
+
+        from src.Objects.item import CItem
+        for _ in range(3):
+            ball = CItem(Vec2(30,30),self.GetTransform().m_pos,"ball21x21.png")
+            self.curballs.append(ball)
+            self.AddChild(ball)
     def update(self):
         super().update()
         rigid = self.GetComp("RigidBody")
@@ -55,7 +62,7 @@ class CPlayer(CObject):
             rigid.AddForce(Vec2(100, 0))
             #animator.OnSignal()
         if 'TAP' == GetKey(SDLK_SPACE):
-            rigid.AddVelocity(Vec2(0,300))
+            rigid.AddVelocity(Vec2(0,200))
             rigid.AddForce(Vec2(0,300))
             rigid.SetIsGround(False)
         from sdl2 import SDLK_r
@@ -65,11 +72,21 @@ class CPlayer(CObject):
         from sdl2 import SDLK_LEFT
         if 'TAP' == GetKey(1):
             self.player_attack.do_attack()
+            if self.curballs:
+                delChild = self.curballs[len(self.curballs) - 1]
+                self.curballs.remove(delChild)
+                self.EraseChild(delChild)
+                delChild.IsDead = True
 
         animator.OnSignal()
     def OnCollisionEnter(self,other):
         print(f'충돌',self.col_count)
         self.col_count += 1
+        if other.name == "Monster":
+            return
+        if None == other.parent:
+            self.curballs.append(other)
+            self.player_attack.ball_count += 1
     def OnCollisionStay(self,other):
         pass
     def OnCollisionExit(self,other):

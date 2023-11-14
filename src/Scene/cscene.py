@@ -3,7 +3,8 @@ GROUP_NAME = {
     "DEFAULT" : 0 ,
     "PLAYER" : 1,
     "MONSTER" : 2,
-    "PROJ" : 3
+    "PROJ" : 3,
+    "ITEM" : 4
 }
 
 class CScene:
@@ -49,7 +50,12 @@ class CScene:
                     del arr[i]
                 else:
                     arr[i].render()
-
+    def remove_object(self,delObj):
+        for arr in self.objs:
+            for obj in arr:
+                if obj == delObj:
+                    del obj
+                    return
     def Enter(self):
         from src.Factory.factory import CFactory
         p1 = CFactory.CreateObject('Player')
@@ -62,6 +68,7 @@ class CScene:
         from src.Factory.factory import CLayerFactory
         from src.struct.vector2 import Vec2
         RegisterGroup("PROJ", "MONSTER")
+        RegisterGroup("PLAYER","ITEM")
         self.AddLayer(CLayerFactory.CreateLayer('sky1.png',
                                                 Vec2(0, 0),
                                                 Vec2(80, 53),

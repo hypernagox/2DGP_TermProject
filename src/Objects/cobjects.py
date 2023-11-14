@@ -4,6 +4,7 @@ from src.Components.transform import CTransform
 class CObject:
     def __init__(self):
         self.components = []
+        self.parent = None
         self.childs = []
         self.comp_map = {}
         self.name = ''
@@ -15,7 +16,12 @@ class CObject:
         self.comp_map[comp_name] = comp
         comp.SetOwner(self)
         return comp
+
+    def EraseChild(self,obj):
+        self.GetTransform().childs.remove(obj.GetTransform())
+        self.childs.remove(obj)
     def AddChild(self,child):
+        child.parent = self
         self.childs.append(child)
         self.components[0].AddChild(child.components[0])
     def GetTransform(self):

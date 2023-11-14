@@ -23,3 +23,6 @@ class CSceneMgr(metaclass=SingletonBase):
 
 def GetCurSceneObjects():
     return CSceneMgr().GetCurScene().objs
+
+def GetCurScene():
+    return CSceneMgr().GetCurScene()

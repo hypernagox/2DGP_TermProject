@@ -9,7 +9,7 @@ class CRigidBody(CComponent):
         self.vForce = Vec2()
         self.vAccel = Vec2()
         self.vVelocity = Vec2()
-        self.vMaxVelocity = Vec2(100,500)
+        self.vMaxVelocity = Vec2(200,600)
         self.fMass = 1
         self.fFriction = 100
         self.bGravity = True
@@ -67,10 +67,12 @@ class CRigidBody(CComponent):
         trans = self.GetOwner().GetTransform()
         ground = Vec2()
         from src.Components.camera import GetCurMainCam
-        if not self.bIsGround and trans.GetBottom() < 175:
+        if self.bGravity and not self.bIsGround and trans.GetBottom() < 175:
             trans.m_pos.y = trans.m_size.y / 4 + 175
             self.vVelocity.y = 0
             self.bIsGround = True
+        else:
+            self.bIsGround = False
         if not self.bDirty:
             return
         self.update_physics()

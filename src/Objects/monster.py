@@ -3,6 +3,7 @@ from src.Objects.cobjects import CObject
 class CMonster(CObject):
     def __init__(self):
         super().__init__()
+        self.name = "Monster"
         from src.Components.animator import CAnimator
         animator = CAnimator()
         self.AddComponent("Animator", animator)
@@ -45,7 +46,12 @@ class CMonster(CObject):
         cur_mon_pos = self.GetTransform().m_pos
         return cur_player_pos - cur_mon_pos
     def OnCollisionEnter(self,other):
-        pass
+        if other.name != "Ball":
+            return
+        from src.Singletons.eventmgr import CreateObj
+        from src.Objects.item import CItem
+        from src.struct.vector2 import Vec2
+        CreateObj("ITEM",CItem(Vec2(30,30),self.GetTransform().m_pos,"ball21x21.png"))
     def OnCollisionStay(self,other):
         pass
     def OnCollisionExit(self,other):
@@ -71,7 +77,7 @@ class StateMonsterIdle(CState):
         self.mon_anim.render()
     def change_state(self):
         dir = self.mon_anim.animator.owner.GetPlayerDirection()
-        if dir.length() <= 500:
+        if dir.length() <= 300:
             return 'Chase'
         return ''
 class StateMonsterChase(CState):
@@ -85,9 +91,14 @@ class StateMonsterChase(CState):
         dir = self.mon_anim.animator.owner.GetPlayerDirection()
         self.mon_anim.animator.bIsFlip = True if dir.x > 0 else False
         dir.normalize()
-        self.mon_anim.animator.owner.GetTransform().m_pos += dir * DT() * 100
+        self.mon_anim.animator.owner.GetComp("RigidBody").AddVelocity(dir * DT() * 500)
         self.mon_anim.update()
     def render(self):
         self.mon_anim.render()
+    def exit_state(self):
+        self.mon_anim.animator.owner.GetTransform().m_degree = 0
     def change_state(self):
+        dist =  self.mon_anim.animator.owner.GetPlayerDirection()
+        if dist.length() >= 400:
+            return "Idle"
         return ''

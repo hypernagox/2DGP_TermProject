@@ -4,6 +4,7 @@ from src.Objects.cobjects import CObject
 class CBall(CObject):
     def __init__(self,width,height,pos,dir):
         super().__init__()
+        self.name = "Ball"
         from src.struct.vector2 import Vec2
         self.GetTransform().m_size = Vec2(width,height)
         self.GetTransform().m_pos = pos

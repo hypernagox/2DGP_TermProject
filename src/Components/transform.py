@@ -44,3 +44,13 @@ class CTransform(CComponent):
         return self.m_pos.y - self.m_size.y/4
     def GetTop(self):
         return self.m_pos.y + self.m_size.y/4
+    def OrbitAroundParent(self, radius, speed):
+        if self.parent is None:
+            return
+        import math
+        parent_pos = self.parent.GetWorldPos()
+        angle = math.atan2(self.m_pos.y - parent_pos.y, self.m_pos.x - parent_pos.x)
+        from src.Singletons.ctimemgr import DT
+        angle += speed * DT()
+        self.m_pos.x = parent_pos.x + radius * math.cos(angle)
+        self.m_pos.y = parent_pos.y + radius * math.sin(angle)
