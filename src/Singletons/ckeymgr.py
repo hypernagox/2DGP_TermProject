@@ -23,6 +23,8 @@ class CKeyMgr(metaclass=SingletonBase):
         if key not in self.key_map:
             self.key_map[key] = 'NONE'
         return self.key_map[key]
+    def GetMousePos(self):
+        pass
 
 def GetKey(key):
     return CKeyMgr().GetKeyState(key)
