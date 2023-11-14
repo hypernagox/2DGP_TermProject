@@ -83,7 +83,7 @@ def project_obb_on_axis(obb, axis):
 
     return min_proj, max_proj
 
-EPSILON = 25
+EPSILON = 0
 def overlap_on_axis(axis, obb1, obb2):
     min1, max1 = project_obb_on_axis(obb1, axis)
     min2, max2 = project_obb_on_axis(obb2, axis)

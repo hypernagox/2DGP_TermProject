@@ -44,6 +44,12 @@ class CMonster(CObject):
         cur_player_pos = player.GetTransform().m_pos
         cur_mon_pos = self.GetTransform().m_pos
         return cur_player_pos - cur_mon_pos
+    def OnCollisionEnter(self,other):
+        pass
+    def OnCollisionStay(self,other):
+        pass
+    def OnCollisionExit(self,other):
+        pass
 
 
 class StateMonsterIdle(CState):

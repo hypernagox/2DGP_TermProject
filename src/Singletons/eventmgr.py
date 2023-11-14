@@ -26,7 +26,8 @@ def StartCoRoutineWithKey(coro_name,coro):
 
 def CreateObj(group_name,obj):
     AddEvent(CreateObjEvent(group_name,obj))
-
+def DestroyObj(obj):
+    AddEvent(DestroyObjEvent(obj))
 class CEvent:
     def accept(self):
         pass
@@ -37,6 +38,8 @@ class CreateObjEvent(CEvent):
     def accept(self):
         from src.Singletons.cscenemgr import CSceneMgr
         CSceneMgr().GetCurScene().AddObject(self.group_name,self.obj)
-class DestroyObjEvent:
-    def __init__(self):
-        pass
+class DestroyObjEvent(CEvent):
+    def __init__(self,obj):
+        self.obj = obj
+    def accept(self):
+        self.obj.IsDead = True

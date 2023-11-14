@@ -43,6 +43,13 @@ class CScene:
         for arr in self.objs:
             for obj in arr:
                 obj.render()
+        for arr in self.objs:
+            for i in range(len(arr) - 1, -1, -1):
+                if arr[i].IsDead:
+                    del arr[i]
+                else:
+                    arr[i].render()
+
     def Enter(self):
         from src.Factory.factory import CFactory
         p1 = CFactory.CreateObject('Player')
@@ -54,6 +61,7 @@ class CScene:
         RegisterGroup("PLAYER","MONSTER")
         from src.Factory.factory import CLayerFactory
         from src.struct.vector2 import Vec2
+        RegisterGroup("PROJ", "MONSTER")
         self.AddLayer(CLayerFactory.CreateLayer('sky1.png',
                                                 Vec2(0, 0),
                                                 Vec2(80, 53),

@@ -28,7 +28,8 @@ class CCollider(CComponent):
     def OnCollisionExit(self,other):
         self.collision_count -= 1
         self.owner.OnCollisionExit(other.owner)
-
+    def GetRigidBody(self):
+        return self.owner.GetComp("RigidBody")
     def render(self):
         self.owner.GetComp("SpriteRenderer").render_target(
             CCollider.g_colBox,
