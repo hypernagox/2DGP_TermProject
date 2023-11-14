@@ -28,7 +28,7 @@ class CPlayer(CObject):
         self.AddComponent("SpriteRenderer",CSpriteRenderer())
         cam = CCamera(self)
         cam.SetThisCam2Main()
-        self.GetTransform().m_pos.x = 700
+        self.GetTransform().m_pos.x = 900
         self.GetTransform().m_pos.y = 175
         self.AddComponent("Camera", cam)
         self.GetTransform().m_size.x = 150

@@ -34,7 +34,7 @@ class CMonster(CObject):
         from src.Components.spriterenderer import CSpriteRenderer
         self.AddComponent("SpriteRenderer", CSpriteRenderer())
         from src.struct.vector2 import Vec2
-        self.GetTransform().m_pos = Vec2(300, 175)
+        self.GetTransform().m_pos = Vec2(400, 175)
         self.GetTransform().m_size.x = 100
         self.GetTransform().m_size.y = 100
         from src.Components.collider import CCollider
