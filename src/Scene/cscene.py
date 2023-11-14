@@ -9,7 +9,7 @@ GROUP_NAME = {
 class CScene:
     def __init__(self):
         self.objs = [[] for _ in range(len(GROUP_NAME))]
-        self.layers = [0] * 5
+        self.layers = [None] * 5
     def AddObject(self,group_name,obj):
         self.objs[GROUP_NAME[group_name]].append(obj)
 
@@ -32,9 +32,11 @@ class CScene:
             for obj in arr:
                 obj.final_update()
         for layer in self.layers:
+            if layer is None:continue
             layer.update()
     def render(self):
         for layer in self.layers:
+            if layer is None: continue
             layer.render()
         for arr in self.objs:
             for obj in arr:
@@ -47,3 +49,9 @@ class CScene:
         self.AddObject("MONSTER", p2)
         from src.Singletons.collisionmgr import RegisterGroup
         RegisterGroup("PLAYER","MONSTER")
+        from src.Factory.factory import CLayerFactory
+        from src.struct.vector2 import Vec2
+        self.AddLayer(CLayerFactory.CreateLayer('background.png',
+                                                Vec2(0,0),
+                                                Vec2(155,100),
+                                                Vec2(700,350)),1)

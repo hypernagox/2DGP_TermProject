@@ -1,3 +1,6 @@
+from src.Singletons.core import CCore
+
+
 class CFactory:
     @staticmethod
     def CreateObject(object_type):
@@ -7,3 +10,9 @@ class CFactory:
         if 'Monster' == object_type:
             from src.Objects.monster import CMonster
             return CMonster()
+
+class CLayerFactory:
+    @staticmethod
+    def CreateLayer(fileName,filelb,filert,worldCenter,width = CCore().width * 2,height = CCore().height * 2):
+        from src.Objects.layer import CLayer
+        return CLayer(fileName,filelb,filert,worldCenter,width,height)
