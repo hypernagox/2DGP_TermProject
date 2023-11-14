@@ -42,24 +42,25 @@ class CPlayer(CObject):
         if 'TAP' == GetKey(SDLK_a):
             rigid.AddVelocity(Vec2(-100,0))
             animator.bIsFlip = True
-            animator.OnSignal()
+            #animator.OnSignal()
         if 'HOLD' == GetKey(SDLK_a):
             rigid.AddForce(Vec2(-100,0))
         if 'TAP' == GetKey(SDLK_d):
             rigid.AddVelocity(Vec2(100, 0))
             animator.bIsFlip = False
-            animator.OnSignal()
+            #animator.OnSignal()
         if 'HOLD' == GetKey(SDLK_d):
             rigid.AddForce(Vec2(100, 0))
-            animator.OnSignal()
+            #animator.OnSignal()
         if 'TAP' == GetKey(SDLK_SPACE):
-            rigid.AddVelocity(Vec2(0,500))
-            rigid.AddForce(Vec2(0,500))
+            rigid.AddVelocity(Vec2(0,300))
+            rigid.AddForce(Vec2(0,300))
             rigid.SetIsGround(False)
         from sdl2 import SDLK_r
         if 'HOLD' == GetKey(SDLK_r):
             from src.Singletons.ctimemgr import DT
             self.GetTransform().m_degree += 10 * DT()
+        animator.OnSignal()
     def OnCollisionEnter(self,other):
         print(f'충돌',self.col_count)
         self.col_count += 1

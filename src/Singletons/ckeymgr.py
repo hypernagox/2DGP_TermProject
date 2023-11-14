@@ -20,13 +20,15 @@ class CKeyMgr(metaclass=SingletonBase):
 
         for eve in get_events():
             if eve.type == SDL_KEYDOWN:
-                self.key_map[eve.key] = 'TAP'
+                if eve.key not in self.key_map:continue
+                if 'HOLD' != self.key_map[eve.key]:
+                    self.key_map[eve.key] = 'TAP'
             elif eve.type == SDL_KEYUP:
                 self.key_map[eve.key] = 'AWAY'
             elif eve.type == SDL_MOUSEBUTTONDOWN:
+                if eve.key not in self.key_map: continue
                 self.key_map[eve.key] = 'TAP'
                 self.mouse_pos = Vec2(eve.x,eve.y)
-
 
     def GetKeyState(self,key):
         if key not in self.key_map:
