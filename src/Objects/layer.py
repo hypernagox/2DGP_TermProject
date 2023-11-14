@@ -15,8 +15,8 @@ class CLayer:
         self.transform = CTransform()
         self.transform.m_size.x = width
         self.transform.m_size.y = height
-        self.transform.m_pos.x = worldLeftBottom.x + width / 4
-        self.transform.m_pos.y = worldLeftBottom.y + height / 4
+        self.transform.m_pos.x = worldLeftBottom.x + width / 8
+        self.transform.m_pos.y = worldLeftBottom.y + height / 8
         self.sprite_renderer.owner = self.transform.owner = self
     def GetTransform(self):
         return self.transform
