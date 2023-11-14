@@ -33,7 +33,8 @@ class CPlayer(CObject):
         self.GetTransform().m_size.x = 150
         self.GetTransform().m_size.y = 150
         self.AddComponent("Collider",CCollider(self))
-        self.col_count =0
+        from src.Attack.attack import CAttack
+        self.player_attack = CAttack(self)
     def update(self):
         super().update()
         rigid = self.GetComp("RigidBody")
@@ -61,13 +62,7 @@ class CPlayer(CObject):
             self.GetTransform().m_degree += 10 * DT()
         from sdl2 import SDLK_LEFT
         if 'TAP' == GetKey(1):
-            from src.Singletons.cscenemgr import CSceneMgr
-            from src.Objects.ball import CBall
-            player_pos = self.GetObjectScreenPos()
-            mpos = GetMousePos()
-            dir = (mpos - player_pos).normalized()
 
-            CSceneMgr().GetCurScene().AddObject("PROJ",CBall(21,21,self.GetTransform().m_pos + dir * 10,dir))
         animator.OnSignal()
     def OnCollisionEnter(self,other):
         print(f'충돌',self.col_count)

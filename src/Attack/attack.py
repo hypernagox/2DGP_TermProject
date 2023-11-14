@@ -1,6 +1,6 @@
 
 
-class Attack:
+class CAttack:
     def __init__(self,obj):
         self.obj = obj
     def do_attack(self):
