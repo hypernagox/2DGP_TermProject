@@ -25,21 +25,26 @@ class CKeyMgr(metaclass=SingletonBase):
                     self.key_map[eve.key] = 'TAP'
             elif eve.type == SDL_KEYUP:
                 self.key_map[eve.key] = 'AWAY'
-            elif eve.type == SDL_MOUSEBUTTONDOWN:
-                if eve.key not in self.key_map: continue
-                self.key_map[eve.key] = 'TAP'
-                self.mouse_pos = Vec2(eve.x,eve.y)
+            if eve.type == SDL_MOUSEBUTTONDOWN:
+                self.key_map[eve.button] = 'TAP'
+                from src.Singletons.core import CCore
+                self.mouse_pos = self.convert_coordinates(eve.x,eve.y,CCore().height)
 
     def GetKeyState(self,key):
         if key not in self.key_map:
             self.key_map[key] = 'NONE'
         return self.key_map[key]
     def GetMousePos(self):
-        pass
+        return self.mouse_pos
+
+    def convert_coordinates(self,mouse_x, mouse_y, height):
+        new_y = height - mouse_y
+        return Vec2(mouse_x,new_y)
 
 def GetKey(key):
     return CKeyMgr().GetKeyState(key)
-
+def GetMousePos():
+    return CKeyMgr().GetMousePos()
 def GetTapAllKeys():
     pass
 def GetHoldAllKeys():

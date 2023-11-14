@@ -54,3 +54,7 @@ class CObject:
         pass
     def OnCollisionExit(self,other):
         pass
+
+    def GetObjectScreenPos(self):
+        from src.Components.camera import GetCurMainCam
+        return GetCurMainCam().world_to_screen(self.GetTransform().m_pos)

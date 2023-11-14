@@ -1,15 +1,14 @@
 from sdl2 import SDLK_d, SDLK_a, SDLK_SPACE
-
-from src.Components.animator import CAnimator, CState, CAnimation
-from src.Components.camera import CCamera
-from src.Components.collider import CCollider
-from src.Components.rigidbody import CRigidBody
-from src.Components.spriterenderer import CSpriteRenderer
 from src.Objects.cobjects import CObject
-from src.Singletons.ckeymgr import GetKey
+from src.Singletons.ckeymgr import GetKey, GetMousePos
 from src.struct.vector2 import Vec2
 class CPlayer(CObject):
     def __init__(self):
+        from src.Components.animator import CAnimator, CState, CAnimation
+        from src.Components.camera import CCamera
+        from src.Components.collider import CCollider
+        from src.Components.rigidbody import CRigidBody
+        from src.Components.spriterenderer import CSpriteRenderer
         super().__init__()
         animator = CAnimator()
         self.AddComponent("Animator",animator)
@@ -60,6 +59,15 @@ class CPlayer(CObject):
         if 'HOLD' == GetKey(SDLK_r):
             from src.Singletons.ctimemgr import DT
             self.GetTransform().m_degree += 10 * DT()
+        from sdl2 import SDLK_LEFT
+        if 'TAP' == GetKey(1):
+            from src.Singletons.cscenemgr import CSceneMgr
+            from src.Objects.CBall import CBall
+            player_pos = self.GetObjectScreenPos()
+            mpos = GetMousePos()
+            dir = (mpos - player_pos).normalized()
+
+            CSceneMgr().GetCurScene().AddObject("PROJ",CBall(21,21,self.GetTransform().m_pos + dir * 10,dir))
         animator.OnSignal()
     def OnCollisionEnter(self,other):
         print(f'충돌',self.col_count)
