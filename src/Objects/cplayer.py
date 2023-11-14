@@ -62,7 +62,7 @@ class CPlayer(CObject):
         from sdl2 import SDLK_LEFT
         if 'TAP' == GetKey(1):
             from src.Singletons.cscenemgr import CSceneMgr
-            from src.Objects.CBall import CBall
+            from src.Objects.ball import CBall
             player_pos = self.GetObjectScreenPos()
             mpos = GetMousePos()
             dir = (mpos - player_pos).normalized()

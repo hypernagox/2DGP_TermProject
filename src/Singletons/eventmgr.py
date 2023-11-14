@@ -37,3 +37,6 @@ class CreateObj:
     def accept(self):
         from src.Singletons.cscenemgr import CSceneMgr
         CSceneMgr().GetCurScene().AddObject(self.group_name,self.obj)
+class DestroyObj:
+    def __init__(self):
+        pass
