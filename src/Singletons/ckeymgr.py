@@ -25,7 +25,7 @@ class CKeyMgr(metaclass=SingletonBase):
                 self.key_map[eve.key] = 'AWAY'
             elif eve.type == SDL_MOUSEBUTTONDOWN:
                 self.key_map[eve.key] = 'TAP'
-                self.mouse_pos = Vec2(eve.type.x,eve.type.y)
+                self.mouse_pos = Vec2(eve.x,eve.y)
 
 
     def GetKeyState(self,key):
