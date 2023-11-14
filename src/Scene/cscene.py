@@ -10,9 +10,11 @@ class CScene:
     def __init__(self):
         self.objs = [[] for _ in range(len(GROUP_NAME))]
         self.layers = [None] * 5
+        self.cur_player = None
     def AddObject(self,group_name,obj):
         self.objs[GROUP_NAME[group_name]].append(obj)
-
+    def GetPlayer(self):
+        return self.cur_player
     def AddLayer(self,layer,depth = 0):
         self.layers[depth] = layer
     def update(self):
@@ -44,6 +46,7 @@ class CScene:
     def Enter(self):
         from src.Factory.factory import CFactory
         p1 = CFactory.CreateObject('Player')
+        self.cur_player = p1
         self.AddObject("PLAYER",p1)
         p2 = CFactory.CreateObject('Monster')
         self.AddObject("MONSTER", p2)
