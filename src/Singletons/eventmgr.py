@@ -8,7 +8,7 @@ class CEventMgr(metaclass=SingletonBase):
         self.coroutine_map = {}
     def update(self):
         for event in self.event_lists:
-            pass
+            event.accept()
         for coro in self.coroutine_lists:
             pass
         for coro in self.coroutine_map.values():
@@ -25,18 +25,18 @@ def StartCoRoutineWithKey(coro_name,coro):
     CEventMgr().coroutine_map[coro_name] = coro
 
 def CreateObj(group_name,obj):
-    AddEvent(CreateObj(group_name,obj))
+    AddEvent(CreateObjEvent(group_name,obj))
 
 class CEvent:
     def accept(self):
         pass
-class CreateObj:
-    def __init__(self,obj,group_name):
-        self.obj = obj
+class CreateObjEvent(CEvent):
+    def __init__(self,group_name,obj):
         self.group_name = group_name
+        self.obj = obj
     def accept(self):
         from src.Singletons.cscenemgr import CSceneMgr
         CSceneMgr().GetCurScene().AddObject(self.group_name,self.obj)
-class DestroyObj:
+class DestroyObjEvent:
     def __init__(self):
         pass

@@ -6,6 +6,7 @@ from src.Singletons.ckeymgr import CKeyMgr, GetKey
 from src.Singletons.collisionmgr import CCollisionMgr
 #from src.Singletons.cscenemgr import CSceneMgr
 from src.Singletons.ctimemgr import CTimeMgr
+from src.Singletons.eventmgr import CEventMgr
 from src.Singletons.resourcemgr import CPathMgr,CResMgr
 
 def GetWidthHeight():
@@ -42,6 +43,7 @@ class CCore(metaclass = SingletonBase):
             CSceneMgr().final_update()
             CSceneMgr().render()
 
+            CEventMgr().update()
             update_canvas()
             clear_canvas()
 

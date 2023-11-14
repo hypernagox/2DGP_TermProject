@@ -2,9 +2,10 @@ from sdl2 import SDLK_d, SDLK_a, SDLK_SPACE
 from src.Objects.cobjects import CObject
 from src.Singletons.ckeymgr import GetKey, GetMousePos
 from src.struct.vector2 import Vec2
+from src.Components.animator import CAnimator, CState, CAnimation
 class CPlayer(CObject):
     def __init__(self):
-        from src.Components.animator import CAnimator, CState, CAnimation
+
         from src.Components.camera import CCamera
         from src.Components.collider import CCollider
         from src.Components.rigidbody import CRigidBody
@@ -35,6 +36,7 @@ class CPlayer(CObject):
         self.AddComponent("Collider",CCollider(self))
         from src.Attack.attack import CAttack
         self.player_attack = CAttack(self)
+        self.col_count = 0
     def update(self):
         super().update()
         rigid = self.GetComp("RigidBody")
@@ -62,6 +64,7 @@ class CPlayer(CObject):
             self.GetTransform().m_degree += 10 * DT()
         from sdl2 import SDLK_LEFT
         if 'TAP' == GetKey(1):
+            self.player_attack.do_attack()
 
         animator.OnSignal()
     def OnCollisionEnter(self,other):
