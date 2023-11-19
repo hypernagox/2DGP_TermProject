@@ -20,7 +20,7 @@ class CLayer:
         self.sprite_renderer.owner = self.transform.owner = self
 
         self.x_min = worldLeftBottom.x
-        self.x_max = worldLeftBottom + width
+        self.x_max = worldLeftBottom.x + width
     def GetTransform(self):
         return self.transform
     def update(self):
@@ -28,31 +28,30 @@ class CLayer:
     def render(self):
         screen_width = CCore().width
         from src.Components.camera import GetCurMainCam
-        cam_x = GetCurMainCam().m_transform.m_pos.x
+        camera_x = GetCurMainCam().m_transform.m_pos.x
+        cam_x = (camera_x) % self.transform.m_size.x
 
-        if cam_x - screen_width / 2 > self.x_min:
-            pass
-        elif cam_x + screen_width / 2 < self.x_max:
-            pass
-        else
-            pass
 
         self.sprite_renderer.render_target(
             self.layer_img,
-            self.left + cam_x - self.layer_img.w,
+            self.left ,
             self.bottom,
-            screen_width,
-            self.layer_img.h,
+            self.transform.m_size.x,
+            self.transform.m_size.y,
             False
         )
 
 
-        if cam_x < screen_width:
-            self.sprite_renderer.render_target(
-                self.layer_img,
-                self.left + cam_x,
-                self.bottom,
-                screen_width - cam_x,
-                self.layer_img.h,
-                False
-            )
+        if cam_x - screen_width / 2 < self.x_min:
+            self.layer_img.clip_composite_draw(
+                int(self.layer_img.w - (self.x_min - (cam_x - screen_width / 2))),
+                int(self.bottom),
+                int((self.layer_img.w - (cam_x - screen_width / 2))),
+                int(self.layer_img.h),
+                int(),
+                'h',
+                int(cam_x),
+                int(0),
+                int(self.transform.m_size.x),
+                int(self.transform.m_size.y),
+        )
