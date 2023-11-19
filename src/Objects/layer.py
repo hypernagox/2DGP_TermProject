@@ -24,8 +24,9 @@ class CLayer:
         pass
     def render(self):
         screen_width = CCore().width
-        cam_x = GetCurMainCam
-        cam_x = int(self.transform.m_pos.x) % self.layer_img.w
+        from src.Components.camera import GetCurMainCam
+        cam_x = GetCurMainCam().m_transform.m_pos.x
+        cam_x = int(cam_x) % self.layer_img.w
 
         self.sprite_renderer.render_target(
             self.layer_img,
