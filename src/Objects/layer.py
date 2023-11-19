@@ -18,6 +18,9 @@ class CLayer:
         self.transform.m_pos.x = worldLeftBottom.x + width / 2
         self.transform.m_pos.y = worldLeftBottom.y + height / 2
         self.sprite_renderer.owner = self.transform.owner = self
+
+        self.x_min = worldLeftBottom.x
+        self.x_max = worldLeftBottom + width
     def GetTransform(self):
         return self.transform
     def update(self):
@@ -25,9 +28,14 @@ class CLayer:
     def render(self):
         screen_width = CCore().width
         from src.Components.camera import GetCurMainCam
-        camera_x = GetCurMainCam().m_transform.m_pos.x
-        cam_x = (-camera_x) % self.layer_img.w
+        cam_x = GetCurMainCam().m_transform.m_pos.x
 
+        if cam_x - screen_width / 2 > self.x_min:
+            pass
+        elif cam_x + screen_width / 2 < self.x_max:
+            pass
+        else
+            pass
 
         self.sprite_renderer.render_target(
             self.layer_img,
