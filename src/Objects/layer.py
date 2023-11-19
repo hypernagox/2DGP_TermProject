@@ -23,9 +23,7 @@ class CLayer:
     def update(self):
         pass
     def render(self):
-
         screen_width = CCore().width
-
         from src.Components.camera import GetCurMainCam
         camera_x = GetCurMainCam().m_transform.m_pos.x
         cam_x = (-camera_x) % self.layer_img.w
