@@ -23,11 +23,25 @@ class CLayer:
     def update(self):
         pass
     def render(self):
+        screen_width = CCore().width
+        cam_x = GetCurMainCam
+        cam_x = int(self.transform.m_pos.x) % self.layer_img.w
+
         self.sprite_renderer.render_target(
             self.layer_img,
-            self.left,
+            self.left - cam_x,
             self.bottom,
-            self.layer_img.w,
+            min(self.layer_img.w, screen_width + cam_x),
             self.layer_img.h,
             False
         )
+
+        if cam_x > 0:
+            self.sprite_renderer.render_target(
+                self.layer_img,
+                self.left - cam_x + self.layer_img.w,
+                self.bottom,
+                cam_x,
+                self.layer_img.h,
+                False
+            )
