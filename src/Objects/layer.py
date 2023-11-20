@@ -44,13 +44,13 @@ class CLayer:
 
         if cam_x + screen_width / 2 > self.x_max:
             self.layer_img.clip_composite_draw(
-                int(self.layer_img.w - (self.x_min - (cam_x - screen_width / 2))),
+                int(0),
                 int(self.bottom),
-                int((self.layer_img.w - (cam_x - screen_width / 2))),
+                int(self.layer_img.w),
                 int(self.layer_img.h),
                 int(),
                 'h',
-                int(cam_x),
+                int(0),
                 int(0),
                 int(self.transform.m_size.x),
                 int(self.transform.m_size.y),
