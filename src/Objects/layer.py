@@ -50,7 +50,7 @@ class CLayer:
                 int(self.layer_img.h),
                 int(),
                 'h',
-                int(0),
+                int(self.x_max + screen_width/2),
                 int(0),
                 int(self.transform.m_size.x),
                 int(self.transform.m_size.y),
