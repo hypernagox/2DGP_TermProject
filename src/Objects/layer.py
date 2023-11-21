@@ -21,6 +21,7 @@ class CLayer:
 
         self.x_min = worldLeftBottom.x
         self.x_max = worldLeftBottom.x + width
+        self.speed = 1
     def GetTransform(self):
         return self.transform
     def update(self):
