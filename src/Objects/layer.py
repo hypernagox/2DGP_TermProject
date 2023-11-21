@@ -35,7 +35,7 @@ class CLayer:
 
         self.sprite_renderer.render_target(
             self.layer_img,
-            self.left ,
+            self.left * self.speed,
             self.bottom,
             self.transform.m_size.x,
             self.transform.m_size.y,
