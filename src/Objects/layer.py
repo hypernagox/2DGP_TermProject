@@ -33,26 +33,4 @@ class CLayer:
         cam_x = (camera_x) % self.transform.m_size.x
 
 
-        self.sprite_renderer.render_target(
-            self.layer_img,
-            self.left * self.speed,
-            self.bottom,
-            self.transform.m_size.x,
-            self.transform.m_size.y,
-            False
-        )
 
-
-        if cam_x + screen_width / 2 > self.x_max:
-            self.layer_img.clip_composite_draw(
-                int(0),
-                int(self.bottom),
-                int(self.layer_img.w),
-                int(self.layer_img.h),
-                int(),
-                'h',
-                int(self.x_max + screen_width/2),
-                int(0),
-                int(self.transform.m_size.x),
-                int(self.transform.m_size.y),
-        )
