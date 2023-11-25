@@ -5,8 +5,9 @@ class CItem(CObject):
     def __init__(self,size,pos,item_img_name):
         super().__init__()
         from src.struct.vector2 import Vec2
-        self.GetTransform().m_size = size
-        self.GetTransform().m_pos = pos
+        from copy import deepcopy
+        self.GetTransform().m_size = deepcopy(size)
+        self.GetTransform().m_pos = deepcopy(pos)
         from src.Components.collider import CCollider
         col = self.AddComponent("Collider",CCollider(self))
         col.m_vSizeOffSet = Vec2(50,50)

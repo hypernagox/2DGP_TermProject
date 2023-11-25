@@ -48,7 +48,8 @@ class CTransform(CComponent):
         if self.parent is None:
             return
         import math
-        parent_pos = self.parent.GetWorldPos()
+        from copy import deepcopy
+        parent_pos = deepcopy(self.parent.GetWorldPos())
         angle = math.atan2(self.m_pos.y - parent_pos.y, self.m_pos.x - parent_pos.x)
         from src.Singletons.ctimemgr import DT
         angle += speed * DT()

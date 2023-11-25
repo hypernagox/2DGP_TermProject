@@ -6,6 +6,10 @@ class Vec2:
     def __str__(self):
         return f"({self.x}, {self.y})"
 
+    def __deepcopy__(self, memo=None):
+        import copy
+        return Vec2(copy.deepcopy(self.x), copy.deepcopy(self.y))
+
     def __add__(self, other):
         if isinstance(other, Vec2):
             return Vec2(self.x + other.x, self.y + other.y)

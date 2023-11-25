@@ -7,7 +7,8 @@ class CBall(CObject):
         self.name = "Ball"
         from src.struct.vector2 import Vec2
         self.GetTransform().m_size = Vec2(width,height)
-        self.GetTransform().m_pos = pos
+        from copy import deepcopy
+        self.GetTransform().m_pos = deepcopy(pos)
         from src.Components.collider import CCollider
         col = self.AddComponent("Collider",CCollider(self))
         col.m_vSizeOffSet = Vec2(50,50)
