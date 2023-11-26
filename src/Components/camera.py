@@ -16,7 +16,8 @@ class CCamera(CComponent):
         camera_x, camera_y = self.m_transform.m_pos.x, self.m_transform.m_pos.y
         screen_x += self.camOffset.x
         screen_y += self.camOffset.y
-        return Vec2(screen_x, screen_y)
+        from copy import deepcopy
+        return deepcopy(Vec2(screen_x, screen_y))
     def screen_to_world(self,screen_pos):
         width, height = CCore().GetWidthHeight()
         screen_x = screen_pos.x - self.m_transform.m_pos.x + width / 2
