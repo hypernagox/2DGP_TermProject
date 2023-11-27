@@ -32,5 +32,27 @@ class CLayer:
         camera_x = GetCurMainCam().m_transform.m_pos.x
         cam_x = (camera_x) % self.transform.m_size.x
 
+    def calculate_infinite_scrolling(self,camera_x, screen_width, screen_height, image_width, image_height):
+
+        start_x = -(camera_x % image_width)
 
 
+        num_images = int(screen_width / image_width) + 2
+
+        images_info = []
+        for i in range(num_images):
+
+            screen_start_x = start_x + i * image_width
+
+
+            draw_width = min(image_width, screen_width - screen_start_x)
+            draw_height = screen_height
+
+
+            image_start_x = max(0, -screen_start_x)
+
+
+            image_info = ((screen_start_x, 0), (draw_width, draw_height), (image_start_x, 0))
+            images_info.append(image_info)
+
+        return images_info
