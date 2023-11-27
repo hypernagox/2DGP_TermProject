@@ -30,8 +30,10 @@ class CLayer:
     def update(self):
         pass
 
-    def calculate_infinite_scrolling(self, camera_x, screen_width, screen_height, image_width, image_height):
-        start_x = -(camera_x % image_width)
+    def calculate_infinite_scrolling(self, camera_x, camera_y, screen_width, screen_height, image_width, image_height):
+        start_x = -(int(camera_x * self.speed) % image_width)
+        start_y = -camera_y
+
         num_images = int(screen_width / image_width) + 2
 
         images_info = []
@@ -40,16 +42,17 @@ class CLayer:
             draw_width = min(image_width, screen_width - screen_start_x)
             draw_height = screen_height
             image_start_x = max(0, -screen_start_x)
-            image_info = ((screen_start_x, 0), (draw_width, draw_height), (image_start_x, 0))
+            image_info = ((screen_start_x, start_y), (draw_width, draw_height), (image_start_x, start_y))
             images_info.append(image_info)
+
         return images_info
 
     def render(self):
         from src.Components.camera import CCamera
-        cam_x = CCamera.curMainCam.m_transform.m_pos.x
-        desired_width = 300
-        desired_height = 300
-        for img_info in self.calculate_infinite_scrolling(cam_x, self.cw, self.ch, self.w, self.h):
+        cam_x = CCamera.curMainCam.GetCamPos().x
+        cam_y = CCamera.curMainCam.GetCamPos().y
+
+        for img_info in self.calculate_infinite_scrolling(cam_x, cam_y, self.cw, self.ch, self.w, self.h):
             screen_start, draw_size, image_start = img_info
 
             clip_left = max(0, int(image_start[0]))
@@ -64,7 +67,7 @@ class CLayer:
                 left=clip_left,
                 bottom=clip_bottom,
                 width=clip_width,
-                height=clip_height,
+                height=clip_height * 2,
                 x=screen_x,
                 y=screen_y,
             )
