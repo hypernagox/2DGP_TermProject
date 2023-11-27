@@ -77,10 +77,10 @@ class CScene:
                                                 Vec2(0,0),
                                                 Vec2(155,100),
                                                 Vec2(0,0)),1)
-        self.AddLayer(CLayerFactory.CreateLayer('ground.png',
-                                                Vec2(0, 0),
-                                                Vec2(483, 89),
-                                                Vec2(0, 0),
-                                                1400 * 2,
-                                                700 / 4
-                                                ), 2)
+        # self.AddLayer(CLayerFactory.CreateLayer('ground.png',
+        #                                         Vec2(0, 0),
+        #                                         Vec2(483, 89),
+        #                                         Vec2(0, 0),
+        #                                         1400 * 2,
+        #                                         700 / 4
+        #                                         ), 2)
