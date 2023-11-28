@@ -66,7 +66,7 @@ class CLayer:
             self.layer_img.clip_draw_to_origin(
                 left=clip_left,
                 bottom=clip_bottom,
-                width=clip_width,
+                width=clip_width * 2,
                 height=clip_height * 2,
                 x=screen_x,
                 y=screen_y,
