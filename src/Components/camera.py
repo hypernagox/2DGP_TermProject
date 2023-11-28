@@ -8,7 +8,7 @@ class CCamera(CComponent):
     def __init__(self,obj):
         self.owner = obj
         self.m_transform = obj.GetTransform()
-        self.camOffset = Vec2(0,00)
+        self.camOffset = Vec2(0,-200)
     def world_to_screen(self, world_pos):
         width, height = CCore().GetWidthHeight()
         screen_x = world_pos.x - self.m_transform.m_pos.x + width / 2
