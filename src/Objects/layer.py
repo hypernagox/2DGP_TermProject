@@ -56,8 +56,9 @@ class CLayer:
         return images_info
 
     def render(self):
+        return
         from src.Components.camera import CCamera
-        mainCam = CCamera().curMainCam
+        #mainCam = CCamera().curMainCam
         cam_x = CCamera.curMainCam.GetCamPos().x
         cam_y = CCamera.curMainCam.GetCamPos().y
         # 비율맞춰서

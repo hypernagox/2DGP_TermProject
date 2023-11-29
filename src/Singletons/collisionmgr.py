@@ -85,14 +85,16 @@ class CCollisionMgr(metaclass = SingletonBase):
         if smallest_axis is not None:
             direction = 1 if dot(smallest_axis, obb2.center - obb1.center) > 0 else -1
             mtv_a = smallest_axis * smallest_overlap * direction
-            mtv_b = -mtv_a
-            self.map_mtv[(obb1.collider.m_Collider_ID,obb2.collider.m_ColliderID)] = [
+            mtv_b = mtv_a * -1
+            self.map_mtv[(obb1.collider.m_Collider_ID,obb2.collider.m_Collider_ID)] = [
                 {obb1.collider.m_Collider_ID : mtv_a},
                 {obb2.collider.m_Collider_ID : mtv_b}
             ]
             return True
         else:
             return False
+    def GetPenetrationVector(self,colA,colB,col):
+        return self.map_mtv[(colA.m_ColliderID,colB.m_Collider_ID)][col.m_Collider_ID]
 
 def project_obb_on_axis(obb, axis):
     corners = obb.corners
@@ -108,3 +110,7 @@ def overlap_on_axis(axis, obb1, obb2):
     min1, max1 = project_obb_on_axis(obb1, axis)
     min2, max2 = project_obb_on_axis(obb2, axis)
     return min(max1, max2) - max(min1, min2)
+
+
+def GetPenetrationVector(self,colA,colB,col):
+    return CCollisionMgr().map_mtv[(colA.m_ColliderID, colB.m_Collider_ID)][col.m_Collider_ID]
