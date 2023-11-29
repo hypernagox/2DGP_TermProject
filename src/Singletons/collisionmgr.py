@@ -2,7 +2,9 @@ import pico2d
 
 from singleton import SingletonBase
 from src.Scene.cscene import GROUP_NAME
-from src.struct.vector2 import Vec2
+from src.struct.vector2 import Vec2, dot
+
+EPSILON = 0
 
 def RegisterGroup(group_name_a,group_name_b):
     CCollisionMgr().RegisterGroup(group_name_a,group_name_b)
@@ -10,6 +12,7 @@ class CCollisionMgr(metaclass = SingletonBase):
     def __init__(self):
         self.collision_table =[[False for _ in range(len(GROUP_NAME))] for _ in range(len(GROUP_NAME))]
         self.map_prev_collision = {}
+        self.map_mtv = {}
     def RegisterGroup(self,group_name_a,group_name_b):
         a = GROUP_NAME[group_name_a]
         b = GROUP_NAME[group_name_b]
@@ -68,10 +71,24 @@ class CCollisionMgr(metaclass = SingletonBase):
         for i in range(4):
             axis = (corners[i] - corners[(i + 1) % 4]).normalized()
             axes.append(axis)
+        smallest_overlap = float('inf')
+        smallest_axis = None
+
         for axis in axes:
-            if not overlap_on_axis(axis, obb1, obb2):
+            overlap = overlap_on_axis(axis, obb1, obb2)
+            if overlap <= EPSILON:
                 return False
-        return True
+            elif overlap < smallest_overlap:
+                smallest_overlap = overlap
+                smallest_axis = axis
+
+        if smallest_axis is not None:
+            direction = 1 if dot(smallest_axis, obb2.center - obb1.center) > 0 else -1
+            mtv_a = smallest_axis * smallest_overlap * direction
+            mtv_b = -mtv_a
+            return True, mtv_a, mtv_b
+        else:
+            return False, None, None
 
 def project_obb_on_axis(obb, axis):
     corners = obb.corners
@@ -83,9 +100,7 @@ def project_obb_on_axis(obb, axis):
 
     return min_proj, max_proj
 
-EPSILON = 0
 def overlap_on_axis(axis, obb1, obb2):
     min1, max1 = project_obb_on_axis(obb1, axis)
     min2, max2 = project_obb_on_axis(obb2, axis)
-    overlap = min(max1, max2) - max(min1, min2)
-    return overlap > EPSILON
+    return min(max1, max2) - max(min1, min2)
