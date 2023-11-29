@@ -47,7 +47,9 @@ class CRigidBody(CComponent):
         self.Move()
         self.vForce = Vec2()
         self.bDirty = False
-
+    def ResetPhysics(self):
+        self.vAccel = Vec2()
+        self.vVelocity = Vec2()
     def AddForce(self,vec):
         self.vForce += vec
         self.bDirty = True

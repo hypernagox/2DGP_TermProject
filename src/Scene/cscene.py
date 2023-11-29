@@ -45,6 +45,7 @@ class CScene:
         for arr in self.objs:
             for obj in arr:
                 obj.render()
+
         for arr in self.objs:
             for i in range(len(arr) - 1, -1, -1):
                 if arr[i].IsDead:
