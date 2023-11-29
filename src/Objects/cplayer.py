@@ -82,6 +82,8 @@ class CPlayer(CObject):
     def OnCollisionEnter(self,other):
         print(f'충돌',self.col_count)
         self.col_count += 1
+        if other.group_name == 'TILE':
+            return
         if other.name == "Monster":
             return
         if None == other.parent:

@@ -5,6 +5,7 @@ class CObject:
     def __init__(self):
         self.components = []
         self.parent = None
+        self.group_name = None
         self.childs = []
         self.comp_map = {}
         self.name = ''

@@ -14,6 +14,7 @@ class CScene:
         self.layers = [None] * 5
         self.cur_player = None
     def AddObject(self,group_name,obj):
+        obj.group_name = group_name
         self.objs[GROUP_NAME[group_name]].append(obj)
     def GetPlayer(self):
         return self.cur_player
