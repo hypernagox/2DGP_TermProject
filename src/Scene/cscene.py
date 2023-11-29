@@ -5,7 +5,8 @@ GROUP_NAME = {
     "MONSTER" : 2,
     "PROJ" : 3,
     "ITEM" : 4,
-    "TILE" : 5
+    "TILE" : 5,
+    "GROUND" : 6
 }
 
 class CScene:
@@ -88,5 +89,9 @@ class CScene:
         #                                         700 / 4
         #                                         ), 2)
         from src.Objects.block import CBlock
-        self.AddObject("TILE", CBlock(1000,200,Vec2(100,100)))
+        self.AddObject("TILE", CBlock(1000,200,Vec2(100,100),'brick.png'))
         RegisterGroup("PLAYER", "TILE")
+
+        from src.Objects.block import CGround
+        self.AddObject("TILE", CGround(0, 0, Vec2(10000, 200), 'front.png'))
+        RegisterGroup("PLAYER", "GROUND")
