@@ -15,7 +15,7 @@ class CCollider(CComponent):
         CCollider.g_collider_ID += 1
         self.m_vOffset = Vec2()
         self.m_vSizeOffset = Vec2()
-        self.obb_box = OBB()
+        self.obb_box = OBB(self)
         self.collision_count = 0
     def last_update(self):
         self.obb_box.update(self.m_transform.m_pos ,self.m_transform.m_size + self.m_vSizeOffset
@@ -42,7 +42,8 @@ class CCollider(CComponent):
 
 
 class OBB:
-    def __init__(self):
+    def __init__(self,collider):
+        self.collider = collider
         self.center = Vec2()
         self.width = 0
         self.height = 0

@@ -86,9 +86,13 @@ class CCollisionMgr(metaclass = SingletonBase):
             direction = 1 if dot(smallest_axis, obb2.center - obb1.center) > 0 else -1
             mtv_a = smallest_axis * smallest_overlap * direction
             mtv_b = -mtv_a
-            return True, mtv_a, mtv_b
+            self.map_mtv[(obb1.collider.m_Collider_ID,obb2.collider.m_ColliderID)] = [
+                {obb1.collider.m_Collider_ID : mtv_a},
+                {obb2.collider.m_Collider_ID : mtv_b}
+            ]
+            return True
         else:
-            return False, None, None
+            return False
 
 def project_obb_on_axis(obb, axis):
     corners = obb.corners
