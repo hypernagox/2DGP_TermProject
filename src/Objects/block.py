@@ -1,4 +1,5 @@
 from src.Objects.cobjects import CObject
+from src.Singletons.collisionmgr import resolve_collision
 
 
 class CBlock(CObject):
@@ -12,26 +13,12 @@ class CBlock(CObject):
         from src.Components.spriterenderer import CSpriteRenderer
         self.AddComponent("SpriteRenderer", CSpriteRenderer("brick.png"))
 
-    def update(self):
-        print(self.GetTransform().m_pos.x)
     def OnCollisionEnter(self,other):
-        from src.Singletons.collisionmgr import GetPenetrationVector
-        penetration = GetPenetrationVector(self.GetComp("Collider"),other.GetComp("Collider"),other.GetComp("Collider"))
-        from src.struct.vector2 import Vec2
-        other.GetTransform().m_pos -= penetration
+        resolve_collision(self,other,True)
         other.GetComp("RigidBody").ResetPhysics()
-        other.GetComp("RigidBody").bIsGround = True
     def OnCollisionStay(self,other):
-        from src.Singletons.collisionmgr import GetPenetrationVector
-        penetration = GetPenetrationVector(self.GetComp("Collider"), other.GetComp("Collider"),
-                                           other.GetComp("Collider"))
-        from src.struct.vector2 import Vec2
-        other.GetTransform().m_pos -= penetration
-        other.GetComp("RigidBody").ResetPhysics()
-        other.GetComp("RigidBody").bIsGround = True
-        pass
+        resolve_collision(self, other, True)
     def OnCollisionExit(self,other):
-        #other.GetComp("RigidBody").bIsGround = False
         pass
 
 

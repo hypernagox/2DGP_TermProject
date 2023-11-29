@@ -19,9 +19,8 @@ class CObject:
         return comp
 
     def EraseChild(self,obj):
-        #self.GetTransform().childs.remove(obj.GetTransform())
-        from src.Singletons.eventmgr import DestroyObj
-        DestroyObj(obj)
+        self.GetTransform().childs.remove(obj.GetTransform())
+        self.childs.remove(obj)
     def AddChild(self,child):
         child.parent = self
         self.childs.append(child)
