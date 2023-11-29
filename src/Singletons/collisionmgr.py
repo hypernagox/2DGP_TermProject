@@ -28,7 +28,9 @@ class CCollisionMgr(metaclass = SingletonBase):
         penetration = GetPenetrationVector(fixed_obj.GetComp("Collider"), target_obj.GetComp("Collider"),
                                            target_obj.GetComp("Collider"))
         target_obj.GetTransform().m_pos -= penetration
+        #target_obj.GetComp("RigidBody").AddVelocity(penetration * -1)
         target_obj.GetComp("RigidBody").bIsGround = set_ground
+        return penetration
     def CheckCollision(self,row,col):
         from src.Singletons.cscenemgr import GetCurSceneObjects
         objs = GetCurSceneObjects()
@@ -132,4 +134,4 @@ def GetPenetrationVector(colA,colB,col):
 
 
 def resolve_collision(fixed_obj, target_obj,set_ground = False):
-    CCollisionMgr().resolve_collision(fixed_obj,target_obj,set_ground)
+    return CCollisionMgr().resolve_collision(fixed_obj,target_obj,set_ground)

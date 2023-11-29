@@ -69,8 +69,8 @@ class CPlayer(CObject):
             from src.Singletons.ctimemgr import DT
             self.GetTransform().m_degree += 10 * DT()
         from sdl2 import SDLK_LEFT
-        if 'TAP' == GetKey(1):
-            self.player_attack.do_attack()
+        if self.player_attack.do_attack():
+           # self.player_attack.do_attack()
             if self.curballs:
                 delChild = self.curballs[len(self.curballs) - 1]
                 self.curballs.remove(delChild)

@@ -29,6 +29,8 @@ class CKeyMgr(metaclass=SingletonBase):
                 self.key_map[eve.button] = 'TAP'
                 from src.Singletons.core import CCore
                 self.mouse_pos = self.convert_coordinates(eve.x,eve.y,CCore().height)
+            elif eve.type == SDL_MOUSEBUTTONUP:
+                self.key_map[eve.button] = 'AWAY'
 
     def GetKeyState(self,key):
         if key not in self.key_map:

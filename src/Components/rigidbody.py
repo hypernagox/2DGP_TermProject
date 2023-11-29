@@ -9,7 +9,7 @@ class CRigidBody(CComponent):
         self.vForce = Vec2()
         self.vAccel = Vec2()
         self.vVelocity = Vec2()
-        self.vMaxVelocity = Vec2(200,600)
+        self.vMaxVelocity = Vec2(500,500)
         self.fMass = 1
         self.fFriction = 100
         self.bGravity = True
@@ -50,6 +50,8 @@ class CRigidBody(CComponent):
         self.Move()
         self.vForce = Vec2()
         self.bDirty = False
+    def ResetY(self):
+        self.vAccel.y = self.vForce.y = self.vVelocity.y = 0
     def ResetPhysics(self):
         self.vAccel = Vec2()
         self.vVelocity = Vec2()

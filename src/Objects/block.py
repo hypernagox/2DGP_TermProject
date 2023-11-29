@@ -15,11 +15,13 @@ class CBlock(CObject):
 
     def OnCollisionEnter(self,other):
         if None != other.parent and other.group_name == 'ITEM': return
-        resolve_collision(self,other,True)
-        #other.GetComp("RigidBody").ResetPhysics()
+        pene = resolve_collision(self,other,True)
+        other.GetComp("RigidBody").ResetY()
     def OnCollisionStay(self,other):
         if None != other.parent and other.group_name == 'ITEM': return
-        resolve_collision(self, other, True)
+        pene = resolve_collision(self, other, True)
+
+        #other.GetComp("RigidBody").ResetY()
     def OnCollisionExit(self,other):
         other.GetComp("RigidBody").bIsGround = False
 
