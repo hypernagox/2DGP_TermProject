@@ -36,7 +36,6 @@ class CPlayer(CObject):
         self.AddComponent("Collider",CCollider(self))
         from src.Attack.attack import CAttack
         self.player_attack = CAttack(self)
-        self.col_count = 0
         self.curballs = []
 
         from src.Objects.item import CItem
@@ -62,7 +61,7 @@ class CPlayer(CObject):
             rigid.AddForce(Vec2(100, 0))
             #animator.OnSignal()
         if 'TAP' == GetKey(SDLK_SPACE):
-            rigid.AddVelocity(Vec2(0,200))
+            rigid.AddVelocity(Vec2(0,500))
             rigid.AddForce(Vec2(0,300))
             rigid.SetIsGround(False)
         from sdl2 import SDLK_r
@@ -80,13 +79,7 @@ class CPlayer(CObject):
 
         animator.OnSignal()
     def OnCollisionEnter(self,other):
-        print(f'충돌',self.col_count)
-        self.col_count += 1
-        if other.group_name == 'TILE':
-            return
-        if other.name == "Monster":
-            return
-        if None == other.parent:
+        if None == other.parent and other.group_name == 'ITEM':
             self.curballs.append(other)
             self.player_attack.ball_count += 1
     def OnCollisionStay(self,other):

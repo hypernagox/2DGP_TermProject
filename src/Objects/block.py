@@ -14,12 +14,14 @@ class CBlock(CObject):
         self.AddComponent("SpriteRenderer", CSpriteRenderer(texture_name))
 
     def OnCollisionEnter(self,other):
+        if None != other.parent and other.group_name == 'ITEM': return
         resolve_collision(self,other,True)
-        other.GetComp("RigidBody").ResetPhysics()
+        #other.GetComp("RigidBody").ResetPhysics()
     def OnCollisionStay(self,other):
+        if None != other.parent and other.group_name == 'ITEM': return
         resolve_collision(self, other, True)
     def OnCollisionExit(self,other):
-        pass
+        other.GetComp("RigidBody").bIsGround = False
 
 class CGround(CBlock):
     def __init__(self,x,y,size,texture_name):

@@ -93,5 +93,7 @@ class CScene:
         RegisterGroup("PLAYER", "TILE")
 
         from src.Objects.block import CGround
-        self.AddObject("TILE", CGround(0, 0, Vec2(10000, 200), 'front.png'))
+        self.AddObject("GROUND", CGround(0, 0, Vec2(10000, 200), 'front.png'))
         RegisterGroup("PLAYER", "GROUND")
+        RegisterGroup("MONSTER", "GROUND")
+        RegisterGroup("ITEM", "GROUND")

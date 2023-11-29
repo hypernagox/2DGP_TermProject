@@ -100,8 +100,6 @@ class CCollisionMgr(metaclass = SingletonBase):
                 obb1.collider.m_Collider_ID: mtv_a,
                 obb2.collider.m_Collider_ID: mtv_b
             }
-
-
             return True
         else:
             return False

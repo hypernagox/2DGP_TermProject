@@ -16,13 +16,12 @@ class CItem(CObject):
         from src.Components.rigidbody import CRigidBody
         rigid = self.AddComponent("RigidBody",CRigidBody())
         rigid.SetVelocity(Vec2(0,1) * 100)
-
     def update(self):
         super().update()
         if None != self.parent:
             self.GetTransform().OrbitAroundParent(100,2)
     def OnCollisionEnter(self,other):
-        if self.parent != None:
+        if self.parent != None or other.group_name != 'PLAYER':
             return
         from src.Singletons.cscenemgr import GetCurScene
         self.GetComp("RigidBody").bGravity = False
