@@ -66,3 +66,21 @@ class CObject:
     def GetObjectScreenPos(self):
         from src.Components.camera import GetCurMainCam
         return GetCurMainCam().world_to_screen(self.GetTransform().m_pos)
+
+    class _ObjectIterator:
+        def __init__(self, root):
+            self.stack = [root]
+
+        def __iter__(self):
+            return self
+
+        def __next__(self):
+            if not self.stack:
+                raise StopIteration
+
+            node = self.stack.pop()
+            self.stack.extend(reversed(node.childs))
+            return node
+
+    def __iter__(self):
+        return CObject._ObjectIterator(self)
