@@ -4,7 +4,8 @@ GROUP_NAME = {
     "PLAYER" : 1,
     "MONSTER" : 2,
     "PROJ" : 3,
-    "ITEM" : 4
+    "ITEM" : 4,
+    "TILE" : 5
 }
 
 class CScene:
@@ -84,3 +85,6 @@ class CScene:
         #                                         1400 * 2,
         #                                         700 / 4
         #                                         ), 2)
+        from src.Objects.block import CBlock
+        self.AddObject("TILE", CBlock(1000,200,Vec2(100,100)))
+        RegisterGroup("PLAYER", "TILE")
