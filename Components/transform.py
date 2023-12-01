@@ -17,7 +17,9 @@ class CTransform(CComponent):
         self.m_scale = 1
 
         self.m_posOffset = Vec2()
-
+        self.m_finalPos =Vec2()
+        self.m_finalScale=1
+        self.m_finalDegree=0
     def GetWorldPos(self,acc = Vec2()):
         if self.parent is not None:
             return self.parent.GetWorldPos(self.m_pos + acc)
@@ -40,6 +42,15 @@ class CTransform(CComponent):
         self.m_pos += self.m_posOffset
         from vector2 import Vec2
         self.m_posOffset = Vec2()
+        if self.parent:
+            self.m_finalPos = self.parent.m_finalPos + self.m_pos
+            self.m_finalDegree = self.parent.m_finalDegree + self.m_degree
+            self.m_finalScale = self.parent.m_finalScale * self.m_scale
+        else:
+            self.m_finalPos = self.m_pos
+            self.m_finalDegree = self.m_degree
+            self.m_finalScale = self.m_scale
+
     def GetLeft(self):
         return self.m_pos.x - self.m_size.x/4
     def GetRight(self):
@@ -54,7 +65,7 @@ class CTransform(CComponent):
         import math
         from copy import deepcopy
         parent_pos = deepcopy(self.parent.GetWorldPos())
-        angle = math.atan2(self.m_pos.y - parent_pos.y, self.m_pos.x - parent_pos.x)
+        angle = math.atan2(self.m_finalPos.y - parent_pos.y, self.m_finalPos.x - parent_pos.x)
         from Singletons.ctimemgr import DT
         angle += speed * DT()
         self.m_pos.x = parent_pos.x + radius * math.cos(angle)

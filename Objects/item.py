@@ -21,9 +21,11 @@ class CItem(CObject):
     def update(self):
         super().update()
         if None != self.parent:
-            self.GetTransform().OrbitAroundParent(100,2)
             if self.ready_to_fire:
-                self.GetTransform().m_size = Vec2(100,100)
+                self.GetTransform().m_pos = Vec2(20,2)
+            else:
+                self.GetTransform().OrbitAroundParent(100,200)
+
 
     def OnCollisionEnter(self,other):
         if self.parent != None or other.group_name != 'PLAYER':

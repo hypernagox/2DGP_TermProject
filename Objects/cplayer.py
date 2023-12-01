@@ -40,7 +40,7 @@ class CPlayer(CObject):
 
         from Objects.item import CItem
         for _ in range(3):
-            ball = CItem(Vec2(30,30),self.GetTransform().m_pos,"ball21x21.png")
+            ball = CItem(Vec2(700,21),self.GetTransform().m_pos,"ball21x21.png")
             self.curballs.append(ball)
             self.AddChild(ball)
     def update(self):
@@ -69,9 +69,9 @@ class CPlayer(CObject):
             from Singletons.ctimemgr import DT
             self.GetTransform().m_degree += 10 * DT()
         from sdl2 import SDLK_LEFT
-        if self.player_attack.do_attack():
+        if self.player_attack.do_attack(self.curballs[0]):
            # self.player_attack.do_attack()
-            self.curballs[0].ready_to_fire = True
+            #self.curballs[0].ready_to_fire = True
             if self.curballs:
                 delChild = self.curballs[len(self.curballs) - 1]
                 self.curballs.remove(delChild)
