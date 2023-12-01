@@ -5,6 +5,7 @@ class CAttack:
         self.obj = obj
         self.ball_count = 3
         self.scale = 1.
+
     def do_attack(self):
         if self.ball_count <= 0 :
             return False

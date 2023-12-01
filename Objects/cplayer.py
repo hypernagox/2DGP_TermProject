@@ -66,7 +66,7 @@ class CPlayer(CObject):
             rigid.SetIsGround(False)
         from sdl2 import SDLK_r
         if 'HOLD' == GetKey(SDLK_r):
-            from src.Singletons.ctimemgr import DT
+            from Singletons.ctimemgr import DT
             self.GetTransform().m_degree += 10 * DT()
         from sdl2 import SDLK_LEFT
         if self.player_attack.do_attack():
