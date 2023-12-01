@@ -40,7 +40,7 @@ class CPlayer(CObject):
 
         from Objects.item import CItem
         for _ in range(3):
-            ball = CItem(Vec2(700,21),self.GetTransform().m_pos,"ball21x21.png")
+            ball = CItem(Vec2(50,50),Vec2(20,20),"ball21x21.png")
             self.curballs.append(ball)
             self.AddChild(ball)
     def update(self):

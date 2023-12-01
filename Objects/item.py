@@ -1,7 +1,11 @@
+import random
+
 from Objects.cobjects import CObject
 from vector2 import Vec2
 
+import time
 
+random.seed(time.time())
 class CItem(CObject):
     def __init__(self,size,pos,item_img_name):
         super().__init__()
@@ -17,16 +21,21 @@ class CItem(CObject):
         from Components.rigidbody import CRigidBody
         rigid = self.AddComponent("RigidBody",CRigidBody())
         rigid.SetVelocity(Vec2(0,1) * 100)
+        rigid.bGravity = False
         self.ready_to_fire = False
+        self.rev_speed = random.uniform(0.5, 5.5)
     def update(self):
         super().update()
         if None != self.parent:
             if self.ready_to_fire:
                 self.GetTransform().m_pos = Vec2(20,2)
             else:
-                self.GetTransform().OrbitAroundParent(100,200)
+                self.GetTransform().OrbitAroundParent(100,self.rev_speed)
 
-
+    def final_update(self):
+        super().final_update()
+    def render(self):
+        super().render()
     def OnCollisionEnter(self,other):
         if self.parent != None or other.group_name != 'PLAYER':
             return

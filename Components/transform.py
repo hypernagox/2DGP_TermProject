@@ -68,5 +68,7 @@ class CTransform(CComponent):
         angle = math.atan2(self.m_finalPos.y - parent_pos.y, self.m_finalPos.x - parent_pos.x)
         from Singletons.ctimemgr import DT
         angle += speed * DT()
-        self.m_pos.x = parent_pos.x + radius * math.cos(angle)
-        self.m_pos.y = parent_pos.y + radius * math.sin(angle)
+        new_x = (parent_pos.x + radius * math.cos(angle)) - self.m_finalPos.x
+        new_y = (parent_pos.y + radius * math.sin(angle)) - self.m_finalPos.y
+        self.m_posOffset.x = new_x
+        self.m_posOffset.y = new_y

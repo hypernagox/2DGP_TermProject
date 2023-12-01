@@ -12,11 +12,11 @@ class CAttack:
         from Singletons.ckeymgr import GetKey
         if 'HOLD' == GetKey(1) or 'TAP' == GetKey(1):
             from Singletons.ctimemgr import DT
-            ball.ready_to_fire = True
+            #ball.ready_to_fire = True
             self.scale += 5 * DT()
             from pico2d import clamp
             self.scale = clamp(self.scale,1,2)
-            ball.GetTransform().m_scale = self.scale
+            #ball.GetTransform().m_scale = self.scale
             return False
         elif 'AWAY' == GetKey(1):
             from Objects.ball import CBall
