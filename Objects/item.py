@@ -28,7 +28,7 @@ class CItem(CObject):
         super().update()
         if None != self.parent:
             if self.ready_to_fire:
-                self.GetTransform().m_pos = Vec2(20,2)
+                self.GetTransform().m_pos = Vec2(100,2)
             else:
                 self.GetTransform().OrbitAroundParent(100,self.rev_speed)
 
