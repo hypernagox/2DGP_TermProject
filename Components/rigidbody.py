@@ -25,6 +25,9 @@ class CRigidBody(CComponent):
         self.bDirty = True
     def Move(self):
         trans = self.GetOwner().GetTransform()
+        val = abs(self.vVelocity.x)
+        if val != 0:
+            trans.dir = self.vVelocity.x / val
         trans.m_posOffset += self.vVelocity * DT()
     def update_gravity(self):
         if self.bGravity and not self.bIsGround:

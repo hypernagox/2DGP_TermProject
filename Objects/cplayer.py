@@ -69,15 +69,11 @@ class CPlayer(CObject):
             from Singletons.ctimemgr import DT
             self.GetTransform().m_degree += 10 * DT()
         from sdl2 import SDLK_LEFT
-        if self.player_attack.do_attack(self.curballs[0]):
-           # self.player_attack.do_attack()
-            #self.curballs[0].ready_to_fire = True
-            if self.curballs:
-                delChild = self.curballs[len(self.curballs) - 1]
-                self.curballs.remove(delChild)
-                self.EraseChild(delChild)
-                delChild.IsDead = True
-
+        if self.curballs and self.player_attack.do_attack(self.curballs[len(self.curballs) - 1]):
+            delChild = self.curballs[len(self.curballs) - 1]
+            self.curballs.remove(delChild)
+            self.EraseChild(delChild)
+            delChild.IsDead = True
         animator.OnSignal()
     def OnCollisionEnter(self,other):
         if None == other.parent and other.group_name == 'ITEM':

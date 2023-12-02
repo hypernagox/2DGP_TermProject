@@ -24,11 +24,13 @@ class CItem(CObject):
         rigid.bGravity = False
         self.ready_to_fire = False
         self.rev_speed = random.uniform(0.5, 5.5)
+        self.item_fire_dir = Vec2(1,1)
     def update(self):
         super().update()
         if None != self.parent:
             if self.ready_to_fire:
-                self.GetTransform().m_pos = Vec2(100,2)
+                d = self.item_fire_dir * 100. * self.GetTransform().dir
+                self.GetTransform().m_pos = d
             else:
                 self.GetTransform().OrbitAroundParent(100,self.rev_speed)
 

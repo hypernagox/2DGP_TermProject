@@ -2,11 +2,12 @@ from Objects.cobjects import CObject
 
 
 class CBall(CObject):
-    def __init__(self,width,height,pos,dir):
+    def __init__(self,width,height,pos,dir,scale):
         super().__init__()
         self.name = "Ball"
         from vector2 import Vec2
         self.GetTransform().m_size = Vec2(width,height)
+        self.GetTransform().m_scale = scale
         from copy import deepcopy
         self.GetTransform().m_pos = deepcopy(pos)
         from Components.collider import CCollider

@@ -15,6 +15,7 @@ class CTransform(CComponent):
         self.m_size = Vec2()
         self.m_degree = 0
         self.m_scale = 1
+        self.dir = 1
 
         self.m_posOffset = Vec2()
         self.m_finalPos =Vec2()
@@ -46,6 +47,7 @@ class CTransform(CComponent):
             self.m_finalPos = self.parent.m_finalPos + self.m_pos
             self.m_finalDegree = self.parent.m_finalDegree + self.m_degree
             self.m_finalScale = self.parent.m_finalScale * self.m_scale
+            self.dir = self.parent.dir
         else:
             self.m_finalPos = self.m_pos
             self.m_finalDegree = self.m_degree
