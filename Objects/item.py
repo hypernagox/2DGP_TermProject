@@ -21,7 +21,6 @@ class CItem(CObject):
         from Components.rigidbody import CRigidBody
         rigid = self.AddComponent("RigidBody",CRigidBody())
         rigid.SetVelocity(Vec2(0,1) * 100)
-        rigid.bGravity = False
         self.ready_to_fire = False
         self.rev_speed = random.uniform(0.5, 5.5)
         self.item_fire_dir = Vec2(1,1)
@@ -29,15 +28,10 @@ class CItem(CObject):
         super().update()
         if None != self.parent:
             if self.ready_to_fire:
-                d = self.item_fire_dir * 100. * self.GetTransform().dir
+                d = self.item_fire_dir * 100.
                 self.GetTransform().m_pos = d
             else:
                 self.GetTransform().OrbitAroundParent(100,self.rev_speed)
-
-    def final_update(self):
-        super().final_update()
-    def render(self):
-        super().render()
     def OnCollisionEnter(self,other):
         if self.parent != None or other.group_name != 'PLAYER':
             return

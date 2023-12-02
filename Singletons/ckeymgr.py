@@ -11,6 +11,7 @@ class CKeyMgr(metaclass=SingletonBase):
     def Initialize(self):
         pass
     def update(self):
+        from Singletons.core import CCore
         from pico2d import get_events
         for keys in self.key_map.keys():
             if 'AWAY' == self.key_map[keys]:
@@ -25,12 +26,15 @@ class CKeyMgr(metaclass=SingletonBase):
                     self.key_map[eve.key] = 'TAP'
             elif eve.type == SDL_KEYUP:
                 self.key_map[eve.key] = 'AWAY'
+            from sdl2 import SDL_MOUSEMOTION
             if eve.type == SDL_MOUSEBUTTONDOWN:
                 self.key_map[eve.button] = 'TAP'
-                from Singletons.core import CCore
                 self.mouse_pos = self.convert_coordinates(eve.x,eve.y,CCore().height)
             elif eve.type == SDL_MOUSEBUTTONUP:
                 self.key_map[eve.button] = 'AWAY'
+            elif eve.type == SDL_MOUSEMOTION:
+                self.mouse_pos = self.convert_coordinates(eve.x, eve.y, CCore().height)
+
 
     def GetKeyState(self,key):
         if key not in self.key_map:

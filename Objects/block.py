@@ -29,3 +29,5 @@ class CGround(CBlock):
     def __init__(self,x,y,size,texture_name):
         super().__init__(x,y,size,texture_name)
 
+
+
