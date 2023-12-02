@@ -24,13 +24,14 @@ class CPlayer(CObject):
         animator.AddAnimState('Idle',idle)
 
         jump = StatePlayerJump()
-        jump.anim_torso = CAnimation('Player/jump', 0.1, True, 0, 0, 94, 98, animator)
+
+        jump.anim_jump = CAnimation('Player/jump', 0.1, True, 0, 0, 94, 98, animator)
 
         animator.AddAnimState('Jump', jump)
 
         animator.cur_state = idle
 
-        self.AddComponent("RigidBody",CRigidBody())
+        jump.obj_rigid = self.AddComponent("RigidBody",CRigidBody())
         self.AddComponent("SpriteRenderer",CSpriteRenderer())
         cam = CCamera(self)
         cam.SetThisCam2Main()
@@ -43,6 +44,7 @@ class CPlayer(CObject):
         from Attack.attack import CAttack
         self.player_attack = CAttack(self)
         self.curballs = []
+
 
         from Objects.item import CItem
         for _ in range(3):
@@ -106,6 +108,8 @@ class StatePlayerIdle(CState):
     def change_state(self):
         if 'TAP' == GetKey(SDLK_a) or 'TAP' == GetKey(SDLK_d):
             return 'Walk'
+        if 'TAP'== GetKey(SDLK_SPACE):
+            return 'Jump'
         return ''
 
 
@@ -122,15 +126,32 @@ class StatePlayerWalk(CState):
     def change_state(self):
         if 'AWAY' == GetKey(SDLK_a) or 'AWAY' == GetKey(SDLK_d):
             return 'Idle'
+        if 'TAP' == GetKey(SDLK_SPACE):
+            return 'Jump'
         return ''
 
 class StatePlayerJump(CState):
     def __init__(self):
         self.anim_jump = None
+        self.obj_rigid = None
     def update(self):
-        self.anim_torso.update()
-        self.anim_leg.update()
+        self.anim_jump.update()
     def render(self):
         self.anim_jump.render()
     def change_state(self):
-       return ''
+        if self.obj_rigid.bIsGround:
+            return 'Idle'
+        return ''
+
+class StatePlayerAttack(CState):
+    def __init__(self):
+        self.anim_atk = None
+        self.obj_rigid = None
+    def update(self):
+        self.anim_atk.update()
+    def render(self):
+        self.anim_atk.render()
+    def change_state(self):
+        if self.obj_rigid.bIsGround:
+            return 'Idle'
+        return ''
