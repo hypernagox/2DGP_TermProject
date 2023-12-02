@@ -21,10 +21,11 @@ class CBall(CObject):
         self.GetTransform().m_pos += self.dir * 800 * DT()
 
     def OnCollisionEnter(self,other):
-        rigid = other.GetComp("RigidBody")
-        rigid.SetVelocity(self.dir * 1000)
-        from Singletons.eventmgr import DestroyObj
-        DestroyObj(self)
+        if other.group_name == 'MONSTER':
+            rigid = other.GetComp("RigidBody")
+            rigid.SetVelocity(self.dir * 1000)
+            from Singletons.eventmgr import DestroyObj
+            DestroyObj(self)
     def OnCollisionStay(self,other):
         pass
     def OnCollisionExit(self,other):
