@@ -29,8 +29,10 @@ class CCollisionMgr(metaclass = SingletonBase):
         penetration = GetPenetrationVector(fixed_obj.GetComp("Collider"), target_obj.GetComp("Collider"),
                                            target_obj.GetComp("Collider"))
         target_obj.GetTransform().m_pos -= penetration
+        c = fixed_obj.GetTransform().GetTop()
+        target_obj.GetTransform().m_pos = Vec2(target_obj.GetTransform().m_pos.x,fixed_obj.GetTransform().GetTop() + target_obj.GetTransform().m_size.y/2)
         #target_obj.GetComp("RigidBody").AddVelocity(penetration * -1)
-        col_dir =Vec2()
+        #col_dir = Vec2()
         if abs(penetration.x) > abs(penetration.y):
             col_dir =  Vec2(-1 if penetration.x > 0 else 1, 0)
         else:
@@ -75,8 +77,8 @@ class CCollisionMgr(metaclass = SingletonBase):
                             if not self.map_prev_collision[union_key]:
                                 a_collider.OnCollisionExit(b_collider)
                                 b_collider.OnCollisionExit(a_collider)
-                        if union_key in self.map_prev_collision:
-                            self.map_prev_collision[union_key] = now_collision
+
+                        self.map_prev_collision[union_key] = now_collision
 
 
     def IsCollision(self , obb1, obb2):

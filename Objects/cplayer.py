@@ -60,7 +60,8 @@ class CPlayer(CObject):
         if 'HOLD' == GetKey(SDLK_d):
             rigid.AddForce(Vec2(100, 0))
             #animator.OnSignal()
-        if 'TAP' == GetKey(SDLK_SPACE):
+        if 'TAP' == GetKey(SDLK_SPACE) :
+            self.GetTransform().m_pos.y += 100
             rigid.AddVelocity(Vec2(0,500))
             rigid.AddForce(Vec2(0,300))
             rigid.SetIsGround(False)

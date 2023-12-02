@@ -94,7 +94,7 @@ class CScene:
         #                                         700 / 4
         #                                         ), 2)
         from Objects.block import CBlock
-        self.AddObject("TILE", CBlock(1000,200,Vec2(100,100),'brick.png'))
+        self.AddObject("TILE", CBlock(1000,300,Vec2(100,100),'brick.png'))
         RegisterGroup("PLAYER", "TILE")
 
         from Objects.block import CGround

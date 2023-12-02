@@ -54,13 +54,13 @@ class CTransform(CComponent):
             self.m_finalScale = self.m_scale
 
     def GetLeft(self):
-        return self.m_pos.x - self.m_size.x/4
+        return self.m_pos.x - self.m_size.x/2
     def GetRight(self):
-        return self.m_pos.x + self.m_size.x/4
+        return self.m_pos.x + self.m_size.x/2
     def GetBottom(self):
-        return self.m_pos.y - self.m_size.y/4
+        return self.m_pos.y - self.m_size.y/2
     def GetTop(self):
-        return self.m_pos.y + self.m_size.y/4
+        return self.m_pos.y + self.m_size.y/2
     def OrbitAroundParent(self, radius, speed):
         if self.parent is None:
             return
