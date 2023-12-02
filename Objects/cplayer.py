@@ -22,6 +22,12 @@ class CPlayer(CObject):
         idle.anim_torso = CAnimation('Player/walking', 0.1, True,0,0,94,98,animator)
         idle.anim_leg = CAnimation('Player/legs', 0.1, True,0,0,94,98,animator)
         animator.AddAnimState('Idle',idle)
+
+        jump = StatePlayerJump()
+        jump.anim_torso = CAnimation('Player/jump', 0.1, True, 0, 0, 94, 98, animator)
+
+        animator.AddAnimState('Jump', jump)
+
         animator.cur_state = idle
 
         self.AddComponent("RigidBody",CRigidBody())
@@ -60,8 +66,8 @@ class CPlayer(CObject):
         if 'HOLD' == GetKey(SDLK_d):
             rigid.AddForce(Vec2(100, 0))
             #animator.OnSignal()
-        if 'TAP' == GetKey(SDLK_SPACE) :
-            self.GetTransform().m_pos.y += 100
+        if 'TAP' == GetKey(SDLK_SPACE) and rigid.bIsGround :
+            self.GetTransform().m_pos.y += 20
             rigid.AddVelocity(Vec2(0,500))
             rigid.AddForce(Vec2(0,300))
             rigid.SetIsGround(False)
@@ -117,3 +123,14 @@ class StatePlayerWalk(CState):
         if 'AWAY' == GetKey(SDLK_a) or 'AWAY' == GetKey(SDLK_d):
             return 'Idle'
         return ''
+
+class StatePlayerJump(CState):
+    def __init__(self):
+        self.anim_jump = None
+    def update(self):
+        self.anim_torso.update()
+        self.anim_leg.update()
+    def render(self):
+        self.anim_jump.render()
+    def change_state(self):
+       return ''

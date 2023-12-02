@@ -28,15 +28,38 @@ class CCollisionMgr(metaclass = SingletonBase):
     def resolve_collision(self,fixed_obj,target_obj,set_ground):
         penetration = GetPenetrationVector(fixed_obj.GetComp("Collider"), target_obj.GetComp("Collider"),
                                            target_obj.GetComp("Collider"))
-        target_obj.GetTransform().m_pos -= penetration
-        c = fixed_obj.GetTransform().GetTop()
-        target_obj.GetTransform().m_pos = Vec2(target_obj.GetTransform().m_pos.x,fixed_obj.GetTransform().GetTop() + target_obj.GetTransform().m_size.y/2)
+        #target_obj.GetTransform().m_pos -= penetration
+
         #target_obj.GetComp("RigidBody").AddVelocity(penetration * -1)
         #col_dir = Vec2()
+
         if abs(penetration.x) > abs(penetration.y):
-            col_dir =  Vec2(-1 if penetration.x > 0 else 1, 0)
+            if penetration.x > 0:
+                if fixed_obj.group_name == 'GROUND':return Vec2(),Vec2()
+
+
+                col_dir = Vec2(-1, 0)
+                new_x_position = fixed_obj.GetTransform().GetLeft() - target_obj.GetTransform().m_size.x / 2
+            else:
+
+                col_dir = Vec2(1, 0)
+                new_x_position = fixed_obj.GetTransform().GetRight() + target_obj.GetTransform().m_size.x / 2
+            target_obj.GetTransform().m_pos = Vec2(new_x_position, target_obj.GetTransform().m_pos.y)
         else:
-            col_dir = Vec2(0, -1 if penetration.y > 0 else 1)
+            if penetration.y > 0:
+
+                col_dir = Vec2(0, -1)
+                new_y_position = fixed_obj.GetTransform().GetBottom() - target_obj.GetTransform().m_size.y / 2
+            else:
+
+                col_dir = Vec2(0, 1)
+                new_y_position = (fixed_obj.GetTransform().GetTop() + target_obj.GetTransform().m_size.y / 2)-1
+            target_obj.GetTransform().m_pos = Vec2(target_obj.GetTransform().m_pos.x, new_y_position)
+
+        target_obj.GetComp("RigidBody").bIsGround = set_ground
+        return penetration, col_dir
+
+
         target_obj.GetComp("RigidBody").bIsGround = set_ground
         return penetration,col_dir
     def CheckCollision(self,row,col):
@@ -74,7 +97,7 @@ class CCollisionMgr(metaclass = SingletonBase):
                                     a_collider.OnCollisionEnter(b_collider)
                                     b_collider.OnCollisionEnter(a_collider)
                         else:
-                            if not self.map_prev_collision[union_key]:
+                            if self.map_prev_collision[union_key]:
                                 a_collider.OnCollisionExit(b_collider)
                                 b_collider.OnCollisionExit(a_collider)
 

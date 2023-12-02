@@ -18,8 +18,8 @@ class CCollider(CComponent):
         self.obb_box = OBB(self)
         self.collision_count = 0
     def last_update(self):
-        self.obb_box.update(self.m_transform.m_pos ,self.m_transform.m_size + self.m_vSizeOffset
-                            ,self.m_transform.m_degree , self.m_vOffset)
+        self.obb_box.update(self.m_transform.m_finalPos ,self.m_transform.m_size + self.m_vSizeOffset
+                            ,self.m_transform.m_finalDegree , self.m_vOffset)
     def OnCollisionEnter(self,other):
         self.collision_count += 1
         self.owner.OnCollisionEnter(other.owner)
@@ -37,7 +37,8 @@ class CCollider(CComponent):
             0,
             512,
             512,
-            False
+            False,
+            self.m_vSizeOffset
         )
 
 

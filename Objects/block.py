@@ -9,21 +9,18 @@ class CBlock(CObject):
         self.GetTransform().m_pos = Vec2(x,y)
         self.GetTransform().m_size = size
         from Components.collider import CCollider
-        self.AddComponent("Collider",CCollider(self))
+        self.AddComponent("Collider",CCollider(self)).m_vSizeOffset = Vec2(0,0)
         from Components.spriterenderer import CSpriteRenderer
         self.AddComponent("SpriteRenderer", CSpriteRenderer(texture_name))
 
     def OnCollisionEnter(self,other):
         if None != other.parent and other.group_name == 'ITEM': return
-        pene = resolve_collision(self,other,True)
-        #other.GetComp("RigidBody").ResetY()
+        pene,col_dir = resolve_collision(self,other,True)
+
     def OnCollisionStay(self,other):
         if None != other.parent and other.group_name == 'ITEM': return
         pene,col_dir = resolve_collision(self, other, True)
-        from Singletons.ckeymgr import GetKey
-        from sdl2 import SDLK_SPACE
-        if col_dir.y == 0 and 'TAP' == GetKey(SDLK_SPACE):
-            other.GetComp("RigidBody").AddVelocity(col_dir * 100)
+
     def OnCollisionExit(self,other):
         other.GetComp("RigidBody").bIsGround = False
 

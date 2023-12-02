@@ -51,7 +51,9 @@ class CMonster(CObject):
         from Singletons.eventmgr import CreateObj
         from Objects.item import CItem
         from vector2 import Vec2
-        CreateObj("ITEM",CItem(Vec2(30,30),self.GetTransform().m_pos,"ball21x21.png"))
+        item = CItem(Vec2(30,30),self.GetTransform().m_finalPos,"ball21x21.png")
+        CreateObj("ITEM",item)
+        item.GetComp("RigidBody").bGravity=True
     def OnCollisionStay(self,other):
         pass
     def OnCollisionExit(self,other):

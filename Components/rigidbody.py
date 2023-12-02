@@ -9,9 +9,9 @@ class CRigidBody(CComponent):
         self.vForce = Vec2()
         self.vAccel = Vec2()
         self.vVelocity = Vec2()
-        self.vMaxVelocity = Vec2(500,500)
+        self.vMaxVelocity = Vec2(500,1000)
         self.fMass = 1
-        self.fFriction = 100
+        self.fFriction = 200
         self.bGravity = True
         self.bIsGround = False
         self.bDirty = True
@@ -31,7 +31,7 @@ class CRigidBody(CComponent):
         trans.m_posOffset += self.vVelocity * DT()
     def update_gravity(self):
         if self.bGravity and not self.bIsGround:
-            self.AddForce(Vec2(0,-500))
+            self.AddForce(Vec2(0,-700))
 
     def update_physics(self):
         self.vAccel = self.vForce / self.fMass
@@ -55,6 +55,8 @@ class CRigidBody(CComponent):
         self.bDirty = False
     def ResetY(self):
         self.vAccel.y = self.vForce.y = self.vVelocity.y = 0
+    def ResetX(self):
+        self.vAccel.x = self.vForce.x = self.vVelocity.x = 0
     def ResetPhysics(self):
         self.vAccel = Vec2()
         self.vVelocity = Vec2()

@@ -1,6 +1,8 @@
 from Components.camera import GetCurMainCam
 from Components.camera import CCamera
 from Components.component import CComponent
+from vector2 import Vec2
+
 
 class Sprite:
     def __init__(self):
@@ -24,7 +26,7 @@ class CSpriteRenderer(CComponent):
         self.deg = trans.m_finalDegree
         render_pos = trans.m_finalPos if cam is None or not self.bIsCamAffective else cam.world_to_screen(trans.m_finalPos)
         return (render_pos,trans.m_size,trans.m_finalDegree,trans.m_finalScale)
-    def render_target(self,sprite,left,bottom,width,height,bflip):
+    def render_target(self,sprite,left,bottom,width,height,bflip,offset = Vec2()):
         render_pos,size,self.deg,scale = self.GetTransformedPos()
         sprite.clip_composite_draw(
             int(left),
@@ -35,8 +37,8 @@ class CSpriteRenderer(CComponent):
             '' if not bflip else 'h',
             int(render_pos.x),
             int(render_pos.y),
-            int(size.x * scale),
-            int(size.y * scale)
+            int(size.x * scale + offset.x),
+            int(size.y * scale + offset.y)
         )
     def render(self):
         if None == self.obj_img:

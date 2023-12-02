@@ -13,6 +13,7 @@ class CItem(CObject):
         from copy import deepcopy
         self.GetTransform().m_size = deepcopy(size)
         self.GetTransform().m_pos = deepcopy(pos)
+        self.GetTransform().m_finalPos = deepcopy(pos)
         from Components.collider import CCollider
         col = self.AddComponent("Collider",CCollider(self))
         col.m_vSizeOffSet = Vec2(50,50)
@@ -21,6 +22,7 @@ class CItem(CObject):
         from Components.rigidbody import CRigidBody
         rigid = self.AddComponent("RigidBody",CRigidBody())
         rigid.SetVelocity(Vec2(0,1) * 100)
+        rigid.bGravity = False
         self.ready_to_fire = False
         self.rev_speed = random.uniform(0.5, 5.5)
         self.item_fire_dir = Vec2(1,1)
@@ -32,6 +34,8 @@ class CItem(CObject):
                 self.GetTransform().m_pos = d
             else:
                 self.GetTransform().OrbitAroundParent(100,self.rev_speed)
+    def render(self):
+        super().render()
     def OnCollisionEnter(self,other):
         if self.parent != None or other.group_name != 'PLAYER':
             return
