@@ -30,8 +30,13 @@ class CCollisionMgr(metaclass = SingletonBase):
                                            target_obj.GetComp("Collider"))
         target_obj.GetTransform().m_pos -= penetration
         #target_obj.GetComp("RigidBody").AddVelocity(penetration * -1)
+        col_dir =Vec2()
+        if abs(penetration.x) > abs(penetration.y):
+            col_dir =  Vec2(-1 if penetration.x > 0 else 1, 0)
+        else:
+            col_dir = Vec2(0, -1 if penetration.y > 0 else 1)
         target_obj.GetComp("RigidBody").bIsGround = set_ground
-        return penetration
+        return penetration,col_dir
     def CheckCollision(self,row,col):
         from Singletons.cscenemgr import GetCurSceneObjects
         objs = GetCurSceneObjects()
