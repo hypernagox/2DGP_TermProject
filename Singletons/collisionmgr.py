@@ -36,16 +36,18 @@ class CCollisionMgr(metaclass = SingletonBase):
         if abs(penetration.x) > abs(penetration.y):
             # 가로 방향 충돌 처리
             if penetration.x > 0:
+                sign = - 1
                 col_dir = Vec2(-1, 0)
                 new_x_position = fixed_obj.GetTransform().GetLeft() - target_obj.GetTransform().m_size.x / 2 - collider_size_offset.x
             else:
+                sign = 1
                 col_dir = Vec2(1, 0)
                 new_x_position = fixed_obj.GetTransform().GetRight() + target_obj.GetTransform().m_size.x / 2 + collider_size_offset.x
 
             # 캐릭터를 오른쪽으로 밀어내는 로직
-            push_amount = -10  # 밀어내는 양을 조정
+            push_amount = 5 * sign  # 밀어내는 양을 조정
             if target_obj.GetComp("RigidBody"):
-                target_obj.GetComp("RigidBody").SetVelocity(penetration*100)
+                target_obj.GetComp("RigidBody").SetVelocity(penetration*1 * sign)
             target_obj.GetTransform().m_pos = Vec2(new_x_position + push_amount, target_obj.GetTransform().m_pos.y)
         else:
             # 세로 방향 충돌 처리
