@@ -39,6 +39,8 @@ class CAnimation:
                                ,self.height
                                ,self.animator.bIsFlip)
 class CState:
+    def __init__(self):
+        self.obj=None
     def update(self):
         pass
     def enter_state(self):

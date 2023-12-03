@@ -24,10 +24,16 @@ class CPlayer(CObject):
         animator.AddAnimState('Idle',idle)
 
         jump = StatePlayerJump()
-
+        jump.obj = self
         jump.anim_jump = CAnimation('Player/jump', 0.1, True, 0, 0, 94, 98, animator)
 
         animator.AddAnimState('Jump', jump)
+
+        attack = StatePlayerAttack()
+
+        attack.anim_atk = CAnimation('Player/attack', 0.5, False, 0, 0, 94, 98, animator)
+
+        animator.AddAnimState('Attack', attack)
 
         animator.cur_state = idle
 
@@ -40,7 +46,8 @@ class CPlayer(CObject):
         self.AddComponent("Camera", cam)
         self.GetTransform().m_size.x = 150
         self.GetTransform().m_size.y = 150
-        self.AddComponent("Collider",CCollider(self))
+        col = self.AddComponent("Collider",CCollider(self))
+        col.m_vSizeOffset = Vec2(-50,-50)
         from Attack.attack import CAttack
         self.player_attack = CAttack(self)
         self.curballs = []
@@ -110,6 +117,8 @@ class StatePlayerIdle(CState):
             return 'Walk'
         if 'TAP'== GetKey(SDLK_SPACE):
             return 'Jump'
+        if 'AWAY' == GetKey(1):
+            return "Attack"
         return ''
 
 
@@ -128,6 +137,8 @@ class StatePlayerWalk(CState):
             return 'Idle'
         if 'TAP' == GetKey(SDLK_SPACE):
             return 'Jump'
+        if 'AWAY' == GetKey(1):
+            return "Attack"
         return ''
 
 class StatePlayerJump(CState):
@@ -136,22 +147,29 @@ class StatePlayerJump(CState):
         self.obj_rigid = None
     def update(self):
         self.anim_jump.update()
+        from Singletons.ctimemgr import DT
+        self.obj.GetTransform().m_degree += 10 * DT()
+    def exit_state(self):
+        self.obj.GetTransform().m_degree = 0
     def render(self):
         self.anim_jump.render()
     def change_state(self):
         if self.obj_rigid.bIsGround:
             return 'Idle'
+        if 'AWAY' == GetKey(1):
+            return "Attack"
         return ''
 
 class StatePlayerAttack(CState):
     def __init__(self):
         self.anim_atk = None
-        self.obj_rigid = None
     def update(self):
         self.anim_atk.update()
     def render(self):
         self.anim_atk.render()
+    def enter_state(self):
+        self.anim_atk.bFinish = False
     def change_state(self):
-        if self.obj_rigid.bIsGround:
+        if self.anim_atk.bFinish:
             return 'Idle'
         return ''
