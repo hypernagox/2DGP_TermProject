@@ -55,7 +55,8 @@ class CCollisionMgr(metaclass = SingletonBase):
                 new_y_position = fixed_obj.GetTransform().GetTop() + target_obj.GetTransform().m_size.y / 2 + collider_size_offset.y - 1
             target_obj.GetTransform().m_pos = Vec2(target_obj.GetTransform().m_pos.x, new_y_position)
 
-        target_obj.GetComp("RigidBody").bIsGround = set_ground
+        if target_obj.GetComp("RigidBody"):
+            target_obj.GetComp("RigidBody").bIsGround = set_ground
         return penetration, col_dir
     def CheckCollision(self,row,col):
         from Singletons.cscenemgr import GetCurSceneObjects

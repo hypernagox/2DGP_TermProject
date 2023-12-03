@@ -15,6 +15,15 @@ class CBlock(CObject):
 
     def OnCollisionEnter(self,other):
         if None != other.parent and other.group_name == 'ITEM': return
+        if other.group_name == 'PROJ':
+            from Singletons.eventmgr import CreateObj
+            from Objects.item import CItem
+            from vector2 import Vec2
+            item = CItem(Vec2(30, 30), self.GetTransform().m_pos, "ball21x21.png")
+            CreateObj("ITEM", item)
+            item.GetComp("RigidBody").bGravity = True
+            from Singletons.eventmgr import DestroyObj
+            DestroyObj(self)
         pene,col_dir = resolve_collision(self,other,True)
 
     def OnCollisionStay(self,other):
@@ -22,7 +31,8 @@ class CBlock(CObject):
         pene,col_dir = resolve_collision(self, other, True)
 
     def OnCollisionExit(self,other):
-        other.GetComp("RigidBody").bIsGround = False
+        if other.GetComp("RigidBody"):
+            other.GetComp("RigidBody").bIsGround = False
 
 class CGround(CBlock):
     def __init__(self,x,y,size,texture_name):

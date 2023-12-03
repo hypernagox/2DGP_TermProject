@@ -3,7 +3,7 @@
 class CAttack:
     def __init__(self,obj):
         self.obj = obj
-        self.ball_count = 3
+        self.ball_count = 10
         self.scale = 1.
 
     def do_attack(self,ball):

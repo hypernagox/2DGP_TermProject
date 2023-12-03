@@ -94,6 +94,26 @@ class CScene:
         #                                         700 / 4
         #                                         ), 2)
         from Objects.block import CBlock
+        def random_position(center, range_x, range_y):
+            import random
+            random_x = center[0] + random.randint(-range_x, range_x)
+            random_y = center[1] + random.randint(-range_y, range_y)
+            return Vec2(random_x, random_y)
+
+
+        center = (1000, 300)
+        num_tiles = 100
+        range_x, range_y = 1000, 1000
+        tile_size = Vec2(100, 100)
+        image = 'brick.png'
+
+        for _ in range(num_tiles):
+
+            position = random_position(center, range_x, range_y)
+
+
+            tile = CBlock(position.x,position.y, tile_size, image)
+            self.AddObject("TILE", tile)
         self.AddObject("TILE", CBlock(1000,300,Vec2(100,100),'brick.png'))
         RegisterGroup("PLAYER", "TILE")
 
@@ -102,3 +122,5 @@ class CScene:
         RegisterGroup("PLAYER", "GROUND")
         RegisterGroup("MONSTER", "GROUND")
         RegisterGroup("ITEM", "GROUND")
+
+        RegisterGroup("PROJ", "TILE")

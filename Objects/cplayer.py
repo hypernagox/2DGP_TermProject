@@ -54,7 +54,7 @@ class CPlayer(CObject):
 
 
         from Objects.item import CItem
-        for _ in range(3):
+        for _ in range(10):
             ball = CItem(Vec2(50,50),Vec2(20,20),"ball21x21.png")
             self.curballs.append(ball)
             self.AddChild(ball)
@@ -77,7 +77,7 @@ class CPlayer(CObject):
             #animator.OnSignal()
         if 'TAP' == GetKey(SDLK_SPACE) and rigid.bIsGround :
             self.GetTransform().m_pos.y += 20
-            rigid.AddVelocity(Vec2(0,500))
+            rigid.AddVelocity(Vec2(0,600))
             rigid.AddForce(Vec2(0,300))
             rigid.SetIsGround(False)
         from sdl2 import SDLK_r
