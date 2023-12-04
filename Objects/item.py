@@ -37,6 +37,8 @@ class CItem(CObject):
     def render(self):
         super().render()
     def OnCollisionEnter(self,other):
+        if self.parent == None and other.group_name == "TILE":
+            self.GetComp("RigidBody").bGravity = True
         if self.parent != None or other.group_name != 'PLAYER':
             return
         from Singletons.cscenemgr import GetCurScene

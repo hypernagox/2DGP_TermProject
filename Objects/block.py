@@ -31,6 +31,7 @@ class CBlock(CObject):
         pene,col_dir = resolve_collision(self, other, True)
 
     def OnCollisionExit(self,other):
+        return
         if other.GetComp("RigidBody"):
             other.GetComp("RigidBody").bIsGround = False
 

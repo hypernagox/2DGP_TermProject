@@ -22,6 +22,7 @@ class CPlayer(CObject):
         idle.anim_torso = CAnimation('Player/walking', 0.1, True,0,0,94,98,animator)
         idle.anim_leg = CAnimation('Player/legs', 0.1, True,0,0,94,98,animator)
         animator.AddAnimState('Idle',idle)
+        idle.obj =self
 
         jump = StatePlayerJump()
         jump.obj = self
@@ -41,8 +42,8 @@ class CPlayer(CObject):
         self.AddComponent("SpriteRenderer",CSpriteRenderer())
         cam = CCamera(self)
         cam.SetThisCam2Main()
-        self.GetTransform().m_pos.x = 900
-        self.GetTransform().m_pos.y = 1000
+        self.GetTransform().m_finalPos.x = self.GetTransform().m_pos.x = 10
+        self.GetTransform().m_pos.y = 500
         self.AddComponent("Camera", cam)
         self.GetTransform().m_size.x = 150
         self.GetTransform().m_size.y = 150
@@ -112,6 +113,8 @@ class StatePlayerIdle(CState):
     def render(self):
         self.anim_torso.render()
         self.anim_leg.render()
+    def enter_state(self):
+        self.obj.GetComp("RigidBody").bIsGround=False
     def change_state(self):
         if 'TAP' == GetKey(SDLK_a) or 'TAP' == GetKey(SDLK_d):
             return 'Walk'
@@ -126,6 +129,8 @@ class StatePlayerWalk(CState):
     def __init__(self):
         self.anim_torso = None
         self.anim_leg = None
+        self.is_wall=False
+        self.anim_wall.None
     def update(self):
         self.anim_torso.update()
         self.anim_leg.update()
@@ -149,8 +154,11 @@ class StatePlayerJump(CState):
         self.anim_jump.update()
         from Singletons.ctimemgr import DT
         self.obj.GetTransform().m_degree += 10 * DT()
+    def enter_state(self):
+        self.anim_jump.bFinish = False
     def exit_state(self):
         self.obj.GetTransform().m_degree = 0
+        self.obj_rigid.SetIsGround(False)
     def render(self):
         self.anim_jump.render()
     def change_state(self):

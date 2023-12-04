@@ -114,13 +114,14 @@ class CScene:
 
             tile = CBlock(position.x,position.y, tile_size, image)
             self.AddObject("TILE", tile)
-        self.AddObject("TILE", CBlock(1000,300,Vec2(100,100),'brick.png'))
+        self.AddObject("TILE", CBlock(500,300,Vec2(100,100),'brick.png'))
         RegisterGroup("PLAYER", "TILE")
 
         from Objects.block import CGround
-        self.AddObject("GROUND", CGround(0, 0, Vec2(10000, 200), 'front.png'))
+        self.AddObject("GROUND", CGround(0, 0, Vec2(1000, 200), 'front.png'))
         RegisterGroup("PLAYER", "GROUND")
         RegisterGroup("MONSTER", "GROUND")
         RegisterGroup("ITEM", "GROUND")
 
         RegisterGroup("PROJ", "TILE")
+        RegisterGroup("ITEM", "TILE")
