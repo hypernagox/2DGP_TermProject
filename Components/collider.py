@@ -1,6 +1,8 @@
 from Components.component import CComponent
 from vector2 import Vec2
 
+g_renderColBox = True
+
 class CCollider(CComponent):
     g_collider_ID = 0
     g_colBox = None
@@ -17,20 +19,29 @@ class CCollider(CComponent):
         self.m_vSizeOffset = Vec2()
         self.obb_box = OBB(self)
         self.collision_count = 0
+        self.cur_col_target = ''
+        self.cur_pene = Vec2()
     def last_update(self):
         self.obb_box.update(self.m_transform.m_finalPos ,self.m_transform.m_size + self.m_vSizeOffset
                             ,self.m_transform.m_finalDegree , self.m_vOffset)
     def OnCollisionEnter(self,other):
         self.collision_count += 1
         self.owner.OnCollisionEnter(other.owner)
+        self.cur_col_target = other.owner.group_name
+        from Singletons.collisionmgr import GetPenetrationVector
+        self.cur_pene = GetPenetrationVector(self,other,self)
     def OnCollisionStay(self,other):
         self.owner.OnCollisionStay(other.owner)
     def OnCollisionExit(self,other):
         self.collision_count -= 1
         self.owner.OnCollisionExit(other.owner)
+    def GetCollisionDir(self):
+        return self.cur_pene
     def GetRigidBody(self):
         return self.owner.GetComp("RigidBody")
     def render(self):
+        if not g_renderColBox:
+            return
         self.owner.GetComp("SpriteRenderer").render_target(
             CCollider.g_colBox,
             0,

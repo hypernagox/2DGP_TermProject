@@ -17,6 +17,8 @@ class CPlayer(CObject):
         walk.anim_torso = CAnimation('Player/walking',0.1,True,0,0,94,98,animator)
         walk.anim_leg = CAnimation('Player/legs', 0.1, True,0,0,94,98,animator)
         animator.AddAnimState('Walk',walk)
+        walk.anim_wall =  CAnimation('Player/wall', 0.1, True,0,0,94,98,animator)
+        walk.obj = self
 
         idle = StatePlayerIdle()
         idle.anim_torso = CAnimation('Player/walking', 0.1, True,0,0,94,98,animator)
@@ -29,6 +31,7 @@ class CPlayer(CObject):
         jump.anim_jump = CAnimation('Player/jump', 0.1, True, 0, 0, 94, 98, animator)
 
         animator.AddAnimState('Jump', jump)
+
 
         attack = StatePlayerAttack()
 
@@ -102,8 +105,6 @@ class CPlayer(CObject):
         pass
 
 
-
-
 class StatePlayerIdle(CState):
     def __init__(self):
         self.anim_torso = None
@@ -116,7 +117,7 @@ class StatePlayerIdle(CState):
     def enter_state(self):
         self.obj.GetComp("RigidBody").bIsGround=False
     def change_state(self):
-        if 'TAP' == GetKey(SDLK_a) or 'TAP' == GetKey(SDLK_d):
+        if 'NONE' != GetKey(SDLK_a) or 'NONE' != GetKey(SDLK_d):
             return 'Walk'
         if 'TAP'== GetKey(SDLK_SPACE):
             return 'Jump'
@@ -129,14 +130,22 @@ class StatePlayerWalk(CState):
     def __init__(self):
         self.anim_torso = None
         self.anim_leg = None
-        self.is_wall=False
-        self.anim_wall.None
+        self.is_wall = False
+        self.anim_wall = None
     def update(self):
-        self.anim_torso.update()
-        self.anim_leg.update()
+        self.is_wall = self.obj.GetComp("RigidBody").bIsGround and self.obj.GetComp("Collider").cur_col_target == "TILE" and abs(self.obj.GetComp("Collider").cur_pene.y) < 0.01
+
+        if not self.is_wall:
+            self.anim_torso.update()
+            self.anim_leg.update()
+        else:
+            self.anim_wall.update()
     def render(self):
-        self.anim_torso.render()
-        self.anim_leg.render()
+        if not self.is_wall:
+            self.anim_torso.render()
+            self.anim_leg.render()
+        else:
+            self.anim_wall.render()
     def change_state(self):
         if 'AWAY' == GetKey(SDLK_a) or 'AWAY' == GetKey(SDLK_d):
             return 'Idle'
@@ -181,3 +190,4 @@ class StatePlayerAttack(CState):
         if self.anim_atk.bFinish:
             return 'Idle'
         return ''
+
