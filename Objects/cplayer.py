@@ -1,4 +1,4 @@
-from sdl2 import SDLK_d, SDLK_a, SDLK_SPACE
+from sdl2 import SDLK_d, SDLK_a, SDLK_SPACE, SDLK_r
 from Objects.cobjects import CObject
 from Singletons.ckeymgr import GetKey, GetMousePos
 from vector2 import Vec2
@@ -40,6 +40,11 @@ class CPlayer(CObject):
         animator.AddAnimState('Attack', attack)
 
         animator.cur_state = idle
+
+        sp = StatePlayerSpcialAttack()
+        sp.anim_atk = CAnimation('Player/attack', 0.1, True, 0, 0, 94, 98, animator)
+        animator.AddAnimState('SpecialAttack', sp)
+        sp.obj = self
 
         jump.obj_rigid = self.AddComponent("RigidBody",CRigidBody())
         self.AddComponent("SpriteRenderer",CSpriteRenderer())
@@ -123,6 +128,8 @@ class StatePlayerIdle(CState):
             return 'Jump'
         if 'AWAY' == GetKey(1):
             return "Attack"
+        if 'TAP' == GetKey(SDLK_r):
+            return 'SpecialAttack'
         return ''
 
 
@@ -191,3 +198,36 @@ class StatePlayerAttack(CState):
             return 'Idle'
         return ''
 
+def go_fly(obj):
+    from Singletons.ctimemgr import DT
+    acc = 0
+    obj.GetComp("RigidBody").bGravity = False
+    while True:
+        if acc >= 200:
+            break
+        delta = 10 * DT()
+        acc += delta
+        obj.GetTransform().m_pos.y += delta
+        yield acc
+
+
+class StatePlayerSpcialAttack(CState):
+    def __init__(self):
+        self.anim_atk = None
+    def update(self):
+        self.anim_atk.update()
+        for acc in go_fly(self.obj):
+            if acc >= 200:
+                self.obj.GetComp("RigidBody").bGravity = True
+                break
+        self.anim_atk.bRepeat = False
+        self.anim_atk.bFinish = True
+    def render(self):
+        self.anim_atk.render()
+    def enter_state(self):
+        self.anim_atk.bRepeat = True
+        self.anim_atk.bFinish = False
+    def change_state(self):
+        if self.anim_atk.bFinish:
+            return 'Idle'
+        return ''

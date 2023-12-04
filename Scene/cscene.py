@@ -113,7 +113,7 @@ class CScene:
 
         center = (1000, 300)
         num_tiles = 100
-        range_x, range_y = 1000, 1000
+        range_x, range_y = 00, 1000
         tile_size = Vec2(100, 100)
         image = 'brick.png'
 
