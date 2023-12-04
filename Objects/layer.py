@@ -56,72 +56,33 @@ class CLayer:
         return images_info
 
     def render(self):
-        #return
         from Components.camera import CCamera
-        mainCam = CCamera.curMainCam
-        cam_x = CCamera.curMainCam.GetCamPos().x
-        cam_y = CCamera.curMainCam.GetCamPos().y
-        # 비율맞춰서
-        # 원본이미지 너비 * 실제월드에서의크기 / (상수)
-        # 높이 똑같음
-
-        # bl  = 내 스크린 기준 LB를 월드로 바꾼좌표 (스크린투월드)
-        # tr = RT 는 내 화면 크기넓이 이것도 스크린투월드
-
-        # begin x 사진의 시작 left 스크린좌표기준
-        # wv 오프셋 - bl - w(원본이미지너비) * 0.5) % w - w + bl.x
-        # n 몇번 그리는지 계산 << n = (오른쪽가장자리 - 왼쪽처음)/w << 이걸 ceil
-
-        # v = vec2(bx * (tx(레인지) * w(이미지너비),y오프셋)
-        # bl = mainCam.screen_to_world(Vec2())
-        # tr = mainCam.screen_to_world(Vec2(1400,700))
-        # bx = (1400 - bl.x - self.w * 0.5) % self.w - self.w + bl.x
-        # self.layer_img.clip_draw_to_origin(
-        #     0,
-        #     0,
-        #
-        # )
-        self.layer_img.clip_draw_to_origin(
-            0,
-            0,
-            1400,
-            700,
-            0,
-            0
-
-        )
-        for img_info in self.calculate_infinite_scrolling(cam_x, cam_y, self.cw , self.ch, self.w, self.h):
-            screen_start, draw_size, image_start = img_info
+        cam_x = int(CCamera.curMainCam.GetCamPos().x)
+        screen_width = int(self.cw)
+        image_width = int(self.layer_img.w)
+        image_height = int(self.layer_img.h)
 
 
-            # 비율맞춰서
-            # 원본이미지 너비 * 실제월드에서의크기 / (상수)
-            # 높이 똑같음
-
-            # bl  = 내 스크린 기준 LB를 월드로 바꾼좌표 (스크린투월드)
-            # tr = RT 는 내 화면 크기넓이 이것도 스크린투월드
-
-            # begin x 사진의 시작 left 스크린좌표기준
-            # wv 오프셋 - bl - w(원본이미지너비) * 0.5) % w - w + bl.x
-            # n 몇번 그리는지 계산 << n = (오른쪽가장자리 - 왼쪽처음)/w << 이걸 ceil
-
-            # v = vec2(bx * (tx(레인지) * w(이미지너비),y오프셋)
+        scale_factor = screen_width / image_width
+        new_image_width = int(image_width * scale_factor)
+        new_image_height = int(image_height * scale_factor)
 
 
-            clip_left = max(0, int(image_start[0]))
-            clip_bottom = max(0, int(image_start[1]))
-            clip_width = min(int(draw_size[0]), self.w - clip_left)
-            clip_height = int(self.h)
+        scroll_x = -(cam_x % new_image_width)
 
-            screen_x = max(0, int(screen_start[0]))
-            screen_y = int(screen_start[1])
 
+        start_x = scroll_x if scroll_x <= 0 else scroll_x - new_image_width
+
+        while start_x < screen_width:
+            #clip_width = min(new_image_width, screen_width - start_x)
             self.layer_img.clip_draw_to_origin(
-                left=clip_left,
-                bottom=clip_bottom,
-                width=clip_width,
-                height=clip_height,
-                x=screen_x,
-                y=screen_y,
-
+                left=0,
+                bottom=0,
+                width=self.cw,
+                height=new_image_height,
+                x=start_x,
+                y=0,
+                w=self.cw,
+                h=700
             )
+            start_x += new_image_width
