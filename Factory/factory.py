@@ -3,7 +3,7 @@ from Singletons.core import CCore
 
 class CFactory:
     @staticmethod
-    def CreateObject(object_type):
+    def CreateObject(object_type,strFolderName = None):
         if 'Player' == object_type:
 
             from Objects.cplayer import CPlayer
@@ -11,7 +11,7 @@ class CFactory:
         if 'Monster' == object_type:
 
             from Objects.monster import CMonster
-            return CMonster()
+            return CMonster(strFolderName)
 
 class CLayerFactory:
     @staticmethod

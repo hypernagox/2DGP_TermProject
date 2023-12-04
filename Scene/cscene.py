@@ -6,7 +6,8 @@ GROUP_NAME = {
     "PROJ" : 3,
     "ITEM" : 4,
     "TILE" : 5,
-    "GROUND" : 6
+    "GROUND" : 6,
+    "FLYING_MONSTER" : 7
 }
 
 class CScene:
@@ -70,8 +71,11 @@ class CScene:
         p1 = CFactory.CreateObject('Player')
         self.cur_player = p1
         self.AddObject("PLAYER",p1)
-        p2 = CFactory.CreateObject('Monster')
+        p2 = CFactory.CreateObject('Monster','wolf')
         self.AddObject("MONSTER", p2)
+
+        p3 = CFactory.CreateObject('Monster', 'ghost')
+        self.AddObject("FLYING_MONSTER", p3)
 
         from Singletons.collisionmgr import RegisterGroup
         RegisterGroup("PLAYER","MONSTER")

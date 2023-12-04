@@ -1,7 +1,7 @@
 from Components.animator import CState
 from Objects.cobjects import CObject
 class CMonster(CObject):
-    def __init__(self):
+    def __init__(self,strMonsterName):
         super().__init__()
         self.name = "Monster"
         from Components.animator import CAnimator
@@ -9,7 +9,8 @@ class CMonster(CObject):
         self.AddComponent("Animator", animator)
         from Components.animator import CAnimation
         idle = StateMonsterIdle()
-        idle.mon_anim = CAnimation('Monster/wolf/walking',
+        folderName = f'Monster/{strMonsterName}/walking'
+        idle.mon_anim = CAnimation(folderName,
                                    0.1,
                                    True,
                                    0,
@@ -19,7 +20,7 @@ class CMonster(CObject):
                                    , animator)
         animator.AddAnimState('Idle', idle)
         chase = StateMonsterChase()
-        chase.mon_anim = CAnimation('Monster/wolf/walking',
+        chase.mon_anim = CAnimation(folderName,
                                    0.1,
                                    True,
                                    0,
