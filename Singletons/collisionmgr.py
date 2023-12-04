@@ -34,7 +34,8 @@ class CCollisionMgr(metaclass = SingletonBase):
         col_dir = Vec2()
 
         if abs(penetration.x) > abs(penetration.y):
-            # 가로 방향 충돌 처리
+            if fixed_obj.group_name == "GROUND":
+                return Vec2(),Vec2()
             if penetration.x > 0:
                 sign = - 1
                 col_dir = Vec2(-1, 0)
@@ -62,6 +63,8 @@ class CCollisionMgr(metaclass = SingletonBase):
             target_obj.GetComp("RigidBody").bIsGround = set_ground
         return penetration, col_dir
     def IsTooFar(self,col_a,col_b):
+        if col_a.owner.group_name == "GROUND" or col_b.owner.group_name == "GROUND":
+            return False
         trans_a = col_a.m_transform
         trans_b = col_b.m_transform
         x_dist = int(trans_a.m_finalPos.x - trans_b.m_finalPos.x) ** 2

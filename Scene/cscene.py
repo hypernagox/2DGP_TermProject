@@ -33,6 +33,10 @@ class CScene:
         for arr in self.objs:
             for obj in arr:
                 obj.last_update()
+    def transform_update(self):
+        for arr in self.objs:
+            for obj in arr:
+                obj.components[0].final_update()
     def final_update(self):
         for arr in self.objs:
             for obj in arr:
@@ -118,7 +122,9 @@ class CScene:
         RegisterGroup("PLAYER", "TILE")
 
         from Objects.block import CGround
-        self.AddObject("GROUND", CGround(0, 0, Vec2(1000, 200), 'front.png'))
+        for i in range(10):
+            self.AddObject("GROUND", CGround(i* 1000, 0, Vec2(1000, 100), 'front.png'))
+
         RegisterGroup("PLAYER", "GROUND")
         RegisterGroup("MONSTER", "GROUND")
         RegisterGroup("ITEM", "GROUND")

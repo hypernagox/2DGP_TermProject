@@ -40,7 +40,7 @@ class CGround(CBlock):
         super().__init__(x,y,size,texture_name)
         from vector2 import Vec2
         self.GetTransform().m_pos.y = size.y / 2
-        ##self.GetTransform().m_size = size
+        #self.GetTransform().m_size.x = 1400
 
 
 

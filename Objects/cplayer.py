@@ -46,7 +46,7 @@ class CPlayer(CObject):
         cam = CCamera(self)
         cam.SetThisCam2Main()
         self.GetTransform().m_finalPos.x = self.GetTransform().m_pos.x = 10
-        self.GetTransform().m_pos.y = 500
+        self.GetTransform().m_pos.y = 200
         self.AddComponent("Camera", cam)
         self.GetTransform().m_size.x = 150
         self.GetTransform().m_size.y = 150
@@ -117,7 +117,7 @@ class StatePlayerIdle(CState):
     def enter_state(self):
         self.obj.GetComp("RigidBody").bIsGround=False
     def change_state(self):
-        if 'NONE' != GetKey(SDLK_a) or 'NONE' != GetKey(SDLK_d):
+        if 'HOLD' == GetKey(SDLK_a) or 'HOLD' == GetKey(SDLK_d):
             return 'Walk'
         if 'TAP'== GetKey(SDLK_SPACE):
             return 'Jump'
