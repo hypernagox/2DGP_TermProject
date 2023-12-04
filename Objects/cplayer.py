@@ -90,9 +90,9 @@ class CPlayer(CObject):
             rigid.AddForce(Vec2(0,300))
             rigid.SetIsGround(False)
         from sdl2 import SDLK_r
-        if 'HOLD' == GetKey(SDLK_r):
-            from Singletons.ctimemgr import DT
-            self.GetTransform().m_degree += 10 * DT()
+        #if 'HOLD' == GetKey(SDLK_r):
+        #    from Singletons.ctimemgr import DT
+        #    self.GetTransform().m_degree += 10 * DT()
         from sdl2 import SDLK_LEFT
         if self.curballs and self.player_attack.do_attack(self.curballs[len(self.curballs) - 1]):
             delChild = self.curballs[len(self.curballs) - 1]
@@ -203,30 +203,36 @@ def go_fly(obj):
     acc = 0
     obj.GetComp("RigidBody").bGravity = False
     while True:
-        if acc >= 200:
+        if acc >= 500:
             break
-        delta = 10 * DT()
-        acc += delta
+        delta = 500 * DT()
         obj.GetTransform().m_pos.y += delta
-        yield acc
+        acc += delta
+        yield
 
 
 class StatePlayerSpcialAttack(CState):
     def __init__(self):
         self.anim_atk = None
+
+        self.fly_coro = None
     def update(self):
         self.anim_atk.update()
-        for acc in go_fly(self.obj):
-            if acc >= 200:
-                self.obj.GetComp("RigidBody").bGravity = True
-                break
-        self.anim_atk.bRepeat = False
-        self.anim_atk.bFinish = True
+        try:
+            next(self.fly_coro)
+        except StopIteration:
+            self.obj.GetComp("RigidBody").bGravity = True
+            self.anim_atk.bRepeat = False
+            self.anim_atk.bFinish = True
+
+        #self.anim_atk.bRepeat = False
+        #self.anim_atk.bFinish = True
     def render(self):
         self.anim_atk.render()
     def enter_state(self):
         self.anim_atk.bRepeat = True
         self.anim_atk.bFinish = False
+        self.fly_coro = go_fly(self.obj)
     def change_state(self):
         if self.anim_atk.bFinish:
             return 'Idle'
