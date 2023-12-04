@@ -12,7 +12,7 @@ class CBall(CObject):
         self.GetTransform().m_pos = deepcopy(pos)
         from Components.collider import CCollider
         col = self.AddComponent("Collider",CCollider(self))
-        col.m_vSizeOffSet = Vec2(50,50)
+        col.m_vSizeOffSet = Vec2(50,50) * scale
         from Components.spriterenderer import CSpriteRenderer
         self.AddComponent("SpriteRenderer",CSpriteRenderer('ball21x21.png'))
         self.dir = dir.normalized()

@@ -61,7 +61,12 @@ class CCollisionMgr(metaclass = SingletonBase):
         if target_obj.GetComp("RigidBody"):
             target_obj.GetComp("RigidBody").bIsGround = set_ground
         return penetration, col_dir
-
+    def IsTooFar(self,col_a,col_b):
+        trans_a = col_a.m_transform
+        trans_b = col_b.m_transform
+        x_dist = int(trans_a.m_finalPos.x - trans_b.m_finalPos.x) ** 2
+        y_dist = int(trans_a.m_finalPos.y - trans_a.m_finalPos.y) ** 2
+        return 1000 ** 2 <= x_dist + y_dist
     def CheckCollision(self,row,col):
         from Singletons.cscenemgr import GetCurSceneObjects
         objs = GetCurSceneObjects()
@@ -78,6 +83,7 @@ class CCollisionMgr(metaclass = SingletonBase):
                         b_collider = b.GetComp("Collider")
                         if b_collider is None:
                             continue
+                        if self.IsTooFar(a_collider,b_collider):continue
                         left_id = a_collider.m_Collider_ID
                         right_id = b_collider.m_Collider_ID
                         union_key = (left_id, right_id)
