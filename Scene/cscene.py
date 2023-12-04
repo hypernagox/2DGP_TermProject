@@ -66,21 +66,23 @@ class CScene:
                     del obj
                     return
     def Enter(self):
-
+        from vector2 import Vec2
         from Factory.factory import CFactory
         p1 = CFactory.CreateObject('Player')
         self.cur_player = p1
         self.AddObject("PLAYER",p1)
-        p2 = CFactory.CreateObject('Monster','wolf')
+        p2 = CFactory.CreateObject('Monster',Vec2(400, 175),Vec2(100,100),'wolf')
         self.AddObject("MONSTER", p2)
 
-        p3 = CFactory.CreateObject('Monster', 'ghost')
+        p3 = CFactory.CreateObject('Monster',Vec2(400, 300),Vec2(100,100) ,'ghost')
         self.AddObject("FLYING_MONSTER", p3)
-
+        p3.SetFlying()
         from Singletons.collisionmgr import RegisterGroup
         RegisterGroup("PLAYER","MONSTER")
 
         RegisterGroup("PROJ", "MONSTER")
+        RegisterGroup("PROJ", "FLYING_MONSTER")
+
         RegisterGroup("PLAYER","ITEM")
 
         from vector2 import Vec2

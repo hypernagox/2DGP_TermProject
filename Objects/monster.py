@@ -1,7 +1,7 @@
 from Components.animator import CState
 from Objects.cobjects import CObject
 class CMonster(CObject):
-    def __init__(self,strMonsterName):
+    def __init__(self,start_pos,size,strMonsterName):
         super().__init__()
         self.name = "Monster"
         from Components.animator import CAnimator
@@ -34,10 +34,10 @@ class CMonster(CObject):
         self.AddComponent("RigidBody", CRigidBody())
         from Components.spriterenderer import CSpriteRenderer
         self.AddComponent("SpriteRenderer", CSpriteRenderer())
-        from vector2 import Vec2
-        self.GetTransform().m_pos = Vec2(400, 175)
-        self.GetTransform().m_size.x = 100
-        self.GetTransform().m_size.y = 100
+
+        self.GetTransform().m_pos = start_pos
+        self.GetTransform().m_size = size
+
         from Components.collider import CCollider
         self.AddComponent("Collider", CCollider(self))
     def GetPlayerDirection(self):
@@ -59,7 +59,8 @@ class CMonster(CObject):
         pass
     def OnCollisionExit(self,other):
         pass
-
+    def SetFlying(self):
+        self.GetComp("RigidBody").bGravity=False
 
 class StateMonsterIdle(CState):
     def __init__(self):

@@ -1,9 +1,10 @@
 from Singletons.core import CCore
+from vector2 import Vec2
 
 
 class CFactory:
     @staticmethod
-    def CreateObject(object_type,strFolderName = None):
+    def CreateObject(object_type,start_pos = Vec2(0,0),size = Vec2(100,100),strFolderName = None):
         if 'Player' == object_type:
 
             from Objects.cplayer import CPlayer
@@ -11,7 +12,7 @@ class CFactory:
         if 'Monster' == object_type:
 
             from Objects.monster import CMonster
-            return CMonster(strFolderName)
+            return CMonster(start_pos,size,strFolderName)
 
 class CLayerFactory:
     @staticmethod
