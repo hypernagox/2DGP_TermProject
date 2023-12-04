@@ -67,8 +67,8 @@ class CCollisionMgr(metaclass = SingletonBase):
             return False
         trans_a = col_a.m_transform
         trans_b = col_b.m_transform
-        x_dist = int(trans_a.m_finalPos.x - trans_b.m_finalPos.x) ** 2
-        y_dist = int(trans_a.m_finalPos.y - trans_a.m_finalPos.y) ** 2
+        x_dist = int(int(trans_a.m_finalPos.x) - int(trans_b.m_finalPos.x)) ** 2
+        y_dist = int(int(trans_a.m_finalPos.y) - int(trans_a.m_finalPos.y)) ** 2
         return 700 ** 2 <= x_dist + y_dist
     def CheckCollision(self,row,col):
         from Singletons.cscenemgr import GetCurSceneObjects

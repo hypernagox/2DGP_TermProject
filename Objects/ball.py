@@ -31,6 +31,7 @@ class CBall(CObject):
         if other.group_name == 'MONSTER' or other.group_name == 'FLYING_MONSTER':
             rigid = other.GetComp("RigidBody")
             rigid.SetVelocity(self.dir * 1000)
+            DestroyObj(other)
 
             DestroyObj(self)
         elif other.group_name == 'TILE':

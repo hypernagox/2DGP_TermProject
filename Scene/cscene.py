@@ -23,36 +23,52 @@ class CScene:
         return self.cur_player
     def AddLayer(self,layer,depth = 0):
         self.layers[depth] = layer
+
     def update(self):
         for arr in self.objs:
             for obj in arr:
+                if obj.IsDead:
+                    continue  # IsDead인 객체는 무시하고 다음 객체로 이동
                 obj.update()
+
     def late_update(self):
         for arr in self.objs:
             for obj in arr:
+                if obj.IsDead:
+                    continue
                 obj.late_update()
+
     def last_update(self):
         for arr in self.objs:
             for obj in arr:
+                if obj.IsDead:
+                    continue
                 obj.last_update()
+
     def transform_update(self):
         for arr in self.objs:
             for obj in arr:
+                if obj.IsDead:
+                    continue
                 obj.components[0].final_update()
+
     def final_update(self):
         for arr in self.objs:
             for obj in arr:
+                if obj.IsDead:
+                    continue
                 obj.final_update()
         for layer in self.layers:
-            if layer is None:continue
+            if layer is None:
+                continue
             layer.update()
     def render(self):
         for layer in self.layers:
             if layer is None: continue
             layer.render()
-        for arr in self.objs:
-            for obj in arr:
-                obj.render()
+        #for arr in self.objs:
+        #    for obj in arr:
+         #       obj.render()
 
         for arr in self.objs:
             for i in range(len(arr) - 1, -1, -1):
@@ -75,9 +91,11 @@ class CScene:
         p2 = CFactory.CreateObject('Monster',Vec2(400, 175),Vec2(100,100),'wolf')
         self.AddObject("MONSTER", p2)
 
-        p3 = CFactory.CreateObject('Monster',Vec2(400, 300),Vec2(100,100) ,'ghost')
-        self.AddObject("FLYING_MONSTER", p3)
-        p3.SetFlying()
+        for i in range(100):
+            p3 = CFactory.CreateObject('Monster',Vec2(400 + i * 100, 300 + i * 50),Vec2(100,100) ,'ghost')
+            self.AddObject("FLYING_MONSTER", p3)
+            p3.SetFlying()
+        #p3.SetFlying()
         from Singletons.collisionmgr import RegisterGroup
         RegisterGroup("PLAYER","MONSTER")
 
@@ -111,7 +129,7 @@ class CScene:
                 random_x = random.randint(min_x, max_x - tile_size.x)
                 new_pos = Vec2(random_x, y)
 
-                # 새 위치가 기존 타일과 겹치지 않는지 확인
+
                 overlap = False
                 for pos in existing_positions:
                     if (pos.x - tile_size.x < new_pos.x < pos.x + tile_size.x) and \
@@ -122,11 +140,11 @@ class CScene:
                 if not overlap:
                     return new_pos
 
-        # 타일 배치
+
         num_tiles = 100
         min_x, max_x = 200, 3000
         current_y = 200
-        step_y = (3000 - 200) // num_tiles  # Y축 위치 증가량
+        step_y = (3000 - 200) // num_tiles
         tile_size = Vec2(100, 100)
         image = 'brick.png'
         existing_positions = []
@@ -137,7 +155,7 @@ class CScene:
             tile = CBlock(position.x, position.y, tile_size, image)
             self.AddObject("TILE", tile)
 
-            # 다음 타일의 Y축 위치 증가
+
             current_y += step_y
 
         RegisterGroup("PLAYER", "TILE")
