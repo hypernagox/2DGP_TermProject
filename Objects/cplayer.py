@@ -42,7 +42,7 @@ class CPlayer(CObject):
         animator.cur_state = idle
 
         sp = StatePlayerSpcialAttack()
-        sp.anim_atk = CAnimation('Player/attack', 0.1, True, 0, 0, 94, 98, animator)
+        sp.anim_atk = CAnimation('Player/punching', 0.01, True, 0, 0, 94, 98, animator)
         animator.AddAnimState('SpecialAttack', sp)
         sp.obj = self
 
@@ -129,7 +129,14 @@ class StatePlayerIdle(CState):
         if 'AWAY' == GetKey(1):
             return "Attack"
         if 'TAP' == GetKey(SDLK_r):
-            return 'SpecialAttack'
+            if self.obj.player_attack.ball_count >= 5:
+                self.obj.player_attack.ball_count -=5
+                for _ in range(5):
+                    delChild = self.obj.curballs[len(self.obj.curballs) - 1]
+                    self.obj.curballs.remove(delChild)
+                    self.obj.EraseChild(delChild)
+                    delChild.IsDead = True
+                return 'SpecialAttack'
         return ''
 
 
@@ -201,14 +208,56 @@ class StatePlayerAttack(CState):
 def go_fly(obj):
     from Singletons.ctimemgr import DT
     acc = 0
+    origin_pos = obj.GetTransform().m_finalPos
     obj.GetComp("RigidBody").bGravity = False
     while True:
         if acc >= 500:
             break
-        delta = 500 * DT()
+        delta = 5000 * DT()
         obj.GetTransform().m_pos.y += delta
         acc += delta
         yield
+    acc = 0
+    cnt = 0
+    import math
+    arc_range = 60
+    from Singletons.collisionmgr import RegisterGroup
+    RegisterGroup("PROJ", "TILE")
+    player_pos = obj.GetObjectScreenPos()
+    player_pos_world = obj.GetTransform().m_finalPos
+    while True:
+        acc += DT()
+
+        mpos = GetMousePos()
+        if acc >= 0.01:
+            dir_x = mpos.x - player_pos.x
+            dir_y = mpos.y - player_pos.y
+            base_angle = math.atan2(dir_y, dir_x)
+
+            import random
+            random_angle = base_angle + math.radians(random.uniform(-arc_range / 2, arc_range / 2))
+
+            direction = Vec2(math.cos(random_angle), math.sin(random_angle))
+
+            from Singletons.eventmgr import CreateObj
+            from Objects.ball import CBall
+            CreateObj("PROJ", CBall(50, 50,player_pos_world + direction * 10, direction, 1,0.5,2000))
+            cnt += 1
+            acc = 0
+
+        if cnt >= 50:
+            break
+        yield
+    acc = 0
+    go_back = (origin_pos - obj.GetTransform().m_finalPos).normalized()
+    while True:
+        if acc >= 500:
+            break
+        delta = 1000 * DT()
+        obj.GetTransform().m_pos += go_back * delta
+        acc += delta
+        yield
+    RegisterGroup("PROJ", "TILE")
 
 
 class StatePlayerSpcialAttack(CState):

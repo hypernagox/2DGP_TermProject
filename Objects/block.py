@@ -19,17 +19,17 @@ class CBlock(CObject):
             from Singletons.eventmgr import CreateObj
             from Objects.item import CItem
             from vector2 import Vec2
-            #item = CItem(Vec2(30, 30), self.GetTransform().m_pos, "ball21x21.png")
-            #CreateObj("ITEM", item)
-            #item.GetComp("RigidBody").bGravity = True
+            item = CItem(Vec2(30, 30), self.GetTransform().m_pos, "ball21x21.png")
+            CreateObj("ITEM", item)
+            item.GetComp("RigidBody").bGravity = True
             from Singletons.eventmgr import DestroyObj
 
-            item2 = CItem(Vec2(30, 30), self.GetTransform().m_pos, "ball21x21.png")
-            CreateObj("ITEM", item2)
-            item2.GetComp("RigidBody").bGravity = True
+            #item2 = CItem(Vec2(30, 30), self.GetTransform().m_pos, "ball21x21.png")
+            #CreateObj("ITEM", item2)
+            #item2.GetComp("RigidBody").bGravity = True
             pene, col_dir = resolve_collision(self, other, False)
-            item2.GetComp("RigidBody").SetVelocity(other.dir * - 200)
-            item2.GetTransform().m_scale = other.GetTransform().m_scale
+            #item2.GetComp("RigidBody").SetVelocity(other.dir * - 200)
+            #item2.GetTransform().m_scale = other.GetTransform().m_scale
             #item2.GetTransform().m_size =
             DestroyObj(self)
         #pene,col_dir = resolve_collision(self,other,True)

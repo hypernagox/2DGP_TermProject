@@ -1,3 +1,4 @@
+import random
 
 GROUP_NAME = {
     "DEFAULT" : 0 ,
@@ -104,31 +105,45 @@ class CScene:
         #                                         700 / 4
         #                                         ), 2)
         from Objects.block import CBlock
-        def random_position(center, range_x, range_y):
-            import random
-            random_x = center[0] + random.randint(-range_x, range_x)
-            random_y = center[1] + random.randint(-range_y, range_y)
-            return Vec2(random_x, random_y)
 
+        def random_position(min_x, max_x, y, existing_positions, tile_size):
+            while True:
+                random_x = random.randint(min_x, max_x - tile_size.x)
+                new_pos = Vec2(random_x, y)
 
-        center = (1000, 300)
+                # 새 위치가 기존 타일과 겹치지 않는지 확인
+                overlap = False
+                for pos in existing_positions:
+                    if (pos.x - tile_size.x < new_pos.x < pos.x + tile_size.x) and \
+                            (pos.y - tile_size.y < new_pos.y < pos.y + tile_size.y):
+                        overlap = True
+                        break
+
+                if not overlap:
+                    return new_pos
+
+        # 타일 배치
         num_tiles = 100
-        range_x, range_y = 00, 1000
+        min_x, max_x = 200, 3000
+        current_y = 200
+        step_y = (3000 - 200) // num_tiles  # Y축 위치 증가량
         tile_size = Vec2(100, 100)
         image = 'brick.png'
+        existing_positions = []
 
         for _ in range(num_tiles):
-
-            position = random_position(center, range_x, range_y)
-
-
-            tile = CBlock(position.x,position.y, tile_size, image)
+            position = random_position(min_x, max_x, current_y, existing_positions, tile_size)
+            existing_positions.append(position)
+            tile = CBlock(position.x, position.y, tile_size, image)
             self.AddObject("TILE", tile)
-        self.AddObject("TILE", CBlock(500,300,Vec2(100,100),'brick.png'))
+
+            # 다음 타일의 Y축 위치 증가
+            current_y += step_y
+
         RegisterGroup("PLAYER", "TILE")
 
         from Objects.block import CGround
-        for i in range(10):
+        for i in range(200):
             self.AddObject("GROUND", CGround(i* 1000, 0, Vec2(1000, 100), 'front.png'))
 
         RegisterGroup("PLAYER", "GROUND")

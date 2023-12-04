@@ -32,6 +32,7 @@ class CKeyMgr(metaclass=SingletonBase):
                 self.mouse_pos = self.convert_coordinates(eve.x,eve.y,CCore().height)
             elif eve.type == SDL_MOUSEBUTTONUP:
                 self.key_map[eve.button] = 'AWAY'
+                self.mouse_pos = self.convert_coordinates(eve.x, eve.y, CCore().height)
             elif eve.type == SDL_MOUSEMOTION:
                 self.mouse_pos = self.convert_coordinates(eve.x, eve.y, CCore().height)
 

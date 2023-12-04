@@ -26,6 +26,8 @@ class CItem(CObject):
         self.ready_to_fire = False
         self.rev_speed = random.uniform(0.5, 5.5)
         self.item_fire_dir = Vec2(1,1)
+        self.acc=0
+        self.life = 5
     def update(self):
         super().update()
         if None != self.parent:
@@ -34,6 +36,12 @@ class CItem(CObject):
                 self.GetTransform().m_pos = d
             else:
                 self.GetTransform().OrbitAroundParent(100,self.rev_speed)
+        else:
+            from Singletons.ctimemgr import DT
+            self.acc += DT()
+            if self.acc >= self.life:
+                from Singletons.eventmgr import DestroyObj
+                DestroyObj(self)
     def render(self):
         super().render()
     def OnCollisionEnter(self,other):
