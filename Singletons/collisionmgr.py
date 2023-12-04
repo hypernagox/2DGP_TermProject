@@ -69,19 +69,21 @@ class CCollisionMgr(metaclass = SingletonBase):
         trans_b = col_b.m_transform
         x_dist = int(trans_a.m_finalPos.x - trans_b.m_finalPos.x) ** 2
         y_dist = int(trans_a.m_finalPos.y - trans_a.m_finalPos.y) ** 2
-        return 1000 ** 2 <= x_dist + y_dist
+        return 700 ** 2 <= x_dist + y_dist
     def CheckCollision(self,row,col):
         from Singletons.cscenemgr import GetCurSceneObjects
         objs = GetCurSceneObjects()
         end_group = len(GROUP_NAME)
         for a_root in objs[row]:
-            for a in a_root:
+            #for a in a_root:
+                a = a_root
                 if a.group_name == None or row != GROUP_NAME[a.group_name]:continue
                 a_collider = a.GetComp("Collider")
                 if a_collider is None:
                     continue
                 for b_root in objs[col]:
-                    for b in b_root:
+                    #for b in b_root:
+                        b = b_root
                         if b.group_name == None or col != GROUP_NAME[b.group_name]: continue
                         b_collider = b.GetComp("Collider")
                         if b_collider is None:
