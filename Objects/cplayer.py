@@ -69,6 +69,7 @@ class CPlayer(CObject):
             self.AddChild(ball)
     def update(self):
         super().update()
+        print(self.GetTransform().m_pos.x,self.GetTransform().m_pos.y)
         rigid = self.GetComp("RigidBody")
         animator = self.GetComp("Animator")
         if 'TAP' == GetKey(SDLK_a):
