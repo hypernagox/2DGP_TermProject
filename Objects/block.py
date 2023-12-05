@@ -15,6 +15,7 @@ class CBlock(CObject):
 
     def OnCollisionEnter(self,other):
         if None != other.parent and other.group_name == 'ITEM': return
+        if other.group_name == "SWORD": return
         if other.group_name == 'PROJ':
             from Singletons.eventmgr import CreateObj
             from Objects.item import CItem
@@ -31,10 +32,12 @@ class CBlock(CObject):
             #item2.GetComp("RigidBody").SetVelocity(other.dir * - 200)
             #item2.GetTransform().m_scale = other.GetTransform().m_scale
             #item2.GetTransform().m_size =
-            DestroyObj(self)
+            if self.name != 'boss_block':
+                DestroyObj(self)
         #pene,col_dir = resolve_collision(self,other,True)
 
     def OnCollisionStay(self,other):
+        if other.group_name == "SWORD": return
         if None != other.parent and other.group_name == 'ITEM': return
         pene,col_dir = resolve_collision(self, other, True)
 

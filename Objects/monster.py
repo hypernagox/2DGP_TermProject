@@ -50,6 +50,7 @@ class CMonster(CObject):
     def OnCollisionEnter(self,other):
         if other.name != "Ball":
             return
+        if other.group_name == "SWORD": return
         from Singletons.eventmgr import CreateObj
         from Objects.item import CItem
         from vector2 import Vec2

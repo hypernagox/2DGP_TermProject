@@ -2,7 +2,7 @@ from Objects.cobjects import CObject
 
 
 class CBall(CObject):
-    def __init__(self,width,height,pos,dir,scale,life = 3,speed=800):
+    def __init__(self,width,height,pos,dir,scale,life = 10,speed=800):
         super().__init__()
         self.name = "Ball"
         from vector2 import Vec2

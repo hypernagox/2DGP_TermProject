@@ -34,7 +34,7 @@ class CCollisionMgr(metaclass = SingletonBase):
         col_dir = Vec2()
 
         if abs(penetration.x) > abs(penetration.y):
-            if fixed_obj.group_name == "GROUND" and fixed_obj.name != 'boss_ground':
+            if fixed_obj.group_name == "GROUND" and fixed_obj.name == 'main_ground':
                 return Vec2(),Vec2()
             if penetration.x > 0:
                 sign = - 1

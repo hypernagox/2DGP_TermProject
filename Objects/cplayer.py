@@ -1,4 +1,4 @@
-from sdl2 import SDLK_d, SDLK_a, SDLK_SPACE, SDLK_r
+from sdl2 import SDLK_d, SDLK_a, SDLK_SPACE, SDLK_r, SDLK_f
 from Objects.cobjects import CObject
 from Singletons.ckeymgr import GetKey, GetMousePos
 from vector2 import Vec2
@@ -36,9 +36,9 @@ class CPlayer(CObject):
         attack = StatePlayerAttack()
 
         attack.anim_atk = CAnimation('Player/attack', 0.5, False, 0, 0, 94, 98, animator)
-
+        attack.anim_atk_sword =  CAnimation('Player/sword', 0.05, False, 0, 0, 94, 98, animator)
         animator.AddAnimState('Attack', attack)
-
+        attack.obj = self
         animator.cur_state = idle
 
         sp = StatePlayerSpcialAttack()
@@ -67,9 +67,13 @@ class CPlayer(CObject):
             ball = CItem(Vec2(50,50),Vec2(20,20),"ball21x21.png")
             self.curballs.append(ball)
             self.AddChild(ball)
+
+        from Objects.sword import CSword
+        self.sword = CSword(self)
+        self.AddChild(self.sword)
     def update(self):
         super().update()
-        print(self.GetTransform().m_pos.x,self.GetTransform().m_pos.y)
+        #print(self.GetTransform().m_pos.x,self.GetTransform().m_pos.y)
         rigid = self.GetComp("RigidBody")
         animator = self.GetComp("Animator")
         if 'TAP' == GetKey(SDLK_a):
@@ -90,6 +94,7 @@ class CPlayer(CObject):
             rigid.AddVelocity(Vec2(0,600))
             rigid.AddForce(Vec2(0,300))
             rigid.SetIsGround(False)
+
         from sdl2 import SDLK_r
         #if 'HOLD' == GetKey(SDLK_r):
         #    from Singletons.ctimemgr import DT
@@ -127,7 +132,7 @@ class StatePlayerIdle(CState):
             return 'Walk'
         if 'TAP'== GetKey(SDLK_SPACE):
             return 'Jump'
-        if 'AWAY' == GetKey(1):
+        if 'AWAY' == GetKey(1) or 'TAP' == GetKey(SDLK_f):
             return "Attack"
         if 'TAP' == GetKey(SDLK_r):
             if self.obj.player_attack.ball_count >= 5:
@@ -195,15 +200,33 @@ class StatePlayerJump(CState):
 class StatePlayerAttack(CState):
     def __init__(self):
         self.anim_atk = None
+        self.anim_atk_sword = None
+        self.is_shoot = True
     def update(self):
-        self.anim_atk.update()
+        if self.is_shoot:
+            self.anim_atk.update()
+        else:
+            self.anim_atk_sword.update()
     def render(self):
-        self.anim_atk.render()
+        if self.is_shoot:
+            self.anim_atk.render()
+        else:
+            self.anim_atk_sword.render()
     def enter_state(self):
         self.anim_atk.bFinish = False
+        self.anim_atk_sword.bFinish = False
+        self.is_shoot = not ('TAP' == GetKey(SDLK_f))
+        if not self.is_shoot:
+            self.obj.sword.bActivate = True
+    def exit_state(self):
+        self.obj.sword.bActivate = False
     def change_state(self):
-        if self.anim_atk.bFinish:
-            return 'Idle'
+        if self.is_shoot:
+            if self.anim_atk.bFinish:
+                return 'Idle'
+        else:
+            if self.anim_atk_sword.bFinish:
+                return 'Idle'
         return ''
 
 def go_fly(obj):
@@ -223,7 +246,7 @@ def go_fly(obj):
     import math
     arc_range = 60
     from Singletons.collisionmgr import RegisterGroup
-    RegisterGroup("PROJ", "TILE")
+    #RegisterGroup("PROJ", "TILE")
     player_pos = obj.GetObjectScreenPos()
     player_pos_world = obj.GetTransform().m_finalPos
     while True:
@@ -234,7 +257,7 @@ def go_fly(obj):
             dir_x = mpos.x - player_pos.x
             dir_y = mpos.y - player_pos.y
             base_angle = math.atan2(dir_y, dir_x)
-
+            obj.GetComp("Animator").bFlip = dir_x < 0
             import random
             random_angle = base_angle + math.radians(random.uniform(-arc_range / 2, arc_range / 2))
 
@@ -258,7 +281,7 @@ def go_fly(obj):
         obj.GetTransform().m_pos += go_back * delta
         acc += delta
         yield
-    RegisterGroup("PROJ", "TILE")
+    #RegisterGroup("PROJ", "TILE")
 
 
 class StatePlayerSpcialAttack(CState):

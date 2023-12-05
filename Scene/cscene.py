@@ -9,7 +9,8 @@ GROUP_NAME = {
     "TILE" : 5,
     "GROUND" : 6,
     "FLYING_MONSTER" : 7,
-    "PORTAL" : 8
+    "PORTAL" : 8,
+    "SWORD" : 9
 }
 
 class CScene:
@@ -20,6 +21,7 @@ class CScene:
     def AddObject(self,group_name,obj):
         obj.group_name = group_name
         self.objs[GROUP_NAME[group_name]].append(obj)
+        return obj
     def GetPlayer(self):
         return self.cur_player
     def AddLayer(self,layer,depth = 0):
@@ -164,6 +166,7 @@ class CScene:
         from Objects.block import CGround
         for i in range(10):
             self.AddObject("GROUND", CGround(i* 1000, 0, Vec2(1000, 100), 'front.png'))
+            self.name = 'main_ground'
 
         RegisterGroup("PLAYER", "GROUND")
         RegisterGroup("MONSTER", "GROUND")
@@ -172,12 +175,31 @@ class CScene:
         RegisterGroup("PROJ", "TILE")
         RegisterGroup("ITEM", "TILE")
 
+        RegisterGroup("SWORD", "TILE")
+        #RegisterGroup("SWORD", "MONSTER")
+
         RegisterGroup("PLAYER", "PORTAL")
 
         from Objects.portal import CPortal
         portal = CPortal("tree.png")
         self.AddObject("PORTAL",portal)
 
-        bg = CBlock(4800, 3000, Vec2(483 * 10, 11 * 10), 'boss_ground.png')
+        bg = CBlock(5000, 5000, Vec2(483 * 10, 11 * 10), 'boss_ground.png')
+
         bg.name = 'boss_ground'
         self.AddObject("GROUND", bg)
+
+        base_x = 2500
+
+
+        offset_x = 300
+
+        for i in range(22):
+            zigzag_x = base_x + (i % 2) * offset_x
+            b = self.AddObject("TILE", CBlock(zigzag_x, 4700 - i * 100, Vec2(100, 120), 'brick2.png'))
+            b.name = 'boss_block'
+
+        for i in range(3):
+            b = self.AddObject("TILE", CBlock(2400 + i * 100, 2300, Vec2(100, 120), 'brick2.png'))
+            b.name = 'boss_block'
+

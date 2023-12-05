@@ -29,7 +29,8 @@ class CAnimation:
                 self.frame += 1
                 if self.frame == self.num_of_clips:
                     self.bFinish = True
-                    self.frame = self.num_of_clips - 1
+                    #self.frame = self.num_of_clips - 1
+                    self.frame = 0
     def render(self):
         renderer = self.animator.GetOwner().GetComp("SpriteRenderer")
         renderer.render_target(self.anim_clips[self.frame]

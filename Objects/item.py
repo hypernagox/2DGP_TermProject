@@ -45,6 +45,7 @@ class CItem(CObject):
     def render(self):
         super().render()
     def OnCollisionEnter(self,other):
+        if other.group_name == "SWORD": return
         if self.parent == None and other.group_name == "TILE":
             self.GetComp("RigidBody").bGravity = True
         if self.parent != None or other.group_name != 'PLAYER':

@@ -6,7 +6,7 @@ class CPortal(CObject):
         super().__init__()
         self.name = "Portal"
         from vector2 import Vec2
-        self.GetTransform().m_pos = Vec2(2600, 2800)
+        self.GetTransform().m_pos = Vec2(5000, 5150)
         self.GetTransform().m_size = Vec2(200,200)
         from Components.collider import CCollider
         col = self.AddComponent("Collider",CCollider(self))
