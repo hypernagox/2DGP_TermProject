@@ -156,6 +156,8 @@ class Stage_Scene(CScene):
             b.name = 'boss_block'
 
     def Exit(self):
+        from Singletons.collisionmgr import ResetGroup
+        ResetGroup()
         self.cur_player = None
         for obj in self.objs:
             obj.clear()
