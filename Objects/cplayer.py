@@ -36,7 +36,7 @@ class CPlayer(CObject):
         attack = StatePlayerAttack()
 
         attack.anim_atk = CAnimation('Player/attack', 0.5, False, 0, 0, 94, 98, animator)
-        attack.anim_atk_sword =  CAnimation('Player/sword', 0.05, False, 0, 0, 94, 98, animator)
+        attack.anim_atk_sword =  CAnimation('Player/sword', 0.1, False, 0, 0, 94, 98, animator)
         animator.AddAnimState('Attack', attack)
         attack.obj = self
         animator.cur_state = idle
@@ -78,7 +78,7 @@ class CPlayer(CObject):
 
     def update(self):
         super().update()
-        #print(self.GetTransform().m_pos.x,self.GetTransform().m_pos.y)
+        print(self.GetTransform().m_pos.x,self.GetTransform().m_pos.y)
         rigid = self.GetComp("RigidBody")
         animator = self.GetComp("Animator")
         if 'TAP' == GetKey(SDLK_a):
@@ -155,9 +155,9 @@ class StatePlayerIdle(CState):
         if 'AWAY' == GetKey(1):
             return "Attack"
         if 'TAP' == GetKey(SDLK_r):
-            if self.obj.player_attack.ball_count >= 5:
-                self.obj.player_attack.ball_count -=5
-                for _ in range(5):
+            if self.obj.player_attack.ball_count >= 20:
+                self.obj.player_attack.ball_count -=20
+                for _ in range(20):
                     delChild = self.obj.curballs[len(self.obj.curballs) - 1]
                     self.obj.curballs.remove(delChild)
                     self.obj.EraseChild(delChild)
@@ -193,6 +193,15 @@ class StatePlayerWalk(CState):
             return 'Jump'
         if 'AWAY' == GetKey(1):
             return "Attack"
+        if 'TAP' == GetKey(SDLK_r):
+            if self.obj.player_attack.ball_count >= 20:
+                self.obj.player_attack.ball_count -= 20
+                for _ in range(20):
+                    delChild = self.obj.curballs[len(self.obj.curballs) - 1]
+                    self.obj.curballs.remove(delChild)
+                    self.obj.EraseChild(delChild)
+                    delChild.IsDead = True
+                return 'SpecialAttack'
         return ''
 
 class StatePlayerJump(CState):
@@ -215,6 +224,15 @@ class StatePlayerJump(CState):
             return 'Idle'
         if 'AWAY' == GetKey(1):
             return "Attack"
+        if 'TAP' == GetKey(SDLK_r):
+            if self.obj.player_attack.ball_count >= 20:
+                self.obj.player_attack.ball_count -= 20
+                for _ in range(20):
+                    delChild = self.obj.curballs[len(self.obj.curballs) - 1]
+                    self.obj.curballs.remove(delChild)
+                    self.obj.EraseChild(delChild)
+                    delChild.IsDead = True
+                return 'SpecialAttack'
         return ''
 
 class StatePlayerAttack(CState):
@@ -255,9 +273,9 @@ def go_fly(obj):
     origin_pos = obj.GetTransform().m_finalPos
     obj.GetComp("RigidBody").bGravity = False
     while True:
-        if acc >= 500:
+        if acc >= 50:
             break
-        delta = 5000 * DT()
+        delta = 1000 * DT()
         obj.GetTransform().m_pos.y += delta
         acc += delta
         yield
@@ -266,7 +284,7 @@ def go_fly(obj):
     import math
     arc_range = 60
     from Singletons.collisionmgr import RegisterGroup
-    #RegisterGroup("PROJ", "TILE")
+    RegisterGroup("PROJ", "TILE")
     player_pos = obj.GetObjectScreenPos()
     player_pos_world = obj.GetTransform().m_finalPos
     while True:
@@ -295,13 +313,13 @@ def go_fly(obj):
     acc = 0
     go_back = (origin_pos - obj.GetTransform().m_finalPos).normalized()
     while True:
-        if acc >= 500:
+        if acc >= 50:
             break
-        delta = 1000 * DT()
+        delta = 500 * DT()
         obj.GetTransform().m_pos += go_back * delta
         acc += delta
         yield
-    #RegisterGroup("PROJ", "TILE")
+    RegisterGroup("PROJ", "TILE")
 
 
 class StatePlayerSpcialAttack(CState):

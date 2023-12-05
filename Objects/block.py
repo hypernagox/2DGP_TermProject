@@ -1,5 +1,6 @@
 from Objects.cobjects import CObject
 from Singletons.collisionmgr import resolve_collision
+from vector2 import Vec2
 
 
 class CBlock(CObject):
@@ -17,6 +18,7 @@ class CBlock(CObject):
         if None != other.parent and other.group_name == 'ITEM': return
         if other.group_name == "SWORD": return
         if other.group_name == 'PROJ':
+            if other.isReflect:return
             from Singletons.eventmgr import CreateObj
             from Objects.item import CItem
             from vector2 import Vec2
@@ -52,6 +54,8 @@ class CGround(CBlock):
         from vector2 import Vec2
         self.GetTransform().m_pos.y = size.y / 2
         #self.GetTransform().m_size.x = 1400
+
+
 
 
 

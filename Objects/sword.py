@@ -9,7 +9,7 @@ class CSword(CObject):
         self.obj = obj
         col = self.AddComponent("Collider", CCollider(self))
         self.GetTransform().m_pos = Vec2(0,0)
-        self.GetTransform().m_size = Vec2(200,100)
+        self.GetTransform().m_size = Vec2(200,200)
         #col.m_vSizeOffset = Vec2(300,200)
         self.bActivate = False
         from Singletons.cscenemgr import GetCurScene
@@ -26,28 +26,33 @@ class CSword(CObject):
         from Singletons.eventmgr import DestroyObj
         if other.name == "boss_block":return
         if self.bActivate:
-            if other.group_name == 'MONSTER' or other.group_name == 'FLYING_MONSTER':
-                rigid = other.GetComp("RigidBody")
-                rigid.SetVelocity(rigid.GetVelocity().normalized() * -1)
+            if other.group_name == "PROJ_MONSTER":
+               other.dir = other.dir * -1
+               from Objects.ball import CBall
+               from Singletons.eventmgr import CreateObj
+               DestroyObj(other)
+               ball =  CBall(25, 25, self.obj.GetTransform().m_pos, other.dir, 1, 10, 400)
+               ball.isReflect=True
+               CreateObj("PROJ", ball)
             else:
                 DestroyObj(other)
-       # print('칼')
+
     def OnCollisionStay(self,other):
         from Singletons.eventmgr import DestroyObj
         if other.name == "boss_block": return
         #if other.group_name == 'MONSTER' or other.group_name == 'FLYING_MONSTER':return
-        if self.bActivate:
-            if other.group_name == 'MONSTER' or other.group_name == 'FLYING_MONSTER':
-                rigid = other.GetComp("RigidBody")
-                rigid.SetVelocity(rigid.GetVelocity().normalized() * -10000)
-            else:
-                DestroyObj(other)
+        # if self.bActivate:
+        #     if other.group_name == "PROJ_MONSTER":
+        #         other.dir = other.dir * -1
+        #     else:
+        #         DestroyObj(other)
 
 
 
     def OnCollisionExit(self,other):
         from Singletons.eventmgr import DestroyObj
         if other.name == "boss_block": return
+        if other.group_name == "PROJ_MONSTER": return
         if other.group_name == 'MONSTER' or other.group_name == 'FLYING_MONSTER': return
         if self.bActivate:
             DestroyObj(other)

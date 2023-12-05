@@ -1,9 +1,28 @@
 from Scene.cscene import CScene
+from vector2 import Vec2
 
 
 class Stage_Scene(CScene):
     def __init__(self,scene_name):
         super().__init__(scene_name)
+        self.once = False
+    def update(self):
+        super().update()
+        if self.cur_player.GetTransform().m_pos.y >= 4000:
+            if self.once: return
+            import random
+            from Factory.factory import CFactory
+            from Singletons.eventmgr import CreateObj
+
+            for i in range(4000, 5000, 50):
+                x_position = i + random.randint(0, 100)
+                y_position = 5150
+                mon = CFactory.CreateObject('Monster', Vec2(x_position, y_position), Vec2(100, 100), 'zombie')
+                CreateObj("MONSTER", mon)
+                mon.GetTransform().m_pos = Vec2(x_position, y_position)
+                mon.GetTransform().m_size = Vec2(200, 200)
+                mon.hp = 10
+            self.once = True
     def Enter(self):
         from vector2 import Vec2
 
@@ -25,7 +44,7 @@ class Stage_Scene(CScene):
         p2 = CFactory.CreateObject('Monster',Vec2(400, 175),Vec2(100,100),'wolf')
         self.AddObject("MONSTER", p2)
 
-        for i in range(100):
+        for i in range(200):
            p3 = CFactory.CreateObject('Monster',Vec2(400 + i * 100, 300 + i * 50),Vec2(100,100) ,'ghost')
            self.AddObject("FLYING_MONSTER", p3)
            p3.SetFlying()
@@ -107,8 +126,9 @@ class Stage_Scene(CScene):
         RegisterGroup("PROJ", "TILE")
         RegisterGroup("ITEM", "TILE")
 
-        RegisterGroup("SWORD", "TILE")
+        #RegisterGroup("SWORD", "TILE")
         RegisterGroup("SWORD", "MONSTER")
+        RegisterGroup("SWORD", "PROJ_MONSTER")
 
         RegisterGroup("PLAYER", "PORTAL")
 

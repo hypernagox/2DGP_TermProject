@@ -13,7 +13,11 @@ class CSceneMgr(metaclass=SingletonBase):
 
         self.scenes['Intro'] = Intro_Scene('Intro')
         self.scenes['Stage']  = Stage_Scene('Stage')
-        self.cur_scene = self.scenes['Intro']
+        from Scene.csceneboss import Boss_Scene
+        self.scenes['Boss'] = Boss_Scene('Stage')
+        #self.cur_scene = self.scenes['Intro']
+
+        self.cur_scene = self.scenes['Boss']
         self.cur_scene.Enter()
     def update(self):
         self.cur_scene.update()
@@ -34,4 +38,4 @@ def GetCurScene():
     return CSceneMgr().GetCurScene()
 
 def GetUI():
-    return CSceneMgr().GetCurScene().objs[10]
+    return CSceneMgr().GetCurScene().objs[11]

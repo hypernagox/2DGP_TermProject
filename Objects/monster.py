@@ -28,6 +28,18 @@ class CMonster(CObject):
                                    125,
                                    102
                                    , animator)
+
+        atk = StateMonsterAttack()
+        atk.mon_anim = CAnimation(folderName,
+                                    0.1,
+                                    True,
+                                    0,
+                                    0,
+                                    125,
+                                    102
+                                    , animator)
+        atk.obj = self
+        animator.AddAnimState('Attack', atk)
         chase.obj = self
         animator.AddAnimState('Chase', chase)
         animator.cur_state = idle
@@ -41,6 +53,7 @@ class CMonster(CObject):
 
         from Components.collider import CCollider
         self.AddComponent("Collider", CCollider(self))
+        self.hp = 5
     def GetPlayerDirection(self):
         from Singletons.cscenemgr import CSceneMgr
         player = CSceneMgr().GetCurScene().GetPlayer()
@@ -51,10 +64,12 @@ class CMonster(CObject):
         if other.name != "Ball":
             return
         if other.group_name == "SWORD": return
+        if other.group_name == "PROJ_MONSTER": return
         from Singletons.eventmgr import CreateObj
         from Objects.item import CItem
         from vector2 import Vec2
         item = CItem(Vec2(30,30),self.GetTransform().m_finalPos,"ball21x21.png")
+        item.life = 10
         CreateObj("ITEM",item)
         item.GetComp("RigidBody").bGravity=True
     def OnCollisionStay(self,other):
@@ -85,19 +100,19 @@ class StateMonsterIdle(CState):
     def update(self):
         from vector2 import Vec2
         from Singletons.ctimemgr import DT
-        self.acc +=  DT() * 100
-        if self.acc >= 300:
+        self.acc +=  DT() * 800
+        if self.acc >= 2400:
             self.acc = 0
             self.mon_dir = -self.mon_dir
         self.mon_anim.animator.bIsFlip = True if self.mon_dir == 1 else False
 
-        self.mon_anim.animator.owner.GetTransform().m_pos += Vec2(1,0) * DT() * 100 * self.mon_dir
+        self.mon_anim.animator.owner.GetTransform().m_pos += Vec2(1,0) * DT() * 800 * self.mon_dir
         self.mon_anim.update()
     def render(self):
         self.mon_anim.render()
     def change_state(self):
         dir = self.mon_anim.animator.owner.GetPlayerDirection()
-        if dir.length() <= 300:
+        if dir.length() <= 1000:
             return 'Chase'
         return ''
 class StateMonsterChase(CState):
@@ -118,9 +133,11 @@ class StateMonsterChase(CState):
         self.mon_anim.animator.owner.GetTransform().m_degree = 0
     def change_state(self):
         dist =  self.mon_anim.animator.owner.GetPlayerDirection()
-        if dist.length() >= 400:
+        if dist.length() >= 600:
             self.mon_anim.animator.state_map["Idle"].center = self.obj.GetTransform().m_pos + Vec2(100,100)
             return "Idle"
+        if dist.length() <= 300:
+            return "Attack"
         return ''
 
 from vector2 import Vec2
@@ -147,6 +164,33 @@ class StateFlyingMonsterIdle(CState):
         self.mon_anim.render()
     def change_state(self):
         dir = self.mon_anim.animator.owner.GetPlayerDirection()
-        if dir.length() <= 300:
+        if dir.length() <= 500:
+            return 'Chase'
+        if dir.length() <= 600:
+            return 'Idle'
+        return ''
+
+class StateMonsterAttack(CState):
+    def __init__(self):
+        self.mon_anim = None
+        self.acc = 0
+        self.cool_down = 1
+    def update(self):
+        from Singletons.ctimemgr import DT
+        self.mon_anim.update()
+        self.acc += DT()
+        if self.acc >= self.cool_down:
+            self.acc = 0
+            dir = self.mon_anim.animator.owner.GetPlayerDirection()
+            from Objects.ball import CBall
+            from Singletons.eventmgr import CreateObj
+            CreateObj("PROJ_MONSTER",CBall(25, 25, self.obj.GetTransform().m_pos, dir,1,10,400))
+    def enter_state(self):
+        self.acc = 0
+    def render(self):
+        self.mon_anim.render()
+    def change_state(self):
+        dir = self.mon_anim.animator.owner.GetPlayerDirection()
+        if dir.length() >= 600:
             return 'Chase'
         return ''

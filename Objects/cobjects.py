@@ -12,6 +12,10 @@ class CObject:
         self.components.append(CTransform())
         self.components[0].SetOwner(self)
         self.IsDead = False
+        self.hp = 10000
+
+    def DecreaseHP(self,decrease_val):
+        self.hp -= decrease_val
     def AddComponent(self,comp_name,comp):
         self.components.append(comp)
         self.comp_map[comp_name] = comp
@@ -55,6 +59,8 @@ class CObject:
             comp.render()
         for childs in self.childs:
             childs.render()
+        if self.hp <= 0:
+            self.IsDead = True
     def OnCollisionEnter(self,other):
         pass
     def OnCollisionStay(self,other):

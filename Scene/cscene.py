@@ -5,13 +5,14 @@ GROUP_NAME = {
     "PLAYER" : 1,
     "MONSTER" : 2,
     "PROJ" : 3,
-    "ITEM" : 4,
-    "TILE" : 5,
-    "GROUND" : 6,
-    "FLYING_MONSTER" : 7,
-    "PORTAL" : 8,
-    "SWORD" : 9,
-    "UI": 10
+    "PROJ_MONSTER" : 4,
+    "ITEM" : 5,
+    "TILE" : 6,
+    "GROUND" : 7,
+    "FLYING_MONSTER" : 8,
+    "PORTAL" : 9,
+    "SWORD" : 10,
+    "UI": 11
 }
 
 class CScene:

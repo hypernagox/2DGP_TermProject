@@ -19,6 +19,7 @@ class CBall(CObject):
         self.acc = 0
         self.life = life
         self.speed = speed
+        self.isReflect=False
     def update(self):
         from Singletons.ctimemgr import DT
         self.acc += DT()
@@ -31,7 +32,7 @@ class CBall(CObject):
         if other.group_name == 'MONSTER' or other.group_name == 'FLYING_MONSTER':
             #rigid = other.GetComp("RigidBody")
            # rigid.SetVelocity(self.dir * 1000)
-            DestroyObj(other)
+            other.DecreaseHP(1)
 
             DestroyObj(self)
         elif other.group_name == 'TILE':
