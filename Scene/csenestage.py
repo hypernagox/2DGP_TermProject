@@ -41,8 +41,9 @@ class Stage_Scene(CScene):
         p1 = CFactory.CreateObject('Player')
         self.cur_player = p1
         self.AddObject("PLAYER",p1)
-        p2 = CFactory.CreateObject('Monster',Vec2(400, 175),Vec2(100,100),'wolf')
-        self.AddObject("MONSTER", p2)
+        for i in range(20):
+            p2 = CFactory.CreateObject('Monster',Vec2(400 + i * 20, 175),Vec2(100,100),'wolf')
+            self.AddObject("MONSTER", p2)
         p1.hp = 50
         for i in range(200):
            p3 = CFactory.CreateObject('Monster',Vec2(400 + i * 100, 300 + i * 50),Vec2(100,100) ,'ghost')
