@@ -51,6 +51,8 @@ class CCollider(CComponent):
             False,
             self.m_vSizeOffset
         )
+    def GetMaxAxisLength(self):
+        return self.obb_box.max_length
 
 
 class OBB:
@@ -62,7 +64,7 @@ class OBB:
         self.angle = 0
         self.corners = []
         self.axes = []
-
+        self.max_length = 0
     def calculate_corners(self):
         half_width = self.width / 2
         half_height = self.height / 2
@@ -78,12 +80,17 @@ class OBB:
         return rotated_corners
 
     def calculate_axes(self):
+        max_squared_length = 0
         axes = []
         for i in range(4):
             edge = self.corners[i] - self.corners[(i + 1) % 4]
+            squared_length = edge.x ** 2 + edge.y ** 2
+            max_squared_length = max(max_squared_length, squared_length)
+
             normal = Vec2(-edge.y, edge.x)
             axes.append(normal.normalized())
-        return axes
+
+        return axes, max_squared_length
 
     def update(self, center,size,angle,offset):
         self.center = center + offset
@@ -91,6 +98,6 @@ class OBB:
         self.width = size.x
         self.height = size.y
         self.corners = self.calculate_corners()
-        self.axes = self.calculate_axes()
+        self.axes,self.max_length = self.calculate_axes()
 
 

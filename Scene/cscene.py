@@ -8,7 +8,8 @@ GROUP_NAME = {
     "ITEM" : 4,
     "TILE" : 5,
     "GROUND" : 6,
-    "FLYING_MONSTER" : 7
+    "FLYING_MONSTER" : 7,
+    "PORTAL" : 8
 }
 
 class CScene:
@@ -161,7 +162,7 @@ class CScene:
         RegisterGroup("PLAYER", "TILE")
 
         from Objects.block import CGround
-        for i in range(200):
+        for i in range(10):
             self.AddObject("GROUND", CGround(i* 1000, 0, Vec2(1000, 100), 'front.png'))
 
         RegisterGroup("PLAYER", "GROUND")
@@ -170,3 +171,13 @@ class CScene:
 
         RegisterGroup("PROJ", "TILE")
         RegisterGroup("ITEM", "TILE")
+
+        RegisterGroup("PLAYER", "PORTAL")
+
+        from Objects.portal import CPortal
+        portal = CPortal("tree.png")
+        self.AddObject("PORTAL",portal)
+
+        bg = CBlock(4000 + 3000 * 3 + 600, 1000, Vec2(3000 * 7, 1500), 'boss_ground.png')
+        bg.GetComp("Collider").m_vOffset = Vec2(0,-500)
+        self.AddObject("TILE", bg)
