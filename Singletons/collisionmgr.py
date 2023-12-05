@@ -16,9 +16,7 @@ class CCollisionMgr(metaclass = SingletonBase):
         self.map_mtv = {}
 
     def ResetGroup(self):
-        for i in self.collision_table:
-            for j in i:
-                j = False
+        self.collision_table = [[False for _ in range(len(GROUP_NAME))] for _ in range(len(GROUP_NAME))]
     def RegisterGroup(self,group_name_a,group_name_b):
         a = GROUP_NAME[group_name_a]
         b = GROUP_NAME[group_name_b]
@@ -185,4 +183,4 @@ def resolve_collision(fixed_obj, target_obj,set_ground = False):
     return CCollisionMgr().resolve_collision(fixed_obj,target_obj,set_ground)
 
 def ResetGroup():
-    CCollisionMgr().RegisterGroup()
+    CCollisionMgr().ResetGroup()

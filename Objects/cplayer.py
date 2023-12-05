@@ -5,11 +5,14 @@ from vector2 import Vec2
 from Components.animator import CAnimator, CState, CAnimation
 class CPlayer(CObject):
     def __init__(self):
+        from pico2d import load_font
+        self.font = load_font('ENCR10B.TTF', 30)
         self.name = "Player"
         from Components.camera import CCamera
         from Components.collider import CCollider
         from Components.rigidbody import CRigidBody
         from Components.spriterenderer import CSpriteRenderer
+        self.hp = 20
         super().__init__()
         animator = CAnimator()
         self.AddComponent("Animator",animator)
@@ -126,7 +129,19 @@ class CPlayer(CObject):
 
 
         animator.OnSignal()
+
+    def render(self):
+        super().render()
+        from Components.camera import CCamera
+        pos = CCamera.curMainCam.world_to_screen(self.GetTransform().m_pos)
+        self.font.draw(int(pos.x - 50),int(pos.y + 100), f'{self.hp}',(255,0,0))
+        if self.hp <= 0:
+            from Singletons.eventmgr import ChangeScene
+            from Singletons.cscenemgr import GetCurScene
+            ChangeScene(GetCurScene().scene_name,"Intro")
     def OnCollisionEnter(self,other):
+        if other.group_name == "PROJ_MONSTER":
+            self.DecreaseHP(1)
         if None == other.parent and other.group_name == 'ITEM':
             self.curballs.append(other)
             self.player_attack.ball_count += 1

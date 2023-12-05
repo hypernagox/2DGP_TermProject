@@ -59,8 +59,6 @@ class CObject:
             comp.render()
         for childs in self.childs:
             childs.render()
-        if self.hp <= 0:
-            self.IsDead = True
     def OnCollisionEnter(self,other):
         pass
     def OnCollisionStay(self,other):

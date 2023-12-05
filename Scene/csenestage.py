@@ -43,7 +43,7 @@ class Stage_Scene(CScene):
         self.AddObject("PLAYER",p1)
         p2 = CFactory.CreateObject('Monster',Vec2(400, 175),Vec2(100,100),'wolf')
         self.AddObject("MONSTER", p2)
-
+        p1.hp = 50
         for i in range(200):
            p3 = CFactory.CreateObject('Monster',Vec2(400 + i * 100, 300 + i * 50),Vec2(100,100) ,'ghost')
            self.AddObject("FLYING_MONSTER", p3)
@@ -123,6 +123,8 @@ class Stage_Scene(CScene):
         RegisterGroup("MONSTER", "GROUND")
         RegisterGroup("ITEM", "GROUND")
 
+        RegisterGroup("PLAYER", "PROJ_MONSTER")
+
         RegisterGroup("PROJ", "TILE")
         RegisterGroup("ITEM", "TILE")
 
@@ -161,4 +163,5 @@ class Stage_Scene(CScene):
         self.cur_player = None
         for obj in self.objs:
             obj.clear()
-        self.layers.clear()
+        for l in self.layers:
+            l = None

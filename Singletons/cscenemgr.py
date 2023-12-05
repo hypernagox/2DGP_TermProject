@@ -15,9 +15,9 @@ class CSceneMgr(metaclass=SingletonBase):
         self.scenes['Stage']  = Stage_Scene('Stage')
         from Scene.csceneboss import Boss_Scene
         self.scenes['Boss'] = Boss_Scene('Stage')
-        #self.cur_scene = self.scenes['Intro']
+        self.cur_scene = self.scenes['Intro']
 
-        self.cur_scene = self.scenes['Boss']
+        #self.cur_scene = self.scenes['Boss']
         self.cur_scene.Enter()
     def update(self):
         self.cur_scene.update()

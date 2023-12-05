@@ -61,7 +61,8 @@ class CMonster(CObject):
         cur_mon_pos = self.GetTransform().m_pos
         return cur_player_pos - cur_mon_pos
     def OnCollisionEnter(self,other):
-        if other.name != "Ball":
+        from Singletons.cscenemgr import GetCurScene
+        if other.name != "Ball" and GetCurScene().scene_name != "Boss":
             return
         if other.group_name == "SWORD": return
         if other.group_name == "PROJ_MONSTER": return
@@ -91,6 +92,11 @@ class CMonster(CObject):
                                    , animator)
         animator.state_map["Idle"] = flying_idle
         animator.cur_state = flying_idle
+    def render(self):
+        super().render()
+        if self.hp <= 0:
+            from Singletons.eventmgr import DestroyObj
+            DestroyObj(self)
 
 class StateMonsterIdle(CState):
     def __init__(self):

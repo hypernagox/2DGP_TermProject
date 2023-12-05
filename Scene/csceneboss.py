@@ -1,5 +1,6 @@
 from Components.animator import CState, CAnimation
 from Scene.cscene import CScene
+from vector2 import Vec2
 
 
 class Boss_Scene(CScene):
@@ -7,6 +8,14 @@ class Boss_Scene(CScene):
         super().__init__(name)
         self.scene_name = name
 
+    def Exit(self):
+        from Singletons.collisionmgr import ResetGroup
+        ResetGroup()
+        self.cur_player = None
+        for obj in self.objs:
+            obj.clear()
+        for l in self.layers:
+            l = None
     def Enter(self):
         from vector2 import Vec2
 
@@ -25,7 +34,7 @@ class Boss_Scene(CScene):
         self.AddObject("PLAYER",p1)
         self.cur_player = p1
         from Singletons.collisionmgr import RegisterGroup
-
+        p1.hp = 20
         p2 = CFactory.CreateObject('Monster', Vec2(1200, 175), Vec2(800, 600), 'fat')
         p2.GetComp("Animator").state_map.clear()
         bossidle = StateBossIdle()
@@ -40,6 +49,7 @@ class Boss_Scene(CScene):
                                    ,  p2.GetComp("Animator"))
         p2.GetComp("Animator").state_map["Idle"] =bossidle
         p2.GetComp("Animator").cur_state = bossidle
+        p2.hp = 200
         self.AddObject("MONSTER", p2)
         for i in range(10):
             from Objects.block import CBlock
@@ -57,12 +67,14 @@ class Boss_Scene(CScene):
         RegisterGroup("PLAYER", "TILE")
         RegisterGroup("MONSTER", "GROUND")
         RegisterGroup("PLAYER","MONSTER")
+        RegisterGroup("PLAYER", "PROJ_MONSTER")
 
+        RegisterGroup("SWORD", "PROJ_MONSTER")
         RegisterGroup("PROJ", "MONSTER")
         RegisterGroup("PROJ", "FLYING_MONSTER")
 
         RegisterGroup("PLAYER","ITEM")
-
+        RegisterGroup("ITEM", "GROUND")
         from vector2 import Vec2
 
         from Factory.factory import CLayerFactory
@@ -87,10 +99,15 @@ class StateBossIdle(CState):
         self.mon_anim = None
         self.acc = 0
         self.mon_dir = -1
+        self.interval = 0
     def update(self):
         from vector2 import Vec2
         from Singletons.ctimemgr import DT
         self.acc +=  DT() * 800
+        self.interval += DT()
+        if self.interval >= 1:
+            self.shoot_ball()
+            self.interval = 0
         if self.acc >= 1000:
             self.acc = 0
             self.mon_dir = -self.mon_dir
@@ -101,5 +118,19 @@ class StateBossIdle(CState):
     def render(self):
         self.mon_anim.render()
     def change_state(self):
-
         return ''
+
+    def shoot_ball(self):
+        import math
+
+        ball_speed = 500
+        ball_position = self.mon_anim.animator.owner.GetTransform().m_pos
+
+        for angle in range(0, 360, 10):
+            ball_velocity = Vec2(ball_speed * math.cos(math.radians(angle)),
+                                 ball_speed * math.sin(math.radians(angle)))
+            from Objects.ball import CBall
+            from copy import deepcopy
+            ball = CBall(25, 25, deepcopy(ball_position), ball_velocity.normalized(), 1, 10, 400)
+            from Singletons.cscenemgr import GetCurScene
+            GetCurScene().AddObject("PROJ_MONSTER", ball)
