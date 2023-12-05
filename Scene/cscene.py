@@ -92,10 +92,10 @@ class CScene:
         p2 = CFactory.CreateObject('Monster',Vec2(400, 175),Vec2(100,100),'wolf')
         self.AddObject("MONSTER", p2)
 
-        for i in range(100):
-            p3 = CFactory.CreateObject('Monster',Vec2(400 + i * 100, 300 + i * 50),Vec2(100,100) ,'ghost')
-            self.AddObject("FLYING_MONSTER", p3)
-            p3.SetFlying()
+        #for i in range(100):
+       #     p3 = CFactory.CreateObject('Monster',Vec2(400 + i * 100, 300 + i * 50),Vec2(100,100) ,'ghost')
+        #    self.AddObject("FLYING_MONSTER", p3)
+        #    p3.SetFlying()
         #p3.SetFlying()
         from Singletons.collisionmgr import RegisterGroup
         RegisterGroup("PLAYER","MONSTER")
@@ -178,6 +178,6 @@ class CScene:
         portal = CPortal("tree.png")
         self.AddObject("PORTAL",portal)
 
-        bg = CBlock(4000 + 3000 * 3 + 600, 1000, Vec2(3000 * 7, 1500), 'boss_ground.png')
-        bg.GetComp("Collider").m_vOffset = Vec2(0,-500)
-        self.AddObject("TILE", bg)
+        bg = CBlock(4800, 3000, Vec2(483 * 10, 11 * 10), 'boss_ground.png')
+        bg.name = 'boss_ground'
+        self.AddObject("GROUND", bg)
