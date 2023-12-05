@@ -10,7 +10,8 @@ GROUP_NAME = {
     "GROUND" : 6,
     "FLYING_MONSTER" : 7,
     "PORTAL" : 8,
-    "SWORD" : 9
+    "SWORD" : 9,
+    "UI": 10
 }
 
 class CScene:
@@ -203,3 +204,6 @@ class CScene:
             b = self.AddObject("TILE", CBlock(2400 + i * 100, 2300, Vec2(100, 120), 'brick2.png'))
             b.name = 'boss_block'
 
+        from ui.cui import UI
+        ui = UI(Vec2(50,650),Vec2(50,50),'ball21x21.png')
+        self.AddObject("UI", ui)
