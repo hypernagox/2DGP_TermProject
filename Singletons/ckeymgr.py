@@ -52,6 +52,11 @@ def GetKey(key):
     return CKeyMgr().GetKeyState(key)
 def GetMousePos():
     return CKeyMgr().GetMousePos()
+
+def GetConvertMousePos():
+    pos = GetMousePos()
+    from Singletons.core import CCore
+    return CKeyMgr().convert_coordinates(pos.x,pos.y,CCore().height)
 def GetTapAllKeys():
     pass
 def GetHoldAllKeys():

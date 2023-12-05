@@ -43,3 +43,13 @@ class DestroyObjEvent(CEvent):
         self.obj = obj
     def accept(self):
         self.obj.IsDead = True
+
+
+class ChangeSceneEvent(CEvent):
+    def __init__(self,from_scene_name,to_scene_name):
+        from Singletons.cscenemgr import CSceneMgr
+        self.from_scene = CSceneMgr().scenes[from_scene_name]
+        self.to_scene = CSceneMgr().scenes[to_scene_name]
+    def accept(self):
+        self.from_scene.Exit()
+        self.to_scene.Enter()
