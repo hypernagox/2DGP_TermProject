@@ -15,10 +15,11 @@ GROUP_NAME = {
 }
 
 class CScene:
-    def __init__(self):
+    def __init__(self,scene_name):
         self.objs = [[] for _ in range(len(GROUP_NAME))]
         self.layers = [None] * 5
         self.cur_player = None
+        self.scene_name = scene_name
     def AddObject(self,group_name,obj):
         obj.group_name = group_name
         self.objs[GROUP_NAME[group_name]].append(obj)

@@ -28,6 +28,10 @@ def CreateObj(group_name,obj):
     AddEvent(CreateObjEvent(group_name,obj))
 def DestroyObj(obj):
     AddEvent(DestroyObjEvent(obj))
+
+def ChangeScene(from_scene_name,to_scene_name):
+    AddEvent(ChangeSceneEvent(from_scene_name,to_scene_name))
+
 class CEvent:
     def accept(self):
         pass
@@ -51,5 +55,7 @@ class ChangeSceneEvent(CEvent):
         self.from_scene = CSceneMgr().scenes[from_scene_name]
         self.to_scene = CSceneMgr().scenes[to_scene_name]
     def accept(self):
+        from Singletons.cscenemgr import CSceneMgr
         self.from_scene.Exit()
+        CSceneMgr().cur_scene = self.to_scene
         self.to_scene.Enter()

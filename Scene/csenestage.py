@@ -2,8 +2,8 @@ from Scene.cscene import CScene
 
 
 class Stage_Scene(CScene):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,scene_name):
+        super().__init__(scene_name)
     def Enter(self):
         from vector2 import Vec2
 

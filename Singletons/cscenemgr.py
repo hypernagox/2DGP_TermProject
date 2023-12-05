@@ -8,15 +8,12 @@ class CSceneMgr(metaclass=SingletonBase):
     def AddScene(self,name,scene):
         self.scenes[name] = scene
     def Initialize(self):
-
-        from Scene.csenestage import Stage_Scene
-        self.cur_scene = Stage_Scene()
-        self.scenes['Stage']  = self.cur_scene
-
         from Scene.csceneintro import Intro_Scene
+        from Scene.csenestage import Stage_Scene
 
-        self.scenes['Intro'] = Intro_Scene()
-
+        self.scenes['Intro'] = Intro_Scene('Intro')
+        self.scenes['Stage']  = Stage_Scene('Stage')
+        self.cur_scene = self.scenes['Intro']
         self.cur_scene.Enter()
     def update(self):
         self.cur_scene.update()
