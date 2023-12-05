@@ -23,6 +23,8 @@ class CRigidBody(CComponent):
         else:
             self.GetOwner().GetTransform().m_pos.y += 1
         self.bDirty = True
+    def GetVelocity(self):
+        return self.vVelocity
     def Move(self):
         trans = self.GetOwner().GetTransform()
         val = abs(self.vVelocity.x)

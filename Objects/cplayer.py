@@ -71,6 +71,11 @@ class CPlayer(CObject):
         from Objects.sword import CSword
         self.sword = CSword(self)
         self.AddChild(self.sword)
+
+        self.curWeapon = "BALL"
+        from Singletons.cscenemgr import GetUI
+        GetUI()[0].bSelect = True
+
     def update(self):
         super().update()
         #print(self.GetTransform().m_pos.x,self.GetTransform().m_pos.y)
@@ -100,11 +105,26 @@ class CPlayer(CObject):
         #    from Singletons.ctimemgr import DT
         #    self.GetTransform().m_degree += 10 * DT()
         from sdl2 import SDLK_LEFT
-        if self.curballs and self.player_attack.do_attack(self.curballs[len(self.curballs) - 1]):
-            delChild = self.curballs[len(self.curballs) - 1]
-            self.curballs.remove(delChild)
-            self.EraseChild(delChild)
-            delChild.IsDead = True
+        if self.curWeapon == "BALL":
+            if self.curballs and self.player_attack.do_attack(self.curballs[len(self.curballs) - 1]):
+                delChild = self.curballs[len(self.curballs) - 1]
+                self.curballs.remove(delChild)
+                self.EraseChild(delChild)
+                delChild.IsDead = True
+        from sdl2 import SDLK_1
+        from sdl2 import SDLK_2
+        if 'TAP' == GetKey(SDLK_1):
+            self.curWeapon = "BALL"
+            from Singletons.cscenemgr import GetUI
+            GetUI()[0].bSelect = True
+            GetUI()[1].bSelect = False
+        elif 'TAP' == GetKey(SDLK_2):
+            self.curWeapon = "SWORD"
+            from Singletons.cscenemgr import GetUI
+            GetUI()[0].bSelect = False
+            GetUI()[1].bSelect = True
+
+
         animator.OnSignal()
     def OnCollisionEnter(self,other):
         if None == other.parent and other.group_name == 'ITEM':
@@ -132,7 +152,7 @@ class StatePlayerIdle(CState):
             return 'Walk'
         if 'TAP'== GetKey(SDLK_SPACE):
             return 'Jump'
-        if 'AWAY' == GetKey(1) or 'TAP' == GetKey(SDLK_f):
+        if 'AWAY' == GetKey(1):
             return "Attack"
         if 'TAP' == GetKey(SDLK_r):
             if self.obj.player_attack.ball_count >= 5:
@@ -215,7 +235,7 @@ class StatePlayerAttack(CState):
     def enter_state(self):
         self.anim_atk.bFinish = False
         self.anim_atk_sword.bFinish = False
-        self.is_shoot = not ('TAP' == GetKey(SDLK_f))
+        self.is_shoot = ('BALL' == self.obj.curWeapon)
         if not self.is_shoot:
             self.obj.sword.bActivate = True
     def exit_state(self):

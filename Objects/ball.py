@@ -29,8 +29,8 @@ class CBall(CObject):
     def OnCollisionEnter(self,other):
         from Singletons.eventmgr import DestroyObj
         if other.group_name == 'MONSTER' or other.group_name == 'FLYING_MONSTER':
-            rigid = other.GetComp("RigidBody")
-            rigid.SetVelocity(self.dir * 1000)
+            #rigid = other.GetComp("RigidBody")
+           # rigid.SetVelocity(self.dir * 1000)
             DestroyObj(other)
 
             DestroyObj(self)

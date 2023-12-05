@@ -29,3 +29,6 @@ def GetCurSceneObjects():
 
 def GetCurScene():
     return CSceneMgr().GetCurScene()
+
+def GetUI():
+    return CSceneMgr().GetCurScene().objs[10]

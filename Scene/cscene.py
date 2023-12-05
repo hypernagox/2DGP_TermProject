@@ -88,6 +88,18 @@ class CScene:
                     return
     def Enter(self):
         from vector2 import Vec2
+
+        from ui.cui import CItemUI
+        ui = CItemUI(Vec2(50,650),Vec2(50,50),'ball21x21.png')
+        self.AddObject("UI", ui)
+
+        import math
+        ui2 = CItemUI(Vec2(150, 650), Vec2(100, 50), 'sword.png',90 * (math.pi / 180))
+        self.AddObject("UI", ui2)
+
+
+
+
         from Factory.factory import CFactory
         p1 = CFactory.CreateObject('Player')
         self.cur_player = p1
@@ -177,7 +189,7 @@ class CScene:
         RegisterGroup("ITEM", "TILE")
 
         RegisterGroup("SWORD", "TILE")
-        #RegisterGroup("SWORD", "MONSTER")
+        RegisterGroup("SWORD", "MONSTER")
 
         RegisterGroup("PLAYER", "PORTAL")
 
@@ -204,6 +216,3 @@ class CScene:
             b = self.AddObject("TILE", CBlock(2400 + i * 100, 2300, Vec2(100, 120), 'brick2.png'))
             b.name = 'boss_block'
 
-        from ui.cui import UI
-        ui = UI(Vec2(50,650),Vec2(50,50),'ball21x21.png')
-        self.AddObject("UI", ui)
