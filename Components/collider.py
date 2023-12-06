@@ -1,7 +1,7 @@
 from Components.component import CComponent
 from vector2 import Vec2
 
-g_renderColBox = True
+g_renderColBox = False
 
 class CCollider(CComponent):
     g_collider_ID = 0
