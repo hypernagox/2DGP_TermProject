@@ -28,6 +28,9 @@ class CItem(CObject):
         self.item_fire_dir = Vec2(1,1)
         self.acc=0
         self.life = 5
+        from Singletons.resourcemgr import GetSound
+        self.item_sound = GetSound('item_sound.ogg')
+        GetSound('item_create.ogg').play()
     def update(self):
         super().update()
         if None != self.parent:
@@ -51,6 +54,7 @@ class CItem(CObject):
         if self.parent != None or other.group_name != 'PLAYER':
             return
         from Singletons.cscenemgr import GetCurScene
+        self.item_sound.play()
         self.GetComp("RigidBody").bGravity = False
         GetCurScene().remove_object(self)
         other.AddChild(self)

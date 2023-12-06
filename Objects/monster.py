@@ -5,6 +5,8 @@ class CMonster(CObject):
         super().__init__()
         self.name = strMonsterName
         from Components.animator import CAnimator
+        from Singletons.resourcemgr import GetSound
+        self.mon_sound = GetSound('monster_hit.ogg')
         animator = CAnimator()
         self.AddComponent("Animator", animator)
         from Components.animator import CAnimation
@@ -64,6 +66,8 @@ class CMonster(CObject):
         from Singletons.cscenemgr import GetCurScene
         if other.name != "Ball" and GetCurScene().scene_name != "Boss":
             return
+        if other.group_name == 'PROJ':
+            self.mon_sound.play()
         if other.group_name == "SWORD": return
         if other.group_name == "PROJ_MONSTER": return
         from Singletons.eventmgr import CreateObj
@@ -181,6 +185,8 @@ class StateMonsterAttack(CState):
         self.mon_anim = None
         self.acc = 0
         self.cool_down = 1
+        from Singletons.resourcemgr import GetSound
+        self.mon_proj_sound = GetSound('mon_proj.ogg')
     def update(self):
         from Singletons.ctimemgr import DT
         self.mon_anim.update()
@@ -190,6 +196,7 @@ class StateMonsterAttack(CState):
             dir = self.mon_anim.animator.owner.GetPlayerDirection()
             from Objects.ball import CBall
             from Singletons.eventmgr import CreateObj
+            self.mon_proj_sound.play()
             CreateObj("PROJ_MONSTER",CBall(25, 25, self.obj.GetTransform().m_pos, dir,1,10,400))
     def enter_state(self):
         self.acc = 0

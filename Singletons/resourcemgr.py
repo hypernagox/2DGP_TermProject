@@ -40,6 +40,10 @@ class CResMgr(metaclass=SingletonBase):
             if tex.is_file():
                 from pico2d import load_image
                 self.tex_map[tex.name] = load_image(str(tex.absolute()))
+        for sound in CPathMgr().GetSoundPath().rglob('**/*'):
+            if sound.is_file():
+                from pico2d import load_wav
+                self.sound_map[sound.name] = load_wav(str(sound.absolute()))
     def GetTex(self,name):
         return self.tex_map[name]
     def GetSound(self,name):
@@ -54,3 +58,6 @@ class CResMgr(metaclass=SingletonBase):
                     anim_clips.append(load_image(str(clips.absolute())))
             self.anim_map[folderName] = anim_clips
         return self.anim_map[folderName]
+
+def GetSound(fileName):
+    return CResMgr().sound_map[fileName]

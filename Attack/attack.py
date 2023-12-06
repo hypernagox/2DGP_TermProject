@@ -5,7 +5,8 @@ class CAttack:
         self.obj = obj
         self.ball_count = 10
         self.scale = 1.
-
+        from Singletons.resourcemgr import GetSound
+        self.kick_sound = GetSound('kick.ogg')
     def do_attack(self,ball):
         if self.ball_count <= 0 :
             return False
@@ -26,6 +27,7 @@ class CAttack:
             return False
         elif 'AWAY' == GetKey(1):
             from Singletons.eventmgr import CreateObj
+            self.kick_sound.play()
             scale = self.scale
             CreateObj("PROJ",CBall(50, 50, self.obj.GetTransform().m_pos + dir * 10, dir,scale))
             self.ball_count -= 1

@@ -16,6 +16,8 @@ class CSword(CObject):
         GetCurScene().AddObject("SWORD",self)
         from Components.spriterenderer import CSpriteRenderer
         self.AddComponent("SpriteRenderer", CSpriteRenderer())
+        from Singletons.resourcemgr import GetSound
+        self.sword_sound = GetSound('knifeSlice.ogg')
     # def update(self):
     #     from copy import deepcopy
     #     self.GetTransform().m_pos = deepcopy(self.obj.GetTransform().m_finalPos)
@@ -26,6 +28,7 @@ class CSword(CObject):
         from Singletons.eventmgr import DestroyObj
         if other.name == "boss_block":return
         if self.bActivate:
+            self.sword_sound.play()
             if other.group_name == "PROJ_MONSTER":
                other.dir = other.dir * -1
                from Objects.ball import CBall

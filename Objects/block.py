@@ -13,11 +13,13 @@ class CBlock(CObject):
         self.AddComponent("Collider",CCollider(self)).m_vSizeOffset = Vec2(0,0)
         from Components.spriterenderer import CSpriteRenderer
         self.AddComponent("SpriteRenderer", CSpriteRenderer(texture_name))
-
+        from Singletons.resourcemgr import GetSound
+        self.block_sound = GetSound('block_hit.ogg')
     def OnCollisionEnter(self,other):
         if None != other.parent and other.group_name == 'ITEM': return
         if other.group_name == "SWORD": return
         if other.group_name == 'PROJ':
+            self.block_sound.play()
             if other.isReflect:return
             from Singletons.eventmgr import CreateObj
             from Objects.item import CItem
