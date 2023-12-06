@@ -1,4 +1,5 @@
 from Scene.cscene import CScene
+from Singletons.resourcemgr import GetSoundPath
 from vector2 import Vec2
 
 
@@ -6,8 +7,16 @@ class Stage_Scene(CScene):
     def __init__(self,scene_name):
         super().__init__(scene_name)
         self.once = False
+        from pico2d import load_music
+        self.bgm_stage = load_music(str(GetSoundPath().absolute()) + '/bgm_stage.mp3')
+        self.bgm_stage.set_volume(96)
     def update(self):
         super().update()
+        from Singletons.ckeymgr import GetKey
+        from sdl2 import SDLK_p
+        if 'TAP' == GetKey(SDLK_p):
+            from Singletons.eventmgr import ChangeScene
+            ChangeScene(self.scene_name,'Intro')
         if self.cur_player.GetTransform().m_pos.y >= 4000:
             if self.once: return
             import random
@@ -15,15 +24,16 @@ class Stage_Scene(CScene):
             from Singletons.eventmgr import CreateObj
 
             for i in range(4000, 5000, 50):
-                x_position = i + random.randint(0, 100)
+                x_position = i + random.randint(-100, 100)
                 y_position = 5150
                 mon = CFactory.CreateObject('Monster', Vec2(x_position, y_position), Vec2(100, 100), 'zombie')
                 CreateObj("MONSTER", mon)
                 mon.GetTransform().m_pos = Vec2(x_position, y_position)
                 mon.GetTransform().m_size = Vec2(200, 200)
-                mon.hp = 10
+                mon.hp = 5
             self.once = True
     def Enter(self):
+        self.bgm_stage.repeat_play()
         from vector2 import Vec2
 
         from ui.cui import CItemUI
@@ -159,6 +169,7 @@ class Stage_Scene(CScene):
             b.name = 'boss_block'
 
     def Exit(self):
+        CScene.prev_scene = self
         from Singletons.collisionmgr import ResetGroup
         ResetGroup()
         self.cur_player = None

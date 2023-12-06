@@ -138,10 +138,13 @@ class CPlayer(CObject):
         if self.hp <= 0:
             from Singletons.eventmgr import ChangeScene
             from Singletons.cscenemgr import GetCurScene
-            ChangeScene(GetCurScene().scene_name,"Intro")
+            ChangeScene(GetCurScene().scene_name,"Dead")
     def OnCollisionEnter(self,other):
         if other.group_name == "PROJ_MONSTER":
             self.DecreaseHP(1)
+            from Singletons.resourcemgr import GetSound
+            GetSound('player_hit.ogg').set_volume(32)
+            GetSound('player_hit.ogg').play()
         if None == other.parent and other.group_name == 'ITEM':
             self.curballs.append(other)
             self.player_attack.ball_count += 1
@@ -229,6 +232,9 @@ class StatePlayerJump(CState):
         self.obj.GetTransform().m_degree += 10 * DT()
     def enter_state(self):
         self.anim_jump.bFinish = False
+        from Singletons.resourcemgr import GetSound
+        GetSound('jump.ogg').set_volume(32)
+        GetSound('jump.ogg').play()
     def exit_state(self):
         self.obj.GetTransform().m_degree = 0
         self.obj_rigid.SetIsGround(False)
@@ -302,6 +308,9 @@ def go_fly(obj):
     RegisterGroup("PROJ", "TILE")
     player_pos = obj.GetObjectScreenPos()
     player_pos_world = obj.GetTransform().m_finalPos
+
+    from Singletons.resourcemgr import GetSound
+
     while True:
         acc += DT()
 
@@ -318,6 +327,8 @@ def go_fly(obj):
 
             from Singletons.eventmgr import CreateObj
             from Objects.ball import CBall
+            GetSound('118-Fire02.ogg').set_volume(32)
+            GetSound('118-Fire02.ogg').play()
             CreateObj("PROJ", CBall(50, 50,player_pos_world + direction * 10, direction, 1,0.5,2000))
             cnt += 1
             acc = 0

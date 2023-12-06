@@ -44,6 +44,7 @@ class CResMgr(metaclass=SingletonBase):
             if sound.is_file():
                 from pico2d import load_wav
                 self.sound_map[sound.name] = load_wav(str(sound.absolute()))
+                self.sound_map[sound.name].set_volume(32)
     def GetTex(self,name):
         return self.tex_map[name]
     def GetSound(self,name):
@@ -61,3 +62,6 @@ class CResMgr(metaclass=SingletonBase):
 
 def GetSound(fileName):
     return CResMgr().sound_map[fileName]
+
+def GetSoundPath():
+    return CPathMgr().GetSoundPath()

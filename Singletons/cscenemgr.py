@@ -10,14 +10,16 @@ class CSceneMgr(metaclass=SingletonBase):
     def Initialize(self):
         from Scene.csceneintro import Intro_Scene
         from Scene.csenestage import Stage_Scene
+        from Scene.cscenedead import Dead_Scene
+        from Scene.csceneboss import Boss_Scene
 
         self.scenes['Intro'] = Intro_Scene('Intro')
         self.scenes['Stage']  = Stage_Scene('Stage')
-        from Scene.csceneboss import Boss_Scene
-        self.scenes['Boss'] = Boss_Scene('Stage')
+        self.scenes['Dead'] = Dead_Scene('Dead')
+        self.scenes['Boss'] = Boss_Scene('Boss')
+
         self.cur_scene = self.scenes['Intro']
 
-        #self.cur_scene = self.scenes['Boss']
         self.cur_scene.Enter()
     def update(self):
         self.cur_scene.update()

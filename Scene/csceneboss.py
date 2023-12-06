@@ -6,9 +6,19 @@ from vector2 import Vec2
 class Boss_Scene(CScene):
     def __init__(self,name):
         super().__init__(name)
-        self.scene_name = name
-
+        from pico2d import load_music
+        from Singletons.resourcemgr import GetSoundPath
+        self.bgm_boss = load_music(str(GetSoundPath().absolute()) + '/bgm_boss.mp3')
+        self.bgm_boss.set_volume(64)
+        self.boss = None
+    def update(self):
+        super().update()
+        if self.boss.IsDead:
+            from Singletons.eventmgr import ChangeScene
+            ChangeScene(self.scene_name,'Intro')
     def Exit(self):
+        CScene.prev_scene = self
+        self.bgm_boss.stop()
         from Singletons.collisionmgr import ResetGroup
         ResetGroup()
         self.cur_player = None
@@ -17,6 +27,7 @@ class Boss_Scene(CScene):
         for l in self.layers:
             l = None
     def Enter(self):
+        self.bgm_boss.repeat_play()
         from vector2 import Vec2
 
         from ui.cui import CItemUI
@@ -34,9 +45,11 @@ class Boss_Scene(CScene):
         self.AddObject("PLAYER",p1)
         self.cur_player = p1
         from Singletons.collisionmgr import RegisterGroup
-        p1.hp = 20
+        p1.hp = 50
         p2 = CFactory.CreateObject('Monster', Vec2(1200, 175), Vec2(800, 600), 'fat')
         p2.GetComp("Animator").state_map.clear()
+        p2.name = "Boss"
+        self.boss = p2
         bossidle = StateBossIdle()
         bossidle.obj = p2
         bossidle.mon_anim = CAnimation(f'Monster/fat/walking',

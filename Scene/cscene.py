@@ -16,6 +16,7 @@ GROUP_NAME = {
 }
 
 class CScene:
+    prev_scene = None
     def __init__(self,scene_name):
         self.objs = [[] for _ in range(len(GROUP_NAME))]
         self.layers = [None] * 5

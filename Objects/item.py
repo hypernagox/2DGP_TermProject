@@ -30,7 +30,8 @@ class CItem(CObject):
         self.life = 5
         from Singletons.resourcemgr import GetSound
         self.item_sound = GetSound('item_sound.ogg')
-        GetSound('item_create.ogg').play()
+        self.item_sound.set_volume(32)
+        self.item_sound.play()
     def update(self):
         super().update()
         if None != self.parent:

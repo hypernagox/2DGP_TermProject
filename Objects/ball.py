@@ -30,12 +30,15 @@ class CBall(CObject):
     def OnCollisionEnter(self,other):
         from Singletons.eventmgr import DestroyObj
         if other.group_name == 'MONSTER' or other.group_name == 'FLYING_MONSTER':
-            #rigid = other.GetComp("RigidBody")
-           # rigid.SetVelocity(self.dir * 1000)
-            other.DecreaseHP(1)
-
-            DestroyObj(self)
-        elif other.group_name == 'TILE':
+            from Singletons.resourcemgr import GetSound
+            GetSound('monster_hit.ogg').set_volume(32)
+            GetSound('monster_hit.ogg').play()
+            if self.GetTransform().m_scale >= 2:
+                other.DecreaseHP(5)
+            else:
+                other.DecreaseHP(1)
+                DestroyObj(self)
+        if other.group_name == 'TILE':
             DestroyObj(self)
     def OnCollisionStay(self,other):
         pass
