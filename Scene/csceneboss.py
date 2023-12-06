@@ -45,7 +45,7 @@ class Boss_Scene(CScene):
         self.AddObject("PLAYER",p1)
         self.cur_player = p1
         from Singletons.collisionmgr import RegisterGroup
-        p1.hp = 50
+        p1.hp = 20
         p2 = CFactory.CreateObject('Monster', Vec2(1200, 175), Vec2(800, 600), 'fat')
         p2.GetComp("Animator").state_map.clear()
         p2.name = "Boss"
